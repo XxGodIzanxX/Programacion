@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\IzanH\\Desktop\\Programacion\\Conversor de pulgadas a centimetros\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0B3D7C04-E037-4C42-8C23-7C69B26B55E2}|Conversor de pulgadas a centimetros\\Conversor de pulgadas a centimetros.vcxproj|C:\\Users\\IzanH\\Desktop\\Programacion\\Conversor de pulgadas a centimetros\\Conversor de pulgadas a centimetros\\Conversor de pulgadas.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B3D7C04-E037-4C42-8C23-7C69B26B55E2}|Conversor de pulgadas a centimetros\\Conversor de pulgadas a centimetros.vcxproj|solutionrelative:Conversor de pulgadas a centimetros\\Conversor de pulgadas.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Conversor de pulgadas.cpp",
+              "DocumentMoniker": "C:\\Users\\IzanH\\Desktop\\Programacion\\Conversor de pulgadas a centimetros\\Conversor de pulgadas a centimetros\\Conversor de pulgadas.cpp",
+              "RelativeDocumentMoniker": "Conversor de pulgadas a centimetros\\Conversor de pulgadas.cpp",
+              "ToolTip": "C:\\Users\\IzanH\\Desktop\\Programacion\\Conversor de pulgadas a centimetros\\Conversor de pulgadas a centimetros\\Conversor de pulgadas.cpp",
+              "RelativeToolTip": "Conversor de pulgadas a centimetros\\Conversor de pulgadas.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-17T14:33:37.915Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

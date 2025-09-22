@@ -1,4 +1,5 @@
 ﻿  5 descuento bolitas.cpp
 C:\Users\IzanH\Documents\GitHub\Programacion\5 Descuentos bolitas\5 Descuentos bolitas\5 descuento bolitas.cpp(18,23): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\IzanH\Documents\GitHub\Programacion\5 Descuentos bolitas\5 Descuentos bolitas\5 descuento bolitas.cpp(21,23): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\IzanH\Documents\GitHub\Programacion\5 Descuentos bolitas\5 Descuentos bolitas\5 descuento bolitas.cpp(27,23): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
   5 Descuentos bolitas.vcxproj -> C:\Users\IzanH\Documents\GitHub\Programacion\5 Descuentos bolitas\x64\Debug\5 Descuentos bolitas.exe

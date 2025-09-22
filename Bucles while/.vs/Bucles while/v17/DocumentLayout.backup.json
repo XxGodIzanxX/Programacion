@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Bucles while\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{132FC22A-762B-455A-BD89-32D1343E8512}|Bucles while\\Bucles while.vcxproj|C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Bucles while\\Bucles while\\BuclesWhile.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{132FC22A-762B-455A-BD89-32D1343E8512}|Bucles while\\Bucles while.vcxproj|solutionrelative:Bucles while\\BuclesWhile.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BuclesWhile.cpp",
+              "DocumentMoniker": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Bucles while\\Bucles while\\BuclesWhile.cpp",
+              "RelativeDocumentMoniker": "Bucles while\\BuclesWhile.cpp",
+              "ToolTip": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Bucles while\\Bucles while\\BuclesWhile.cpp",
+              "RelativeToolTip": "Bucles while\\BuclesWhile.cpp",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-22T13:32:56.101Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

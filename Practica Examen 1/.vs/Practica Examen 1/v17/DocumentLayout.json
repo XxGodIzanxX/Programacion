@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Practica Examen 1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{BDA945DB-1898-412E-86C7-B06AF102A0C8}|Practica Examen 1\\Practica Examen 1.vcxproj|C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Practica Examen 1\\Practica Examen 1\\Practica Examen1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{BDA945DB-1898-412E-86C7-B06AF102A0C8}|Practica Examen 1\\Practica Examen 1.vcxproj|solutionrelative:Practica Examen 1\\Practica Examen1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Practica Examen1.cpp",
+              "DocumentMoniker": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Practica Examen 1\\Practica Examen 1\\Practica Examen1.cpp",
+              "RelativeDocumentMoniker": "Practica Examen 1\\Practica Examen1.cpp",
+              "ToolTip": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Practica Examen 1\\Practica Examen 1\\Practica Examen1.cpp",
+              "RelativeToolTip": "Practica Examen 1\\Practica Examen1.cpp",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAAABQAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-23T13:42:08.26Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

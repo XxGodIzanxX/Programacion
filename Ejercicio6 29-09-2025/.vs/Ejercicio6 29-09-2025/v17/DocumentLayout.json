@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Ejercicio6 29-09-2025\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2EACC074-E09C-4FE9-B1CE-5F94E6EE4D25}|Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025.vcxproj|C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2EACC074-E09C-4FE9-B1CE-5F94E6EE4D25}|Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025.vcxproj|solutionrelative:Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Ejercicio6 29-09-2025.cpp",
+              "DocumentMoniker": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025.cpp",
+              "RelativeDocumentMoniker": "Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025.cpp",
+              "ToolTip": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025.cpp",
+              "RelativeToolTip": "Ejercicio6 29-09-2025\\Ejercicio6 29-09-2025.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-28T16:15:34.652Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

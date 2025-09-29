@@ -1,0 +1,3 @@
+﻿  vectores.cpp
+C:\Users\IzanH\Documents\GitHub\Programacion\vectores\vectores\vectores.cpp(8,18): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+  vectores.vcxproj -> C:\Users\IzanH\Documents\GitHub\Programacion\vectores\x64\Debug\vectores.exe

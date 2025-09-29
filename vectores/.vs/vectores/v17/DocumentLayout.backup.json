@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\vectores\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1CC8DC85-DCE7-4C0A-9201-4165CC549A7E}|vectores\\vectores.vcxproj|C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\vectores\\vectores\\vectores.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1CC8DC85-DCE7-4C0A-9201-4165CC549A7E}|vectores\\vectores.vcxproj|solutionrelative:vectores\\vectores.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "vectores.cpp",
+              "DocumentMoniker": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\vectores\\vectores\\vectores.cpp",
+              "RelativeDocumentMoniker": "vectores\\vectores.cpp",
+              "ToolTip": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\vectores\\vectores\\vectores.cpp*",
+              "RelativeToolTip": "vectores\\vectores.cpp*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-29T13:49:17.303Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

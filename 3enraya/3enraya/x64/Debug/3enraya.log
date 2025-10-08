@@ -1,0 +1,5 @@
+﻿  3enraya.cpp
+C:\Users\IzanH\Documents\GitHub\Programacion\3enraya\3enraya\3enraya.cpp(6,12): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+C:\Users\IzanH\Documents\GitHub\Programacion\3enraya\3enraya\3enraya.cpp(95,30): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\IzanH\Documents\GitHub\Programacion\3enraya\3enraya\3enraya.cpp(99,30): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+  3enraya.vcxproj -> C:\Users\IzanH\Documents\GitHub\Programacion\3enraya\x64\Debug\3enraya.exe

@@ -1,0 +1,9 @@
+﻿  IzanGutierrez-hundirlaflota.cpp
+C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\IzanGutierrez-Hundirlaflota\IzanGutierrez-hundirlaflota.cpp(7,12): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\IzanGutierrez-Hundirlaflota\IzanGutierrez-hundirlaflota.cpp(10,6): warning C4101: 'barco': variable local sin referencia
+C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\IzanGutierrez-Hundirlaflota\IzanGutierrez-hundirlaflota.cpp(9,6): warning C4101: 'mapa': variable local sin referencia
+C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\IzanGutierrez-Hundirlaflota\IzanGutierrez-hundirlaflota.cpp(13,6): warning C4101: 'v1': variable local sin referencia
+C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\IzanGutierrez-Hundirlaflota\IzanGutierrez-hundirlaflota.cpp(8,12): warning C4101: 'columna': variable local sin referencia
+C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\IzanGutierrez-Hundirlaflota\IzanGutierrez-hundirlaflota.cpp(12,6): warning C4101: 'matriz': variable local sin referencia
+C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\IzanGutierrez-Hundirlaflota\IzanGutierrez-hundirlaflota.cpp(8,6): warning C4101: 'fila': variable local sin referencia
+  IzanGutierrez-Hundirlaflota.vcxproj -> C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\x64\Debug\IzanGutierrez-Hundirlaflota.exe

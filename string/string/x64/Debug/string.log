@@ -1,6 +1,5 @@
 ﻿  string.cpp
-C:\Users\IzanH\Documents\GitHub\Programacion\string\string\string.cpp(27,34): warning C4474: "printf": se pasaron demasiados argumentos para la cadena de formato
-      C:\Users\IzanH\Documents\GitHub\Programacion\string\string\string.cpp(27,34):
-      los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
-  
-  string.vcxproj -> C:\Users\IzanH\Documents\GitHub\Programacion\string\x64\Debug\string.exe
+C:\Users\IzanH\Documents\GitHub\Programacion\string\string\string.cpp(27,104): error C2059: error de sintaxis: ')'
+C:\Users\IzanH\Documents\GitHub\Programacion\string\string\string.cpp(29,14): error C2059: error de sintaxis: ';'
+C:\Users\IzanH\Documents\GitHub\Programacion\string\string\string.cpp(32,1): error C2059: error de sintaxis: '}'
+C:\Users\IzanH\Documents\GitHub\Programacion\string\string\string.cpp(32,1): error C2143: error de sintaxis: falta ';' delante de '}'

@@ -15,16 +15,22 @@ int main() {
 	*/
 
 	//Ejercicio 1
-
+	/*
 	char sentencia[100];
+	int contador = 0;
 	printf("Dime una frase\n");
 	gets_s(sentencia);
+	printf("%s\n", sentencia);
 
+	
 	for (int i = 0; i <= strlen(sentencia); i++)
 	{
-		for (int la = 0; la <= strlen(sentencia) + 1; i++)
-
-			printf("El numero de LA es:", la);
-		
+		if (sentencia[i] == 'l' || sentencia[i] == 'L') && (sentencia[i + 1] == 'a' || sentencia[i + 1] == 'A'))
+		{
+			contador++;
+		}
 	}
+	*/
+
+
 }

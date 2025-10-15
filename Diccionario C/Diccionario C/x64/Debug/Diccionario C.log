@@ -1,0 +1,3 @@
+﻿  Diccionario C.cpp
+C:\Users\IzanH\Documents\GitHub\Programacion\Diccionario C\Diccionario C\Diccionario C.cpp(9,15): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+  Diccionario C.vcxproj -> C:\Users\IzanH\Documents\GitHub\Programacion\Diccionario C\x64\Debug\Diccionario C.exe

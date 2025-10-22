@@ -1,3 +1,2 @@
 ﻿  IzanGutierrez-hundirlaflota.cpp
-C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\IzanGutierrez-Hundirlaflota\IzanGutierrez-hundirlaflota.cpp(10,15): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
   IzanGutierrez-Hundirlaflota.vcxproj -> C:\Users\IzanH\Documents\GitHub\Programacion\IzanGutierrez-Hundirlaflota\x64\Debug\IzanGutierrez-Hundirlaflota.exe

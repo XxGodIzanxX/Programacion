@@ -8,8 +8,14 @@ int main() {
 
     
     for (i = 0; i < 10; i++)
+    {
         for (j = 0; j < 10; j++)
+        {
             tablero[i][j] = '.';
+        }
+            
+    }
+
 
    
     srand((unsigned)time(NULL));
@@ -41,7 +47,7 @@ int main() {
 
         if (x < 0 || x >= 10 || y < 0 || y >= 10) {
             printf("Fuera del tablero.\n");
-            continue;
+         
         }
 
         if (tablero[x][y] == 'S') {

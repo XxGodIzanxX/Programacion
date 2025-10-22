@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Strings-Deberes\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{67456E96-596E-42E6-989D-8696DEBCD404}|Strings-Deberes\\Strings-Deberes.vcxproj|C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Strings-Deberes\\Strings-Deberes\\String-deberes.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{67456E96-596E-42E6-989D-8696DEBCD404}|Strings-Deberes\\Strings-Deberes.vcxproj|solutionrelative:Strings-Deberes\\String-deberes.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "String-deberes.cpp",
+              "DocumentMoniker": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Strings-Deberes\\Strings-Deberes\\String-deberes.cpp",
+              "RelativeDocumentMoniker": "Strings-Deberes\\String-deberes.cpp",
+              "ToolTip": "C:\\Users\\IzanH\\Documents\\GitHub\\Programacion\\Strings-Deberes\\Strings-Deberes\\String-deberes.cpp",
+              "RelativeToolTip": "Strings-Deberes\\String-deberes.cpp",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAAHMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-10-21T21:49:51.246Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

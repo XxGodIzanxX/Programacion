@@ -17,6 +17,9 @@
   --accent:#0B6E7F;
   --accent-soft:#DCEBED;
   --on-accent:#FFFFFF;
+  --b-ryu:#C4121F;
+  --b-file:#1F6FB2;
+  --b-pers:#6A4CA8;
   --amber:#B5730F;
   --green:#2E7D4F;
   --blue:#2C6FA6;
@@ -40,6 +43,9 @@
     --accent:#4FBACB;
     --accent-soft:#123338;
     --on-accent:#08191C;
+    --b-ryu:#FF5566;
+    --b-file:#6FB6E8;
+    --b-pers:#B79BE8;
     --amber:#D9963C;
     --green:#5CB483;
     --blue:#6BA6D6;
@@ -59,6 +65,9 @@
   --accent:#4FBACB;
   --accent-soft:#123338;
   --on-accent:#08191C;
+  --b-ryu:#FF5566;
+  --b-file:#6FB6E8;
+  --b-pers:#B79BE8;
   --amber:#D9963C;
   --green:#5CB483;
   --blue:#6BA6D6;
@@ -191,6 +200,10 @@ input.field[type="search"]{width:180px}
   font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
   color:var(--ink-3);
 }
+.tag.brand{color:var(--card-color);font-weight:700}
+[data-brand="ryu"]{--card-color:var(--b-ryu)}
+[data-brand="fileforge"]{--card-color:var(--b-file)}
+[data-brand="personal"]{--card-color:var(--b-pers)}
 .dot{width:7px;height:7px;border-radius:999px;background:var(--card-color,var(--ink-3));flex:none}
 .state{
   font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;
@@ -318,6 +331,7 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
 
     <div class="filters">
       <input class="field" type="search" id="q" placeholder="Buscar idea…" aria-label="Buscar idea">
+      <select class="field" id="f-brand" aria-label="Filtrar por marca"></select>
       <select class="field" id="f-plat" aria-label="Filtrar por plataforma"></select>
       <select class="field" id="f-state" aria-label="Filtrar por estado"></select>
     </div>
@@ -352,6 +366,10 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
       <label class="wide">
         <span class="lbl">Título</span>
         <input name="title" required placeholder="p. ej. Reel: 3 errores al empezar en C" autocomplete="off">
+      </label>
+      <label>
+        <span class="lbl">Marca</span>
+        <select name="brand" id="sel-brand"></select>
       </label>
       <label>
         <span class="lbl">Plataforma</span>
@@ -395,7 +413,14 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
 (function(){
   "use strict";
 
-  var KEY = "estudio-contenido.v1";
+  var KEY = "estudio-contenido.v2";
+  var OLD_KEY = "estudio-contenido.v1";
+
+  var BRANDS = [
+    { id:"ryu",       label:"Ryu Ads" },
+    { id:"fileforge", label:"FileForge" },
+    { id:"personal",  label:"Marca personal" }
+  ];
 
   var PLATFORMS = [
     { id:"youtube",   label:"YouTube",   color:"#D0473F" },
@@ -405,7 +430,7 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
     { id:"blog",      label:"Blog",      color:"#6F62B8" },
     { id:"otro",      label:"Otro",      color:"#7B9295" }
   ];
-  var FORMATS = ["Short / Reel","Vídeo largo","Carrusel","Post","Directo","Newsletter","Artículo"];
+  var FORMATS = ["Short / Reel","Vídeo largo","Carrusel","Post","Directo","Newsletter","Artículo","Landing"];
   var STATES = [
     { id:"idea",      label:"Idea" },
     { id:"guion",     label:"Guion" },
@@ -420,6 +445,10 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
   var platformOf = function(id){
     for (var i=0;i<PLATFORMS.length;i++){ if (PLATFORMS[i].id === id) return PLATFORMS[i]; }
     return PLATFORMS[PLATFORMS.length-1];
+  };
+  var brandOf = function(id){
+    for (var i=0;i<BRANDS.length;i++){ if (BRANDS[i].id === id) return BRANDS[i]; }
+    return BRANDS[BRANDS.length-1];
   };
   var stateLabel = function(id){
     for (var i=0;i<STATES.length;i++){ if (STATES[i].id === id) return STATES[i].label; }
@@ -439,16 +468,68 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
   var today = new Date();
   var TODAY_ISO = iso(today);
 
+  var OLD_SEED_TITLES = [
+    "Reel: 3 errores al empezar a programar en C",
+    "Cómo monté mi primer juego en consola (3 en raya)",
+    "Carrusel: anatomía de un array en memoria",
+    "Lo que aprendí haciendo Hundir la Flota",
+    "Serie: bucles while explicados con ejemplos reales",
+    "Plantilla de repaso para el primer examen",
+    "Matrices: el ejercicio que todos suspenden"
+  ];
+
   function seed(){
     var d = function(n){ return iso(addDays(today, n)); };
     return [
-      { id:uid(), title:"Reel: 3 errores al empezar a programar en C", platform:"tiktok", format:"Short / Reel", status:"guion", date:d(1), hook:"Tu programa compila pero está mintiéndote.", notes:"Punteros sin inicializar, scanf sin &, comparar strings con ==." },
-      { id:uid(), title:"Cómo monté mi primer juego en consola (3 en raya)", platform:"youtube", format:"Vídeo largo", status:"idea", date:d(5), hook:"Sin librerías, sin motor, 200 líneas.", notes:"Grabar pantalla del código y partida real al final." },
-      { id:uid(), title:"Carrusel: anatomía de un array en memoria", platform:"instagram", format:"Carrusel", status:"editado", date:d(-2), hook:"El índice no es una posición, es una distancia.", notes:"7 diapositivas, diagrama de celdas." },
-      { id:uid(), title:"Lo que aprendí haciendo Hundir la Flota", platform:"linkedin", format:"Post", status:"publicado", date:d(-6), hook:"Un tablero de 10x10 me enseñó más que tres temas de teoría.", notes:"Tono personal, cerrar con pregunta." },
-      { id:uid(), title:"Serie: bucles while explicados con ejemplos reales", platform:"youtube", format:"Vídeo largo", status:"idea", date:null, hook:"", notes:"Podría ser una serie de 4 vídeos cortos." },
-      { id:uid(), title:"Plantilla de repaso para el primer examen", platform:"blog", format:"Artículo", status:"idea", date:null, hook:"", notes:"Recopilar los ejercicios de repaso que ya tengo hechos." },
-      { id:uid(), title:"Matrices: el ejercicio que todos suspenden", platform:"tiktok", format:"Short / Reel", status:"idea", date:null, hook:"", notes:"" }
+      /* ---- Ryu Ads: captación B2B sobre las 7 líneas de servicio ---- */
+      { id:uid(), brand:"ryu", title:"Caso real: 47 leads en un mes con Google Ads en negocio local", platform:"linkedin", format:"Post", status:"publicado", date:d(-6),
+        hook:"Nos dijeron que en su pueblo nadie buscaba en Google. Buscaban 2.400 veces al mes.",
+        notes:"Cifras reales, sin nombrar cliente. Cerrar con el coste por lead, que es lo que hace clic en la cabeza del dueño." },
+      { id:uid(), brand:"ryu", title:"El error de Meta Ads que quema el 40% del presupuesto", platform:"instagram", format:"Short / Reel", status:"editado", date:d(-2),
+        hook:"Tienes 12 conjuntos de anuncios compitiendo entre ellos. Estás pujando contra ti mismo.",
+        notes:"Grabar sobre el panel real con los nombres tapados. Máximo 35 segundos." },
+      { id:uid(), brand:"ryu", title:"Auditoría en 60 segundos: 3 señales de que tu web no convierte", platform:"tiktok", format:"Short / Reel", status:"guion", date:d(1),
+        hook:"Tu web es bonita. Por eso no vende.",
+        notes:"Formato gancho de la auditoría: propuesta de valor invisible, CTA por debajo del pliegue, formulario de 9 campos." },
+      { id:uid(), brand:"ryu", title:"Automatizamos la respuesta a leads: de 6 horas a 2 minutos", platform:"youtube", format:"Vídeo largo", status:"grabado", date:d(4),
+        hook:"El 78% de los clientes compra al primero que le contesta.",
+        notes:"Enseñar el flujo con IA por dentro. Es el servicio con más margen y el que menos se entiende: merece vídeo largo." },
+      { id:uid(), brand:"ryu", title:"Carrusel: qué mira de verdad Performance Max cuando gasta tu dinero", platform:"instagram", format:"Carrusel", status:"idea", date:d(7),
+        hook:"", notes:"8 diapositivas. Señales de audiencia, feed y creatividades. Aterrizar en por qué sin datos limpios va a ciegas." },
+      { id:uid(), brand:"ryu", title:"Los 5 KPIs que sí le importan a un dueño de negocio", platform:"blog", format:"Newsletter", status:"idea", date:d(11),
+        hook:"", notes:"Traducir métricas a euros: CPL, coste por cliente, LTV, ROAS real y margen. Nada de impresiones." },
+      { id:uid(), brand:"ryu", title:"Por qué dejamos de vender packs de posts al mes", platform:"linkedin", format:"Post", status:"idea", date:null,
+        hook:"", notes:"Post de posicionamiento. Riesgo: puede sonar a ataque a otras agencias, cuidar el tono." },
+      { id:uid(), brand:"ryu", title:"Directo: auditoría en vivo de la web de un seguidor", platform:"instagram", format:"Directo", status:"idea", date:null,
+        hook:"", notes:"Pedir candidatos por formulario una semana antes. Es captación disfrazada de contenido." },
+      { id:uid(), brand:"ryu", title:"Cuánto cuesta de verdad Google Ads en España en 2026", platform:"blog", format:"Artículo", status:"idea", date:null,
+        hook:"", notes:"Artículo SEO de intención comercial. Keyword con volumen y competencia media, tabla de CPC por sector." },
+
+      /* ---- FileForge: producto gratuito, tráfico SEO y demostración ---- */
+      { id:uid(), brand:"fileforge", title:"Cómo comprimir un PDF sin que se vea borroso", platform:"blog", format:"Artículo", status:"publicado", date:d(-4),
+        hook:"El truco no es bajar la calidad: es saber qué pesa dentro del PDF.",
+        notes:"Cabeza de serie SEO de FileForge. Enlazar a la herramienta desde el primer tercio del texto." },
+      { id:uid(), brand:"fileforge", title:"500 MB a 40 MB sin subir el vídeo a ningún servidor", platform:"tiktok", format:"Short / Reel", status:"guion", date:d(2),
+        hook:"Tu archivo no sale de tu ordenador. Mira la barra de red: cero.",
+        notes:"Grabar la pestaña de red abierta mientras comprime. La privacidad es el argumento diferencial frente a iLovePDF." },
+      { id:uid(), brand:"fileforge", title:"Carrusel: 6 formatos de imagen y cuándo usar cada uno", platform:"instagram", format:"Carrusel", status:"idea", date:d(6),
+        hook:"", notes:"JPG, PNG, WebP, AVIF, SVG y HEIC. Cerrar con conversor de FileForge." },
+      { id:uid(), brand:"fileforge", title:"Comparativa honesta: FileForge frente a iLovePDF y Smallpdf", platform:"blog", format:"Landing", status:"idea", date:d(13),
+        hook:"", notes:"Landing de comparación para keyword de marca ajena. Reconocer en qué son mejores ellos: da credibilidad y posiciona igual." },
+      { id:uid(), brand:"fileforge", title:"Hilo: por qué una herramienta gratis puede permitirse no vender tus datos", platform:"otro", format:"Post", status:"idea", date:null,
+        hook:"", notes:"Para X y comunidades de dev. Explicar el procesado en el navegador sin tecnicismos." },
+
+      /* ---- Marca personal: el que está detrás de las dos cosas ---- */
+      { id:uid(), brand:"personal", title:"Monté una agencia mientras estudiaba programación", platform:"youtube", format:"Vídeo largo", status:"idea", date:d(9),
+        hook:"Nadie me contrataba por el curriculum, así que me busqué los clientes yo.",
+        notes:"Vídeo pilar de marca personal. Honesto con lo que salió mal, no solo con las victorias." },
+      { id:uid(), brand:"personal", title:"Lo que aprendí lanzando FileForge yo solo", platform:"linkedin", format:"Post", status:"editado", date:d(-1),
+        hook:"Lancé una herramienta gratis sin plan de negocio. Esto es lo que me devolvió.",
+        notes:"Conecta las dos marcas: producto propio como carta de presentación de la agencia." },
+      { id:uid(), brand:"personal", title:"Mi setup y las 4 herramientas con las que llevo la agencia", platform:"tiktok", format:"Short / Reel", status:"idea", date:null,
+        hook:"", notes:"Contenido fácil y muy compartible. Grabar cuando tenga la mesa ordenada." },
+      { id:uid(), brand:"personal", title:"Construyo en público: semana 1 de la próxima herramienta", platform:"youtube", format:"Vídeo largo", status:"idea", date:null,
+        hook:"", notes:"Si funciona, es serie semanal. Decidir formato antes de comprometerse a la cadencia." }
     ];
   }
 
@@ -458,17 +539,42 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
     year: today.getFullYear(),
     month: today.getMonth(),
     q: "",
+    brand: "",
     plat: "",
     stat: ""
   };
 
+  function normalize(idea){
+    return Object.assign({
+      id: uid(), brand:"personal", platform:"otro", format:FORMATS[0], status:"idea",
+      date:null, hook:"", notes:""
+    }, idea);
+  }
+
   function load(){
     try {
       var raw = localStorage.getItem(KEY);
-      if (!raw) { state.ideas = seed(); save(); return; }
-      var data = JSON.parse(raw);
-      state.ideas = Array.isArray(data.ideas) ? data.ideas : [];
-      if (data.view) state.view = data.view;
+      if (raw) {
+        var data = JSON.parse(raw);
+        state.ideas = Array.isArray(data.ideas) ? data.ideas.map(normalize) : [];
+        if (data.view) state.view = data.view;
+        return;
+      }
+      // Datos de la primera versión: si siguen siendo los ejemplos originales
+      // los sustituimos; si el usuario ya escribió los suyos, se conservan.
+      var legacy = localStorage.getItem(OLD_KEY);
+      if (legacy) {
+        var old = JSON.parse(legacy);
+        var previas = Array.isArray(old.ideas) ? old.ideas : [];
+        var intactas = previas.length === OLD_SEED_TITLES.length && previas.every(function(i){
+          return OLD_SEED_TITLES.indexOf(i.title) !== -1;
+        });
+        state.ideas = intactas ? seed() : previas.map(normalize);
+        save();
+        return;
+      }
+      state.ideas = seed();
+      save();
     } catch (e) {
       state.ideas = seed();
     }
@@ -488,6 +594,7 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
   }
 
   function matches(idea){
+    if (state.brand && idea.brand !== state.brand) return false;
     if (state.plat && idea.platform !== state.plat) return false;
     if (state.stat && idea.status !== state.stat) return false;
     if (state.q){
@@ -501,10 +608,11 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
   /* ---------- tarjetas ---------- */
   function cardHTML(idea){
     var p = platformOf(idea.platform);
-    return '<button class="card" type="button" draggable="true" data-id="' + idea.id + '" style="--card-color:' + p.color + '">' +
+    var b = brandOf(idea.brand);
+    return '<button class="card" type="button" draggable="true" data-id="' + idea.id + '" data-brand="' + b.id + '">' +
       '<span class="title">' + esc(idea.title) + '</span>' +
       '<span class="meta">' +
-        '<span class="dot" aria-hidden="true"></span>' +
+        '<span class="tag brand">' + esc(b.label) + '</span>' +
         '<span class="tag">' + esc(p.label) + '</span>' +
         '<span class="state" data-s="' + idea.status + '">' + esc(stateLabel(idea.status)) + '</span>' +
       '</span>' +
@@ -568,16 +676,18 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
     if (!list.length) return '<section class="panel"><p class="empty">Ninguna idea coincide con el filtro.</p></section>';
     var rows = list.map(function(i){
       var p = platformOf(i.platform);
+      var b = brandOf(i.brand);
       return '<tr data-id="' + i.id + '">' +
         '<td class="date">' + (i.date ? esc(i.date) : "—") + '</td>' +
         '<td class="name">' + esc(i.title) + '</td>' +
-        '<td><span class="rowplat"><span class="dot" style="--card-color:' + p.color + '"></span>' + esc(p.label) + '</span></td>' +
+        '<td data-brand="' + b.id + '"><span class="tag brand">' + esc(b.label) + '</span></td>' +
+        '<td><span class="rowplat"><span class="dot" style="background:' + p.color + '"></span>' + esc(p.label) + '</span></td>' +
         '<td>' + esc(i.format || "—") + '</td>' +
         '<td><span class="state" data-s="' + i.status + '">' + esc(stateLabel(i.status)) + '</span></td>' +
       '</tr>';
     }).join("");
     return '<section class="panel"><div class="tablewrap"><table>' +
-      '<thead><tr><th>Fecha</th><th>Idea</th><th>Plataforma</th><th>Formato</th><th>Estado</th></tr></thead>' +
+      '<thead><tr><th>Fecha</th><th>Idea</th><th>Marca</th><th>Plataforma</th><th>Formato</th><th>Estado</th></tr></thead>' +
       '<tbody>' + rows + '</tbody></table></div></section>';
   }
 
@@ -595,8 +705,11 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
     var publicados = mes.filter(function(i){ return i.status === "publicado"; }).length;
     var produccion = state.ideas.filter(function(i){ return i.status === "guion" || i.status === "grabado" || i.status === "editado"; }).length;
     var banco = state.ideas.filter(function(i){ return !i.date; }).length;
+    var reparto = BRANDS.map(function(b){
+      return b.label + " " + mes.filter(function(i){ return brandOf(i.brand).id === b.id; }).length;
+    }).join(" · ");
     var tiles = [
-      { k:"Programado este mes", v:mes.length, n:MONTHS[state.month] + " " + state.year, accent:true },
+      { k:"Programado este mes", v:mes.length, n:mes.length ? reparto : MONTHS[state.month] + " " + state.year, accent:true },
       { k:"Publicado", v:publicados, n:"de " + mes.length + " previstos" },
       { k:"En producción", v:produccion, n:"guion, grabado o editado" },
       { k:"En el banco", v:banco, n:"sin fecha asignada" }
@@ -627,6 +740,9 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
   var modal = $("#modal"), form = $("#form"), editing = null;
 
   function fillSelects(){
+    $("#sel-brand").innerHTML = BRANDS.map(function(b){ return '<option value="' + b.id + '">' + b.label + '</option>'; }).join("");
+    $("#f-brand").innerHTML = '<option value="">Toda marca</option>' +
+      BRANDS.map(function(b){ return '<option value="' + b.id + '">' + b.label + '</option>'; }).join("");
     $("#sel-plat").innerHTML = PLATFORMS.map(function(p){ return '<option value="' + p.id + '">' + p.label + '</option>'; }).join("");
     $("#sel-format").innerHTML = FORMATS.map(function(f){ return '<option value="' + f + '">' + f + '</option>'; }).join("");
     $("#sel-state").innerHTML = STATES.map(function(s){ return '<option value="' + s.id + '">' + s.label + '</option>'; }).join("");
@@ -643,6 +759,7 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
     $("#btn-delete").hidden = !idea;
     $("#btn-duplicate").hidden = !idea;
     form.title.value = idea ? idea.title : "";
+    form.brand.value = idea ? brandOf(idea.brand).id : (state.brand || "ryu");
     form.platform.value = idea ? idea.platform : "tiktok";
     form.format.value = idea ? (idea.format || FORMATS[0]) : FORMATS[0];
     form.status.value = idea ? idea.status : "idea";
@@ -656,6 +773,7 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
   form.addEventListener("submit", function(){
     var data = {
       title: form.title.value.trim(),
+      brand: form.brand.value,
       platform: form.platform.value,
       format: form.format.value,
       status: form.status.value,
@@ -718,6 +836,7 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
     b.addEventListener("click", function(){ state.view = b.dataset.view; save(); render(); });
   });
   $("#q").addEventListener("input", function(e){ state.q = e.target.value; render(); });
+  $("#f-brand").addEventListener("change", function(e){ state.brand = e.target.value; render(); });
   $("#f-plat").addEventListener("change", function(e){ state.plat = e.target.value; render(); });
   $("#f-state").addEventListener("change", function(e){ state.stat = e.target.value; render(); });
 

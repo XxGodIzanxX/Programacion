@@ -321,6 +321,7 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
       </div>
       <span class="label" id="monthlabel"></span>
       <button class="btn btn-quiet" type="button" id="today">Hoy</button>
+      <button class="btn btn-quiet" type="button" id="btn-fill">Rellenar mes</button>
     </div>
 
     <div class="viewtabs" role="group" aria-label="Vista">
@@ -351,7 +352,8 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
   </div>
 
   <p class="footnote">
-    Arrastra una idea del banco a un día para programarla · <kbd>N</kbd> nueva idea · <kbd>Esc</kbd> cerrar
+    Arrastra una idea del banco a un día para programarla · <strong>Rellenar mes</strong> completa los días libres ·
+    <kbd>N</kbd> nueva idea · <kbd>Esc</kbd> cerrar
     <br>Todo se guarda en este navegador. Usa <strong>Exportar</strong> para llevarte una copia.
   </p>
 </div>
@@ -413,8 +415,7 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
 (function(){
   "use strict";
 
-  var KEY = "estudio-contenido.v2";
-  var OLD_KEY = "estudio-contenido.v1";
+  var KEY = "estudio-contenido.v3";
 
   var BRANDS = [
     { id:"ryu",       label:"Ryu Ads" },
@@ -468,69 +469,208 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
   var today = new Date();
   var TODAY_ISO = iso(today);
 
-  var OLD_SEED_TITLES = [
-    "Reel: 3 errores al empezar a programar en C",
-    "Cómo monté mi primer juego en consola (3 en raya)",
-    "Carrusel: anatomía de un array en memoria",
-    "Lo que aprendí haciendo Hundir la Flota",
-    "Serie: bucles while explicados con ejemplos reales",
-    "Plantilla de repaso para el primer examen",
-    "Matrices: el ejercicio que todos suspenden"
-  ];
-
-  function seed(){
-    var d = function(n){ return iso(addDays(today, n)); };
-    return [
-      /* ---- Ryu Ads: captación B2B sobre las 7 líneas de servicio ---- */
-      { id:uid(), brand:"ryu", title:"Caso real: 47 leads en un mes con Google Ads en negocio local", platform:"linkedin", format:"Post", status:"publicado", date:d(-6),
+  /* Ritmo semanal fijo. Cada día de la semana tiene dueño y formato, y dentro
+     de cada uno rotan las ideas según la semana del mes. */
+  var POOL = {
+    1: [ /* LUNES — Ryu Ads, autoridad y casos */
+      { brand:"ryu", platform:"linkedin", format:"Post", title:"Caso real: 47 leads en un mes con Google Ads en un negocio local",
         hook:"Nos dijeron que en su pueblo nadie buscaba en Google. Buscaban 2.400 veces al mes.",
-        notes:"Cifras reales, sin nombrar cliente. Cerrar con el coste por lead, que es lo que hace clic en la cabeza del dueño." },
-      { id:uid(), brand:"ryu", title:"El error de Meta Ads que quema el 40% del presupuesto", platform:"instagram", format:"Short / Reel", status:"editado", date:d(-2),
+        notes:"Cifras reales sin nombrar al cliente. Cerrar con el coste por lead: es el número que hace clic en la cabeza de un dueño." },
+      { brand:"ryu", platform:"linkedin", format:"Post", title:"Auditamos 20 webs del mismo sector y 17 fallaban en lo mismo",
+        hook:"Ninguna decía en portada a qué distancia estaba de ti.",
+        notes:"Elegir un sector local concreto (fisios, dentistas, talleres). El hallazgo repetido es la prueba de que el problema es del sector, no del cliente." },
+      { brand:"ryu", platform:"linkedin", format:"Post", title:"Por qué dejamos de vender packs de posts al mes",
+        hook:"Cobrábamos por publicar. El cliente quería vender. No es lo mismo.",
+        notes:"Post de posicionamiento. Cuidar el tono: explicar nuestra decisión, no atacar a otras agencias." },
+      { brand:"ryu", platform:"blog", format:"Artículo", title:"Lo que cuesta no medir: tres meses de anuncios sin GA4 bien puesto",
+        hook:"Gastó 6.000 € y no sabe cuál de los ocho anuncios se los llevó.",
+        notes:"La analítica es bloqueante: sin medición, los otros seis servicios van a ciegas. Buen artículo para enlazar desde cualquier propuesta." },
+      { brand:"ryu", platform:"linkedin", format:"Post", title:"Cómo decidimos si un cliente necesita SEO, Ads o los dos",
+        hook:"Si necesitas clientes este mes, el SEO no es tu respuesta.",
+        notes:"Criterio honesto: urgencia, ticket medio y competencia. Vender el servicio que toca da más margen a largo plazo que vender el caro." }
+    ],
+    2: [ /* MARTES — FileForge, SEO y producto */
+      { brand:"fileforge", platform:"blog", format:"Artículo", title:"Cómo comprimir un PDF sin que se vea borroso",
+        hook:"El truco no es bajar la calidad: es saber qué pesa dentro del PDF.",
+        notes:"Cabeza de serie SEO de FileForge. Enlazar a la herramienta en el primer tercio del texto." },
+      { brand:"fileforge", platform:"blog", format:"Artículo", title:"Convertir HEIC a JPG cuando el iPhone te complica la vida",
+        hook:"Le mandas la foto a un cliente y no puede abrirla. Otra vez.",
+        notes:"Confirmar primero que la conversión está disponible en la herramienta antes de publicar el artículo." },
+      { brand:"fileforge", platform:"tiktok", format:"Short / Reel", title:"500 MB a 40 MB sin subir el vídeo a ningún servidor",
+        hook:"Tu archivo no sale de tu ordenador. Mira la pestaña de red: cero subidas.",
+        notes:"Grabar con el panel de red abierto. La privacidad es el argumento que no pueden copiar los grandes." },
+      { brand:"fileforge", platform:"blog", format:"Landing", title:"Comparativa honesta: FileForge frente a iLovePDF y Smallpdf",
+        hook:"Ellos tienen más herramientas. Nosotros no tocamos tus archivos.",
+        notes:"Landing para keyword de marca ajena. Reconocer en qué son mejores da credibilidad y posiciona igual." },
+      { brand:"fileforge", platform:"blog", format:"Artículo", title:"Por qué tu PDF pesa 40 MB: las imágenes que lleva dentro sin que lo sepas",
+        hook:"Un folio de texto no pesa 40 MB. Lo que pesa es la foto a 300 ppp que pegaste sin mirar.",
+        notes:"Explicar la anatomía del PDF con capturas. Cierre natural hacia el compresor." }
+    ],
+    3: [ /* MIÉRCOLES — Ryu Ads, píldora corta */
+      { brand:"ryu", platform:"instagram", format:"Short / Reel", title:"El error de Meta Ads que quema el 40% del presupuesto",
         hook:"Tienes 12 conjuntos de anuncios compitiendo entre ellos. Estás pujando contra ti mismo.",
         notes:"Grabar sobre el panel real con los nombres tapados. Máximo 35 segundos." },
-      { id:uid(), brand:"ryu", title:"Auditoría en 60 segundos: 3 señales de que tu web no convierte", platform:"tiktok", format:"Short / Reel", status:"guion", date:d(1),
+      { brand:"ryu", platform:"tiktok", format:"Short / Reel", title:"Auditoría en 60 segundos: 3 señales de que tu web no convierte",
         hook:"Tu web es bonita. Por eso no vende.",
-        notes:"Formato gancho de la auditoría: propuesta de valor invisible, CTA por debajo del pliegue, formulario de 9 campos." },
-      { id:uid(), brand:"ryu", title:"Automatizamos la respuesta a leads: de 6 horas a 2 minutos", platform:"youtube", format:"Vídeo largo", status:"grabado", date:d(4),
+        notes:"Propuesta de valor invisible, CTA por debajo del pliegue, formulario eterno. Formato repetible cada mes con webs distintas." },
+      { brand:"ryu", platform:"tiktok", format:"Short / Reel", title:"Tu formulario tiene nueve campos y por eso nadie lo rellena",
+        hook:"Le estás pidiendo el DNI a alguien que solo quería un presupuesto.",
+        notes:"Enseñar un formulario real recortado a tres campos y el antes/después de conversión." },
+      { brand:"ryu", platform:"instagram", format:"Short / Reel", title:"Pujar por tu propia marca: ¿tirar el dinero o defender el terreno?",
+        hook:"Si no pujas tú por tu nombre, lo hará tu competencia. Y es barato para ellos.",
+        notes:"Pregunta clásica de cliente. Respuesta con matices: depende de si alguien más puja." },
+      { brand:"ryu", platform:"youtube", format:"Short / Reel", title:"Los 5 segundos que deciden si tu anuncio de YouTube existe",
+        hook:"Todo el mundo va a darle a saltar. Diseña el anuncio para eso.",
+        notes:"Ejemplos de aperturas buenas y malas. Cinco segundos de marca y promesa antes del botón." }
+    ],
+    4: [ /* JUEVES — marca personal */
+      { brand:"personal", platform:"youtube", format:"Vídeo largo", title:"Monté una agencia mientras estudiaba programación",
+        hook:"Nadie me contrataba por el currículum, así que me busqué los clientes yo.",
+        notes:"Vídeo pilar de marca personal. Honesto con lo que salió mal, no solo con las victorias." },
+      { brand:"personal", platform:"linkedin", format:"Post", title:"Lo que aprendí lanzando FileForge yo solo",
+        hook:"Lancé una herramienta gratis sin plan de negocio. Esto es lo que me devolvió.",
+        notes:"Conecta las dos marcas: el producto propio es la carta de presentación de la agencia." },
+      { brand:"personal", platform:"tiktok", format:"Short / Reel", title:"Mi setup y las 4 herramientas con las que llevo la agencia",
+        hook:"Tres de las cuatro son gratis.",
+        notes:"Contenido fácil y muy compartible. Grabar con la mesa ordenada." },
+      { brand:"personal", platform:"linkedin", format:"Post", title:"El primer cliente que perdí y por qué fue culpa mía",
+        hook:"Le enseñé métricas. Quería facturación.",
+        notes:"Vulnerabilidad con aprendizaje concreto al final. Sin nombres." },
+      { brand:"personal", platform:"youtube", format:"Vídeo largo", title:"Cómo organizo el contenido de tres marcas sin volverme loco",
+        hook:"Agencia, producto y marca personal. Un solo calendario.",
+        notes:"Enseñar este mismo organizador funcionando. Meta, pero es exactamente lo que la gente pregunta." }
+    ],
+    5: [ /* VIERNES — Ryu Ads, formato largo */
+      { brand:"ryu", platform:"youtube", format:"Vídeo largo", title:"Automatizamos la respuesta a leads: de 6 horas a 2 minutos",
         hook:"El 78% de los clientes compra al primero que le contesta.",
         notes:"Enseñar el flujo con IA por dentro. Es el servicio con más margen y el que menos se entiende: merece vídeo largo." },
-      { id:uid(), brand:"ryu", title:"Carrusel: qué mira de verdad Performance Max cuando gasta tu dinero", platform:"instagram", format:"Carrusel", status:"idea", date:d(7),
-        hook:"", notes:"8 diapositivas. Señales de audiencia, feed y creatividades. Aterrizar en por qué sin datos limpios va a ciegas." },
-      { id:uid(), brand:"ryu", title:"Los 5 KPIs que sí le importan a un dueño de negocio", platform:"blog", format:"Newsletter", status:"idea", date:d(11),
-        hook:"", notes:"Traducir métricas a euros: CPL, coste por cliente, LTV, ROAS real y margen. Nada de impresiones." },
-      { id:uid(), brand:"ryu", title:"Por qué dejamos de vender packs de posts al mes", platform:"linkedin", format:"Post", status:"idea", date:null,
-        hook:"", notes:"Post de posicionamiento. Riesgo: puede sonar a ataque a otras agencias, cuidar el tono." },
-      { id:uid(), brand:"ryu", title:"Directo: auditoría en vivo de la web de un seguidor", platform:"instagram", format:"Directo", status:"idea", date:null,
-        hook:"", notes:"Pedir candidatos por formulario una semana antes. Es captación disfrazada de contenido." },
-      { id:uid(), brand:"ryu", title:"Cuánto cuesta de verdad Google Ads en España en 2026", platform:"blog", format:"Artículo", status:"idea", date:null,
-        hook:"", notes:"Artículo SEO de intención comercial. Keyword con volumen y competencia media, tabla de CPC por sector." },
+      { brand:"ryu", platform:"instagram", format:"Carrusel", title:"Qué mira de verdad Performance Max cuando gasta tu dinero",
+        hook:"No eliges dónde aparece. Eliges qué le enseñas para que decida.",
+        notes:"8 diapositivas: señales de audiencia, feed y creatividades. Aterrizar en que sin datos limpios va a ciegas." },
+      { brand:"ryu", platform:"instagram", format:"Directo", title:"Directo: auditoría en vivo de la web de un seguidor",
+        hook:"Trae tu web. La abrimos y te digo lo que le pasa, gratis.",
+        notes:"Pedir candidatos por formulario la semana anterior. Es captación disfrazada de contenido." },
+      { brand:"ryu", platform:"blog", format:"Newsletter", title:"Los 5 KPIs que sí le importan a un dueño de negocio",
+        hook:"Las impresiones no pagan nóminas.",
+        notes:"Traducir métricas a euros: CPL, coste por cliente, LTV, ROAS real y margen." },
+      { brand:"ryu", platform:"blog", format:"Artículo", title:"Cuánto cuesta de verdad Google Ads en España en 2026",
+        hook:"El clic no es el coste. El coste es el cliente.",
+        notes:"Artículo SEO de intención comercial, tabla de CPC por sector y cálculo de presupuesto mínimo viable." }
+    ],
+    6: [ /* SÁBADO — FileForge, ligero */
+      { brand:"fileforge", platform:"instagram", format:"Carrusel", title:"6 formatos de imagen y cuándo usar cada uno",
+        hook:"Si subes PNG a tu web, le estás cobrando el peaje a cada visita.",
+        notes:"JPG, PNG, WebP, AVIF, SVG y HEIC en seis diapositivas. Cerrar con el conversor." },
+      { brand:"fileforge", platform:"otro", format:"Post", title:"Por qué una herramienta gratis puede permitirse no vender tus datos",
+        hook:"Si el procesado ocurre en tu navegador, no hay datos que vender.",
+        notes:"Para X y comunidades de desarrollo. Explicarlo sin tecnicismos, es el ángulo que mejor funciona ahí." },
+      { brand:"fileforge", platform:"tiktok", format:"Short / Reel", title:"Comprime las fotos del verano antes de que el móvil te pida espacio",
+        hook:"1.400 fotos. 12 GB. Y el móvil avisando otra vez.",
+        notes:"Contenido estacional y de volumen. Muy compartible entre gente que no es del sector." },
+      { brand:"fileforge", platform:"blog", format:"Artículo", title:"WebP o AVIF: cuál usar en tu web en 2026",
+        hook:"AVIF pesa menos. WebP funciona en todo. Elige según a quién sirvas.",
+        notes:"Artículo técnico corto con tabla de compatibilidad. Atrae al público que también necesita la agencia." },
+      { brand:"fileforge", platform:"instagram", format:"Carrusel", title:"Una web que cargaba en 8 segundos y ahora en 2, solo comprimiendo imágenes",
+        hook:"No tocamos el código. Tocamos los 4 MB de fotos de la portada.",
+        notes:"Puente perfecto entre FileForge y el servicio de desarrollo web de Ryu Ads. Capturas de PageSpeed antes y después." }
+    ],
+    0: [ /* DOMINGO — marca personal, reflexión */
+      { brand:"personal", platform:"youtube", format:"Vídeo largo", title:"Construyo en público: semana 1 de la próxima herramienta",
+        hook:"Empiezo con cero usuarios y lo enseño todo, también si sale mal.",
+        notes:"Si funciona, es serie semanal. Decidir la cadencia antes de comprometerse en público." },
+      { brand:"personal", platform:"linkedin", format:"Post", title:"Cinco cosas que haría distinto si empezara la agencia hoy",
+        hook:"La primera: cobrar antes de tener la web perfecta.",
+        notes:"Formato lista, fácil de leer en domingo. Cada punto con una frase de por qué." },
+      { brand:"personal", platform:"linkedin", format:"Post", title:"El error de cobrar barato al principio",
+        hook:"Un precio bajo no te trae clientes fáciles. Te trae los difíciles.",
+        notes:"Tema que resuena mucho con otros autónomos. Cerrar con cómo subí precios sin perder cartera." },
+      { brand:"personal", platform:"tiktok", format:"Short / Reel", title:"Domingo de planificación: dejo la semana cerrada en 40 minutos",
+        hook:"40 minutos hoy me ahorran las siete mañanas de la semana.",
+        notes:"Enseñar el proceso real en pantalla. Encaja con la hora a la que se consume el domingo." },
+      { brand:"personal", platform:"youtube", format:"Vídeo largo", title:"Estudiar y facturar a la vez: mi horario real, sin postureo",
+        hook:"No me levanto a las cinco. Esto es lo que hago de verdad.",
+        notes:"Contra el contenido de productividad de fantasía. Enseñar el calendario tal cual está." }
+    ]
+  };
 
-      /* ---- FileForge: producto gratuito, tráfico SEO y demostración ---- */
-      { id:uid(), brand:"fileforge", title:"Cómo comprimir un PDF sin que se vea borroso", platform:"blog", format:"Artículo", status:"publicado", date:d(-4),
-        hook:"El truco no es bajar la calidad: es saber qué pesa dentro del PDF.",
-        notes:"Cabeza de serie SEO de FileForge. Enlazar a la herramienta desde el primer tercio del texto." },
-      { id:uid(), brand:"fileforge", title:"500 MB a 40 MB sin subir el vídeo a ningún servidor", platform:"tiktok", format:"Short / Reel", status:"guion", date:d(2),
-        hook:"Tu archivo no sale de tu ordenador. Mira la barra de red: cero.",
-        notes:"Grabar la pestaña de red abierta mientras comprime. La privacidad es el argumento diferencial frente a iLovePDF." },
-      { id:uid(), brand:"fileforge", title:"Carrusel: 6 formatos de imagen y cuándo usar cada uno", platform:"instagram", format:"Carrusel", status:"idea", date:d(6),
-        hook:"", notes:"JPG, PNG, WebP, AVIF, SVG y HEIC. Cerrar con conversor de FileForge." },
-      { id:uid(), brand:"fileforge", title:"Comparativa honesta: FileForge frente a iLovePDF y Smallpdf", platform:"blog", format:"Landing", status:"idea", date:d(13),
-        hook:"", notes:"Landing de comparación para keyword de marca ajena. Reconocer en qué son mejores ellos: da credibilidad y posiciona igual." },
-      { id:uid(), brand:"fileforge", title:"Hilo: por qué una herramienta gratis puede permitirse no vender tus datos", platform:"otro", format:"Post", status:"idea", date:null,
-        hook:"", notes:"Para X y comunidades de dev. Explicar el procesado en el navegador sin tecnicismos." },
+  /* Ideas de reserva: llegan sin fecha para que el banco no nazca vacío. */
+  var SPARES = [
+    { brand:"ryu", platform:"youtube", format:"Vídeo largo", title:"Serie: desmontamos el embudo de un cliente real, paso a paso",
+      hook:"", notes:"Pedir permiso al cliente y anonimizar cifras sensibles antes de grabar." },
+    { brand:"fileforge", platform:"blog", format:"Landing", title:"Comprimir imágenes para WordPress sin instalar plugins",
+      hook:"", notes:"Keyword con intención muy clara. Landing corta con la herramienta arriba del todo." },
+    { brand:"personal", platform:"instagram", format:"Directo", title:"Q&A: las 10 preguntas que más me hacéis sobre montar una agencia",
+      hook:"", notes:"Recopilar preguntas reales de comentarios durante dos semanas antes de hacerlo." }
+  ];
 
-      /* ---- Marca personal: el que está detrás de las dos cosas ---- */
-      { id:uid(), brand:"personal", title:"Monté una agencia mientras estudiaba programación", platform:"youtube", format:"Vídeo largo", status:"idea", date:d(9),
-        hook:"Nadie me contrataba por el curriculum, así que me busqué los clientes yo.",
-        notes:"Vídeo pilar de marca personal. Honesto con lo que salió mal, no solo con las victorias." },
-      { id:uid(), brand:"personal", title:"Lo que aprendí lanzando FileForge yo solo", platform:"linkedin", format:"Post", status:"editado", date:d(-1),
-        hook:"Lancé una herramienta gratis sin plan de negocio. Esto es lo que me devolvió.",
-        notes:"Conecta las dos marcas: producto propio como carta de presentación de la agencia." },
-      { id:uid(), brand:"personal", title:"Mi setup y las 4 herramientas con las que llevo la agencia", platform:"tiktok", format:"Short / Reel", status:"idea", date:null,
-        hook:"", notes:"Contenido fácil y muy compartible. Grabar cuando tenga la mesa ordenada." },
-      { id:uid(), brand:"personal", title:"Construyo en público: semana 1 de la próxima herramienta", platform:"youtube", format:"Vídeo largo", status:"idea", date:null,
-        hook:"", notes:"Si funciona, es serie semanal. Decidir formato antes de comprometerse a la cadencia." }
-    ];
+  /* Semillas de versiones anteriores, para saber si el usuario ya las tocó. */
+  var LEGACY = [
+    { key:"estudio-contenido.v2", titles:[
+      "Caso real: 47 leads en un mes con Google Ads en negocio local",
+      "El error de Meta Ads que quema el 40% del presupuesto",
+      "Auditoría en 60 segundos: 3 señales de que tu web no convierte",
+      "Automatizamos la respuesta a leads: de 6 horas a 2 minutos",
+      "Carrusel: qué mira de verdad Performance Max cuando gasta tu dinero",
+      "Los 5 KPIs que sí le importan a un dueño de negocio",
+      "Por qué dejamos de vender packs de posts al mes",
+      "Directo: auditoría en vivo de la web de un seguidor",
+      "Cuánto cuesta de verdad Google Ads en España en 2026",
+      "Cómo comprimir un PDF sin que se vea borroso",
+      "500 MB a 40 MB sin subir el vídeo a ningún servidor",
+      "Carrusel: 6 formatos de imagen y cuándo usar cada uno",
+      "Comparativa honesta: FileForge frente a iLovePDF y Smallpdf",
+      "Hilo: por qué una herramienta gratis puede permitirse no vender tus datos",
+      "Monté una agencia mientras estudiaba programación",
+      "Lo que aprendí lanzando FileForge yo solo",
+      "Mi setup y las 4 herramientas con las que llevo la agencia",
+      "Construyo en público: semana 1 de la próxima herramienta"
+    ]},
+    { key:"estudio-contenido.v1", titles:[
+      "Reel: 3 errores al empezar a programar en C",
+      "Cómo monté mi primer juego en consola (3 en raya)",
+      "Carrusel: anatomía de un array en memoria",
+      "Lo que aprendí haciendo Hundir la Flota",
+      "Serie: bucles while explicados con ejemplos reales",
+      "Plantilla de repaso para el primer examen",
+      "Matrices: el ejercicio que todos suspenden"
+    ]}
+  ];
+
+  function statusFor(dateISO){
+    var dias = Math.round((new Date(dateISO + "T00:00:00") - new Date(TODAY_ISO + "T00:00:00")) / 86400000);
+    if (dias < -1) return "publicado";
+    if (dias <= 0) return "editado";
+    if (dias <= 2) return "grabado";
+    if (dias <= 6) return "guion";
+    return "idea";
+  }
+
+  /* Una idea por cada día del mes, siguiendo el ritmo semanal del POOL.
+     `ocupados` es un mapa de fechas que ya tienen algo y se saltan. */
+  function planDelMes(year, month, ocupados){
+    var total = new Date(year, month + 1, 0).getDate();
+    var vueltas = {};
+    var plan = [];
+    for (var dia = 1; dia <= total; dia++){
+      var fecha = new Date(year, month, dia);
+      var wd = fecha.getDay();
+      var cesta = POOL[wd];
+      var n = vueltas[wd] || 0;
+      vueltas[wd] = n + 1;
+      var key = iso(fecha);
+      if (ocupados && ocupados[key]) continue;
+      plan.push(normalize(Object.assign({}, cesta[n % cesta.length], {
+        id: uid(), date: key, status: statusFor(key)
+      })));
+    }
+    return plan;
+  }
+
+  function seed(){
+    var ideas = planDelMes(today.getFullYear(), today.getMonth(), null)
+      .concat(SPARES.map(function(s){ return normalize(Object.assign({ id: uid() }, s)); }));
+    state.seedTitles = ideas.map(function(i){ return i.title; });
+    return ideas;
   }
 
   var state = {
@@ -551,6 +691,13 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
     }, idea);
   }
 
+  // ¿Las ideas guardadas siguen siendo exactamente los ejemplos que pusimos?
+  function sinTocar(ideas, titulos){
+    return ideas.length === titulos.length && ideas.every(function(i){
+      return titulos.indexOf(i.title) !== -1;
+    });
+  }
+
   function load(){
     try {
       var raw = localStorage.getItem(KEY);
@@ -558,18 +705,17 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
         var data = JSON.parse(raw);
         state.ideas = Array.isArray(data.ideas) ? data.ideas.map(normalize) : [];
         if (data.view) state.view = data.view;
+        if (Array.isArray(data.seedTitles)) state.seedTitles = data.seedTitles;
         return;
       }
-      // Datos de la primera versión: si siguen siendo los ejemplos originales
-      // los sustituimos; si el usuario ya escribió los suyos, se conservan.
-      var legacy = localStorage.getItem(OLD_KEY);
-      if (legacy) {
-        var old = JSON.parse(legacy);
-        var previas = Array.isArray(old.ideas) ? old.ideas : [];
-        var intactas = previas.length === OLD_SEED_TITLES.length && previas.every(function(i){
-          return OLD_SEED_TITLES.indexOf(i.title) !== -1;
-        });
-        state.ideas = intactas ? seed() : previas.map(normalize);
+      // Versiones anteriores: si el usuario nunca tocó los ejemplos, los
+      // sustituimos por los nuevos; si escribió los suyos, se conservan.
+      for (var v = 0; v < LEGACY.length; v++){
+        var guardado = localStorage.getItem(LEGACY[v].key);
+        if (!guardado) continue;
+        var previas = JSON.parse(guardado).ideas;
+        previas = Array.isArray(previas) ? previas : [];
+        state.ideas = sinTocar(previas, LEGACY[v].titles) ? seed() : previas.map(normalize);
         save();
         return;
       }
@@ -579,8 +725,13 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
       state.ideas = seed();
     }
   }
+
   function save(){
-    try { localStorage.setItem(KEY, JSON.stringify({ ideas: state.ideas, view: state.view })); }
+    var payload = { ideas: state.ideas, view: state.view };
+    // Dejamos constancia de los títulos de ejemplo para que una versión futura
+    // sepa distinguir tus ideas de las nuestras.
+    if (state.seedTitles) payload.seedTitles = state.seedTitles;
+    try { localStorage.setItem(KEY, JSON.stringify(payload)); }
     catch (e) { toast("No se pudo guardar en este navegador"); }
   }
 
@@ -822,6 +973,18 @@ dialog::backdrop{background:rgba(9,20,22,.52)}
   });
 
   $("#btn-new").addEventListener("click", function(){ openModal(null, null); });
+
+  $("#btn-fill").addEventListener("click", function(){
+    var ocupados = {};
+    state.ideas.forEach(function(i){ if (i.date) ocupados[i.date] = true; });
+    var nuevas = planDelMes(state.year, state.month, ocupados);
+    var mes = MONTHS[state.month] + " de " + state.year;
+    if (!nuevas.length){ toast("Todos los días de " + mes + " ya tienen contenido"); return; }
+    if (!confirm("Se añadirán " + nuevas.length + " ideas, una por cada día libre de " + mes + ".\n\nSiguen el ritmo semanal: lunes y viernes Ryu Ads, martes y sábados FileForge, jueves y domingos marca personal.")) return;
+    state.ideas = state.ideas.concat(nuevas);
+    save(); render();
+    toast("Añadidas " + nuevas.length + " ideas a " + mes);
+  });
   $("#prev").addEventListener("click", function(){ shiftMonth(-1); });
   $("#next").addEventListener("click", function(){ shiftMonth(1); });
   $("#today").addEventListener("click", function(){

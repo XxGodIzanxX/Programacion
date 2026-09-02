@@ -32,8 +32,8 @@ const CONFIG = {
   autor: {
     nombre: "Izan Gutiérrez",
     empresa: "Ryu Ads",
-    web: "",
-    email: "",
+    web: "https://ryuads.com",
+    email: "info@ryuads.com",
     frase: "Agencia de marketing digital: SEO, Google Ads, YouTube Ads, Meta Ads, desarrollo web, redes y automatización con IA."
   },
 

@@ -61,9 +61,10 @@ Se guarda en el `localStorage` del navegador de cada alumno, con la clave
 sincroniza entre dispositivos y no llega a nadie más. Si cambias el `id` de una
 lección, quien la tuviera completada la verá otra vez pendiente.
 
-## Las cuatro vistas
+## Las cinco vistas
 
 - **Curso** — las lecciones, con notas propias al final de cada una.
+- **Taller** — el constructor de prompts, abajo.
 - **Prompts** — los 25 prompts y archivos del curso juntos, filtrables y
   buscables, con enlace a la lección de origen. Es la vista que más se usa
   cuando ya has hecho el curso.
@@ -105,6 +106,36 @@ De ahí salen dos consecuencias que conviene tener asumidas antes de poner preci
    sin la parte que te devuelve algo.
 
 `emitidas/` está fuera de git: lleva nombres y correos de clientes.
+
+## El taller: cómo corrige
+
+El taller monta el prompt por piezas y lo va corrigiendo mientras escribes. Las
+reglas corren **en el navegador**: funcionan sin conexión y sin servidor, que es
+lo que necesita un archivo que se vende y se abre dentro de dos años.
+
+Comprueba, entre otras cosas:
+
+- Piezas que faltan, con su peso: el contexto pesa 42 de 100 y la tarea 18.
+- **Adjetivos usados como instrucción** ("creativo", "profesional", "impactante")
+  solo dentro de la tarea y el formato, que es donde son una orden. En el
+  contexto son una descripción legítima y no se penalizan.
+- El anti-patrón de "hazlo mejor": subir el tono en vez de subir la información.
+- El rol inflado tipo "el mejor copywriter del mundo".
+- Tarea sin verbo, sin cantidad, o con dos entregables metidos en una.
+- Un objetivo sin número, un perfil de cliente sin fuentes de datos, un contexto
+  más corto que la tarea.
+- **Datos personales a punto de pegarse**: correos, identificadores largos,
+  menciones a DNI o IBAN.
+
+Cada aviso lleva a la lección que lo explica, así que la corrección es el propio
+curso hablando.
+
+### El límite, dicho dentro de la herramienta
+
+Un motor de reglas comprueba **qué falta** y **errores conocidos**. No puede
+juzgar si tu contexto es bueno: un prompt con todo en verde y un contexto flojo
+da un resultado flojo. El taller lo dice en su propio panel, para que nadie
+confunda el aprobado con una garantía.
 
 ## Sesión y acceso
 

@@ -73,7 +73,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .ghost:hover{border-color:var(--brass);color:var(--brass)}
 
 .pestanas{display:flex;gap:2px;padding:9px 12px;border-bottom:1px solid var(--line-soft)}
-.pest{flex:1;background:none;border:0;border-radius:7px;padding:7px 4px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--ink-3);text-transform:uppercase}
+.pest{flex:1;background:none;border:0;border-radius:6px;padding:7px 2px;font-family:var(--mono);font-size:9px;letter-spacing:.02em;color:var(--ink-3);text-transform:uppercase;white-space:nowrap}
 .pest:hover{background:var(--surface-2);color:var(--ink-2)}
 .pest[aria-selected="true"]{background:var(--brass-soft);color:var(--brass);font-weight:700}
 
@@ -214,6 +214,53 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 .med-relleno{display:block;height:100%;border-radius:4px;background:var(--brass);transition:width .5s ease}
 .med-relleno[data-lleno="true"]{background:var(--ok)}
 
+/* ---------------------------------------------------------------- taller */
+.taller{display:grid;grid-template-columns:1fr 340px;gap:26px;align-items:start}
+.t-campos{min-width:0;display:flex;flex-direction:column;gap:20px}
+.t-lado{position:sticky;top:24px;display:flex;flex-direction:column;gap:16px}
+.t-grupo{border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.t-grupo>header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:11px 15px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.t-grupo h3{margin:0;font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+.t-grupo .peso{font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.t-cuerpo{padding:14px 15px;display:flex;flex-direction:column;gap:13px}
+.t-campo label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin:0 0 5px}
+.t-campo .pista{display:block;font-weight:400;color:var(--ink-3);font-size:12px;margin-top:2px}
+.t-campo textarea{width:100%;min-height:62px;overflow:hidden;resize:vertical;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:inherit;font-size:14.5px;line-height:1.5}
+.t-campo textarea:focus{border-color:var(--brass)}
+.t-campo textarea::placeholder{color:var(--ink-3)}
+.t-rapidos{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.t-rapido{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:16px;padding:3px 10px;font-family:var(--mono);font-size:10px;color:var(--ink-2);letter-spacing:.03em}
+.t-rapido:hover{border-color:var(--brass);color:var(--brass)}
+
+.t-marcador{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:15px 16px}
+.t-marcador .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin:0 0 8px}
+.t-veredicto{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.012em;line-height:1.25;margin:0 0 10px}
+.t-pista-barra{display:block;height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin:0 0 8px}
+.t-relleno{display:block;height:100%;border-radius:4px;background:var(--brass);transition:width .4s ease}
+.t-relleno[data-nivel="alto"]{background:var(--ok)}
+.t-relleno[data-nivel="bajo"]{background:var(--plum)}
+.t-marcador .sub{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.45}
+
+.t-diag{display:flex;flex-direction:column;gap:9px}
+.d{border:1px solid var(--line);border-left-width:3px;border-radius:9px;background:var(--surface);padding:11px 13px}
+.d[data-n="error"]{border-left-color:var(--plum)}
+.d[data-n="aviso"]{border-left-color:var(--brass)}
+.d[data-n="bien"]{border-left-color:var(--ok)}
+.d .cab{display:flex;align-items:baseline;gap:8px;margin:0 0 4px}
+.d .et{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.d[data-n="error"] .et{color:var(--plum)}
+.d[data-n="aviso"] .et{color:var(--brass)}
+.d[data-n="bien"]  .et{color:var(--ok)}
+.d .t{font-size:13.5px;font-weight:600;line-height:1.3;flex:1}
+.d p{margin:0;font-size:13px;line-height:1.5;color:var(--ink-2)}
+.d button.ver{background:none;border:0;padding:4px 0 0;font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--brass);text-decoration:underline;text-underline-offset:2px}
+.t-limite{margin:4px 0 0;padding:11px 13px;border:1px dashed var(--line);border-radius:9px;font-size:12px;line-height:1.5;color:var(--ink-3);background:var(--surface)}
+
+@media (max-width:1080px){
+  .taller{grid-template-columns:1fr}
+  .t-lado{position:static;order:-1}
+}
+
 /* --------------------------------------------------------------- portada */
 .portada-eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin:0 0 16px;font-weight:700}
 .portada h1{font-size:clamp(38px,6vw,58px);margin:0 0 12px}
@@ -311,6 +358,7 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 
     <div class="pestanas" role="tablist">
       <button class="pest" type="button" role="tab" data-vista="curso"    aria-selected="true">Curso</button>
+      <button class="pest" type="button" role="tab" data-vista="taller"   aria-selected="false">Taller</button>
       <button class="pest" type="button" role="tab" data-vista="prompts"  aria-selected="false">Prompts</button>
       <button class="pest" type="button" role="tab" data-vista="progreso" aria-selected="false">Avance</button>
       <button class="pest" type="button" role="tab" data-vista="glosario" aria-selected="false">Glosario</button>
@@ -643,6 +691,333 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
     return h;
   }
 
+
+  /* ======================================================== EL TALLER =====
+     Constructor de prompts con corrección en tiempo real. Las reglas son
+     deterministas y corren en el navegador: funcionan sin conexión y sin
+     servidor, que es lo que necesita un archivo que se vende.
+
+     Lo que esto SÍ hace: detectar piezas que faltan y errores conocidos que
+     el curso enseña a evitar.
+     Lo que NO hace: juzgar si tu contexto es bueno. Eso no lo puede saber una
+     regla, y el propio taller lo dice para que nadie se fíe de un aprobado.
+     ==================================================================== */
+
+  var CAMPOS = ["negocio","cliente","objecion","probado","tarea","formato","restricciones","ejemplos"];
+  var borrador = null;
+
+  function cargarBorrador(){
+    try{ borrador = JSON.parse(leeLocal(claveUsuario() + ":taller") || "null"); }catch(e){ borrador = null; }
+    if(!borrador){ borrador = {}; CAMPOS.forEach(function(c){ borrador[c] = ""; }); }
+    CAMPOS.forEach(function(c){ if(typeof borrador[c] !== "string") borrador[c] = ""; });
+  }
+  function guardarBorrador(){ guardaLocal(claveUsuario() + ":taller", JSON.stringify(borrador)); }
+
+  var EJEMPLO = {
+    negocio: "Instalación de placas solares para particulares en Valencia. Ticket medio 7.500 €.",
+    cliente: "45-60 años, casa unifamiliar. Su motivación no es la ecología: le ha subido la factura y está harto.",
+    objecion: "\"¿Y si me mudo antes de amortizarlo?\"",
+    probado: "Anuncios hablando de sostenibilidad y ahorro en porcentaje. Muchos clics, ninguna llamada.",
+    tarea: "Escribe 5 titulares para Meta Ads que ataquen directamente esa objeción.",
+    formato: "Un titular por línea, máximo 40 caracteres cada uno.",
+    restricciones: "No uses \"sostenible\" ni \"medio ambiente\". Nada de urgencia falsa. No prometas un porcentaje de ahorro.",
+    ejemplos: ""
+  };
+
+  var VAGOS = ["mejor","creativo","creativa","atractivo","atractiva","impactante","profesional",
+               "de calidad","potente","innovador","innovadora","disruptivo","moderno","óptimo",
+               "llamativo","espectacular","persuasivo"];
+  var VERBOS = ["escribe","redacta","analiza","lista","enumera","reescribe","adapta","resume",
+                "compara","audita","convierte","extrae","clasifica","genera","crea","propón",
+                "revisa","traduce","ordena","calcula","diseña","monta","prepara","saca","dame","hazme"];
+
+  function vac(x){ return !String(x||"").trim(); }
+  function largo(x){ return String(x||"").trim().length; }
+  function tiene(x, re){ return re.test(String(x||"")); }
+
+  function analizar(){
+    var d = borrador;
+    var ctx = [d.negocio, d.cliente, d.objecion, d.probado].join(" ");
+    var instrucciones = [d.tarea, d.formato].join(" ");
+    var todo = CAMPOS.map(function(c){ return d[c]; }).join(" ");
+    var r = [];
+    var add = function(nivel, t, p, lec){ r.push({ n:nivel, t:t, p:p, lec:lec }); };
+
+    /* --- lo que nunca debería salir de aquí ------------------------------ */
+    if(tiene(todo, /[\w.+-]+@[\w-]+\.\w{2,}/) || tiene(todo, /\b\d{8,}\b/) ||
+       tiene(todo, /\b(dni|nif|iban|n[úu]mero de tarjeta|contrase[ñn]a)\b/i)){
+      add("error", "Hay datos personales aquí dentro",
+          "Un correo, un número largo o un identificador. Antes de pegar datos de un cliente en ninguna herramienta, mira qué firmaste con él. Que sea cómodo no significa que esté permitido.", "m1-l6");
+    }
+
+    /* --- las piezas ------------------------------------------------------ */
+    if(vac(d.negocio))
+      add("error", "Falta qué vendes",
+          "Sin saber el producto y su precio, cualquier texto vale para cualquiera. Es la pieza más barata de rellenar.", "m1-l2");
+
+    if(vac(d.cliente))
+      add("error", "Falta a quién se lo vendes",
+          "La calidad de la salida es función del contexto, no del adjetivo que le pongas a la orden. Sin cliente, sale genérico por definición.", "m1-l1");
+    else if(largo(d.cliente) < 45)
+      add("aviso", "El cliente está descrito muy por encima",
+          "Añade qué le duele y en qué momento aparece ese dolor. Un perfil de una línea produce copy de una línea.", "m2-l1");
+
+    if(vac(d.objecion))
+      add("aviso", "No has puesto ninguna objeción",
+          "La objeción real que te sale en llamada es lo que separa un anuncio que vende de uno correcto. Es la pieza que más rinde de las cuatro.", "m2-l1");
+    else
+      add("bien", "Tienes la objeción puesta", "Es la pieza que más rinde del contexto.", null);
+
+    if(vac(d.tarea))
+      add("error", "No has dicho qué quieres",
+          "Un verbo, un entregable y una cantidad. \"Ayúdame con el email\" no es una tarea.", "m1-l2");
+
+    /* --- cómo está pedida la tarea --------------------------------------- */
+    if(!vac(d.tarea)){
+      var t0 = d.tarea.trim().toLowerCase();
+      var empiezaBien = VERBOS.some(function(v){ return t0.indexOf(v) === 0; });
+      if(!empiezaBien)
+        add("aviso", "La tarea no empieza por un verbo",
+            "Empieza por lo que tiene que hacer: escribe, analiza, lista, reescribe, compara. El verbo fija el entregable.", "m1-l2");
+
+      if(!tiene(d.tarea, /\d/))
+        add("aviso", "No has pedido una cantidad",
+            "Sin número te devuelve una opción y te quedas con ella. Pide cinco y eliges tú: elegir es más barato que corregir.", "m1-l2");
+      else
+        add("bien", "Has pedido una cantidad concreta", "Así eliges en vez de corregir.", null);
+
+      var nverbos = VERBOS.filter(function(v){ return t0.indexOf(v) >= 0; }).length;
+      if(nverbos > 1 && / y /.test(t0))
+        add("aviso", "Parece que hay dos tareas en una",
+            "Dos entregables en la misma petición salen los dos a medias. Sepáralas en dos mensajes.", "m1-l2");
+
+      var pide = (d.tarea.match(/\b(\d+)\b/) || [])[1];
+      if(pide && parseInt(pide,10) >= 4 &&
+         !tiene(todo, /antes de escribir|primero|para y espera|no escribas todav|en dos fases|dos fases/i))
+        add("aviso", "Pídele que piense antes de producir",
+            "Si le pides directamente las piezas, te da piezas. Si primero le pides los ángulos posibles y que pare, corriges el ángulo en vez de corregir cinco textos.", "m1-l2");
+      else if(tiene(todo, /antes de escribir|para y espera|no escribas todav|dos fases/i))
+        add("bien", "Le has pedido una fase previa", "Corregir el ángulo cuesta menos que corregir el resultado.", null);
+    }
+
+    /* --- adjetivos en vez de reglas, solo donde son instrucciones -------- */
+    var pillados = VAGOS.filter(function(v){
+      return new RegExp("\\b" + v + "\\b", "i").test(instrucciones);
+    });
+    if(pillados.length)
+      add("error", "Estás pidiendo con adjetivos",
+          "Has escrito: " + pillados.slice(0,4).join(", ") + ". Un adjetivo no es una instrucción porque no se puede comprobar. Cámbialo por una regla: en vez de \"profesional\", \"trato de usted y frases de menos de 25 palabras\".", "m1-l2");
+
+    if(tiene(todo, /experto de clase mundial|el mejor (copywriter|redactor|marketer|publicista)|eres un expert|act[úu]a como el mejor/i))
+      add("aviso", "El rol inflado añade menos de lo que parece",
+          "\"El mejor copywriter del mundo\" está muy sobrevendido. Lo que sí funciona es un rol específico y verificable: \"escribes para una asesoría que no puede prometer resultados por normativa\".", "m1-l2");
+
+    if(tiene(d.tarea, /h[aá]zlo mejor|mej[óo]ralo|m[áa]s creativ|dale una vuelta|que quede mejor/i))
+      add("error", "Estás subiendo el tono, no la información",
+          "Es el error número uno. Un mal resultado no se arregla pidiendo más empeño: se arregla dando más contexto.", "m1-l1");
+
+    /* --- coherencia entre piezas ----------------------------------------- */
+    if(largo(ctx) > 0 && largo(d.tarea) > 0 && largo(ctx) < largo(d.tarea))
+      add("aviso", "Tu tarea es más larga que tu contexto",
+          "Suele ser al revés. Si lo que explicas de tu negocio ocupa menos que lo que pides, va a rellenar los huecos por su cuenta.", "m1-l1");
+
+    if(tiene(d.tarea, /perfil|persona|buyer/i) &&
+       !tiene(ctx, /rese[ñn]a|llamada|entrevista|encuesta|ticket|datos|baja|search console|crm/i))
+      add("aviso", "Vas a construir un perfil sin datos",
+          "Un perfil sin fuentes reales es un personaje bien escrito. Dile de dónde salen los datos: reseñas, llamadas, bajas, tickets.", "m2-l1");
+
+    if(tiene(todo, /\b(objetivo|m[ée]trica|kpi)\b/i) && !tiene(todo, /\d/))
+      add("aviso", "Hay un objetivo sin número",
+          "\"Más leads\" no es una métrica. \"40 leads cualificados antes del 30 de junio\" sí, y además se puede comprobar.", "m2-l3");
+
+    /* --- las dos que casi nadie rellena ---------------------------------- */
+    if(vac(d.formato))
+      add("aviso", "Falta el formato",
+          "Si no dices longitud y dónde se publica, recibes prosa. El formato es la diferencia entre algo que se puede publicar y algo que hay que reescribir.", "m1-l2");
+
+    if(vac(d.restricciones))
+      add("aviso", "No has puesto ninguna prohibición",
+          "Las prohibiciones hacen más por la consistencia que cualquier descripción de tono, porque son inequívocas: seis palabras prohibidas se comprueban, \"cercano\" no.", "m1-l5");
+    else
+      add("bien", "Tienes prohibiciones puestas", "Es lo que más consistencia da.", null);
+
+    if(vac(d.ejemplos))
+      add("aviso", "No has pegado ningún ejemplo",
+          "La sección que más rinde y la que casi nadie rellena, porque cuesta buscar las referencias. Dos piezas que te gustan enseñan más que un párrafo describiendo el tono. Búscalas una vez: sirven para siempre.", "m1-l2");
+    else
+      add("bien", "Has pegado ejemplos", "Es la pieza con más rendimiento del prompt.", null);
+
+    /* --- puntuación ------------------------------------------------------ */
+    var pesos = { negocio:12, cliente:16, objecion:14, tarea:18, formato:12, restricciones:12, ejemplos:16 };
+    var pts = 0;
+    Object.keys(pesos).forEach(function(k){ if(!vac(d[k])) pts += pesos[k]; });
+    pts -= r.filter(function(x){ return x.n === "error"; }).length * 10;
+    pts = Math.max(0, Math.min(100, pts));
+
+    var veredicto = pts < 35 ? "Le falta lo esencial"
+                  : pts < 60 ? "Va a salir genérico"
+                  : pts < 80 ? "Sirve, se puede afinar"
+                  : "Listo para enviar";
+
+    var orden = { error:0, aviso:1, bien:2 };
+    r.sort(function(a,b){ return orden[a.n] - orden[b.n]; });
+    return { lista:r, pts:pts, veredicto:veredicto };
+  }
+
+  function ensamblar(){
+    var d = borrador, p = [];
+    var ctx = [];
+    if(!vac(d.negocio))  ctx.push("Negocio: " + d.negocio.trim());
+    if(!vac(d.cliente))  ctx.push("Cliente: " + d.cliente.trim());
+    if(!vac(d.objecion)) ctx.push("Objeción principal: " + d.objecion.trim());
+    if(!vac(d.probado))  ctx.push("Ya he probado, y no funcionó: " + d.probado.trim());
+    if(ctx.length) p.push("CONTEXTO\n" + ctx.join("\n"));
+    if(!vac(d.tarea))         p.push("TAREA\n" + d.tarea.trim());
+    if(!vac(d.formato))       p.push("FORMATO\n" + d.formato.trim());
+    if(!vac(d.restricciones)) p.push("RESTRICCIONES\n" + d.restricciones.trim());
+    if(!vac(d.ejemplos))      p.push("EJEMPLOS DE LO QUE SÍ FUNCIONA\n" + d.ejemplos.trim());
+    return p.join("\n\n");
+  }
+
+  var CAMPOS_UI = [
+    { g:"Contexto", peso:"lo que más pesa", campos:[
+      { id:"negocio",  et:"Qué vendes",           pista:"Producto o servicio, y el precio medio.",
+        ph:"Instalación de placas solares a particulares. Ticket medio 7.500 €." },
+      { id:"cliente",  et:"A quién",              pista:"Quién es y, sobre todo, qué le duele.",
+        ph:"45-60 años, casa unifamiliar. No le mueve la ecología: le ha subido la factura." },
+      { id:"objecion", et:"Su objeción principal", pista:"La que te sale de verdad en llamada.",
+        ph:"\"¿Y si me mudo antes de amortizarlo?\"" },
+      { id:"probado",  et:"Qué has probado ya",   pista:"Y por qué no funcionó. Evita que repita tus errores.",
+        ph:"Anuncios de sostenibilidad. Muchos clics, ninguna llamada." }
+    ]},
+    { g:"Qué le pides", peso:"", campos:[
+      { id:"tarea",   et:"Tarea", pista:"Un verbo, un entregable y una cantidad.",
+        ph:"Escribe 5 titulares para Meta Ads que ataquen esa objeción." },
+      { id:"formato", et:"Formato", pista:"Longitud, estructura y dónde se publica.",
+        ph:"Un titular por línea, máximo 40 caracteres." }
+    ]},
+    { g:"Los límites", peso:"la parte que nadie rellena", campos:[
+      { id:"restricciones", et:"Qué no puede hacer", pista:"Palabras y prácticas prohibidas.",
+        ph:"No uses \"sostenible\". Nada de urgencia falsa. Sin porcentajes de ahorro." },
+      { id:"ejemplos", et:"Ejemplos que sí te gustan", pista:"Pega 2 o 3 piezas reales. Es lo que más rinde.",
+        ph:"Pega aquí piezas tuyas o de la competencia que te funcionen." }
+    ]}
+  ];
+
+  var RAPIDOS = {
+    formato: ["Un titular por línea, máx. 40 caracteres",
+              "Post de LinkedIn, 150-200 palabras",
+              "Email de 120-160 palabras, cierre con teléfono",
+              "Guion de 40 segundos, con el conflicto en los 3 primeros"],
+    tarea:   ["Antes de escribir, lista 3 ángulos posibles y para. No escribas todavía."]
+  };
+
+  function vistaTaller(){
+    var h = '<h1>Taller de prompts</h1>';
+    h += '<p style="max-width:64ch;color:var(--ink-2);margin:0 0 26px">Rellena las piezas y el ' +
+         'taller monta el prompt mientras te va corrigiendo. Los avisos salen de las lecciones ' +
+         'del curso, y cada uno te lleva a la suya.</p>';
+
+    h += '<div class="taller"><div class="t-campos">';
+    CAMPOS_UI.forEach(function(g){
+      h += '<div class="t-grupo"><header><h3>' + esc(g.g) + '</h3>' +
+           (g.peso ? '<span class="peso">' + esc(g.peso) + '</span>' : '') + '</header><div class="t-cuerpo">';
+      g.campos.forEach(function(c){
+        h += '<div class="t-campo"><label for="tc-' + c.id + '">' + esc(c.et) +
+             '<span class="pista">' + esc(c.pista) + '</span></label>' +
+             '<textarea id="tc-' + c.id + '" data-campo="' + c.id + '" placeholder="' + esc(c.ph) + '">' +
+             esc(borrador[c.id] || "") + '</textarea>';
+        if(RAPIDOS[c.id]){
+          h += '<div class="t-rapidos">' + RAPIDOS[c.id].map(function(x){
+            return '<button class="t-rapido" type="button" data-rapido="' + c.id +
+                   '" data-txt="' + esc(x) + '">' + esc(x) + '</button>';
+          }).join("") + '</div>';
+        }
+        h += '</div>';
+      });
+      h += '</div></div>';
+    });
+    h += '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+         '<button class="ghost" type="button" id="tEjemplo">Cargar un ejemplo</button>' +
+         '<button class="ghost" type="button" id="tVaciar">Vaciar</button></div>';
+    h += '</div>';
+
+    h += '<div class="t-lado"><div id="tLado"></div></div></div>';
+    h += '<div id="tSalida" style="margin-top:34px"></div>';
+    return h;
+  }
+
+  function refrescarTaller(){
+    var a = analizar();
+    var nivel = a.pts >= 80 ? "alto" : a.pts < 35 ? "bajo" : "medio";
+
+    var h = '<div class="t-marcador"><p class="k">Estado del prompt</p>' +
+      '<p class="t-veredicto">' + esc(a.veredicto) + '</p>' +
+      '<span class="t-pista-barra"><span class="t-relleno" data-nivel="' + nivel +
+      '" style="width:' + a.pts + '%"></span></span>' +
+      '<p class="sub">' + a.lista.filter(function(x){return x.n==="error";}).length + ' errores · ' +
+      a.lista.filter(function(x){return x.n==="aviso";}).length + ' avisos</p></div>';
+
+    h += '<div class="t-diag">';
+    a.lista.forEach(function(x){
+      h += '<div class="d" data-n="' + x.n + '"><div class="cab">' +
+           '<span class="et">' + (x.n === "error" ? "Corrige" : x.n === "aviso" ? "Mejora" : "Bien") + '</span>' +
+           '<span class="t">' + esc(x.t) + '</span></div><p>' + esc(x.p) + '</p>' +
+           (x.lec && indicePorId(x.lec) >= 0
+             ? '<button class="ver" type="button" data-ir="' + indicePorId(x.lec) + '">ver la lección</button>'
+             : '') + '</div>';
+    });
+    h += '</div>';
+
+    h += '<p class="t-limite">Esto comprueba <b>qué falta</b> y errores conocidos, ' +
+         'no si tu contexto es bueno. Eso no lo puede saber una regla: un prompt con ' +
+         'todo en verde y un contexto flojo sigue dando un resultado flojo.</p>';
+
+    $("tLado").innerHTML = h;
+
+    var texto = ensamblar();
+    $("tSalida").innerHTML = texto
+      ? '<h2 class="seccion">Tu prompt</h2><div class="body">' +
+        pintarBloque({ t:"prompt", titulo:"listo para pegar en Claude", texto:texto }) + '</div>'
+      : '';
+  }
+
+  function crecer(ta){
+    ta.style.height = "auto";
+    ta.style.height = Math.max(62, ta.scrollHeight + 2) + "px";
+  }
+
+  function engancharTaller(){
+    var t = null;
+    document.querySelectorAll("[data-campo]").forEach(function(ta){
+      crecer(ta);
+      ta.addEventListener("input", function(){
+        crecer(ta);
+        borrador[ta.getAttribute("data-campo")] = ta.value;
+        clearTimeout(t);
+        t = setTimeout(function(){ guardarBorrador(); refrescarTaller(); }, 220);
+      });
+    });
+    document.querySelectorAll("[data-rapido]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var c = b.getAttribute("data-rapido"), txt = b.getAttribute("data-txt");
+        var ta = $("tc-" + c);
+        ta.value = ta.value.trim() ? ta.value.trim() + "\n" + txt : txt;
+        crecer(ta);
+        borrador[c] = ta.value; guardarBorrador(); refrescarTaller();
+      });
+    });
+    $("tEjemplo").addEventListener("click", function(){
+      CAMPOS.forEach(function(c){ borrador[c] = EJEMPLO[c] || ""; });
+      guardarBorrador(); pintar();
+    });
+    $("tVaciar").addEventListener("click", function(){
+      CAMPOS.forEach(function(c){ borrador[c] = ""; });
+      guardarBorrador(); pintar();
+    });
+    refrescarTaller();
+  }
+
   /* ===================================================== vista: portada */
   function colofon(){
     var a = CFG.autor || {};
@@ -869,13 +1244,14 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
   function pintar(){
     var h = "";
     if(vista === "inicio")        h = vistaInicio();
+    else if(vista === "taller")   h = vistaTaller();
     else if(vista === "curso")    h = vistaCurso();
     else if(vista === "prompts")  h = vistaPrompts();
     else if(vista === "progreso") h = vistaProgreso();
     else                          h = vistaGlosario();
     $("vista").innerHTML = h;
 
-    $("zonaBusca").hidden = (vista === "progreso" || vista === "inicio");
+    $("zonaBusca").hidden = (vista === "progreso" || vista === "inicio" || vista === "taller");
     document.querySelectorAll(".pest").forEach(function(b){
       b.setAttribute("aria-selected", b.getAttribute("data-vista") === vista ? "true" : "false");
     });
@@ -891,7 +1267,9 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
     }else{
       $("topTitle").textContent = vista === "prompts" ? "Prompts"
                                 : vista === "progreso" ? "Avance"
-                                : vista === "inicio" ? "Inicio" : "Glosario";
+                                : vista === "inicio" ? "Inicio"
+                                : vista === "taller" ? "Taller" : "Glosario";
+      if(vista === "taller") engancharTaller();
     }
     pintarArbol();
   }
@@ -1151,9 +1529,11 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
   if(!leeLocal(LLAVE + ":ultima")) vista = "inicio";
 
   pintarCabecera();
+  cargarBorrador();
 
   function arrancar(){
     Almacen.cargar().then(function(){
+      cargarBorrador();
       pintarSesion();
       pintar();
       if(NUBE && CFG.accesoCerrado && !sesion.usuario) pantallaAcceso("entrar");

@@ -214,6 +214,32 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 .med-relleno{display:block;height:100%;border-radius:4px;background:var(--brass);transition:width .5s ease}
 .med-relleno[data-lleno="true"]{background:var(--ok)}
 
+/* --------------------------------------------------------------- portada */
+.portada-eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin:0 0 16px;font-weight:700}
+.portada h1{font-size:clamp(38px,6vw,58px);margin:0 0 12px}
+.portada .lead{font-family:var(--display);font-weight:500;font-size:clamp(19px,2.6vw,23px);line-height:1.35;letter-spacing:-.012em;color:var(--ink-2);max-width:30ch;margin:0 0 30px}
+.portada .intro{max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--ink-2);margin:0 0 26px}
+.mods-lista{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:0 0 34px}
+.mod-fila{display:grid;grid-template-columns:34px 1fr auto;gap:14px;align-items:baseline;background:var(--surface);padding:15px 18px;text-align:left;border:0;width:100%}
+.mod-fila:hover{background:var(--surface-2)}
+.mod-fila .n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--brass);letter-spacing:.06em}
+.mod-fila .t{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em;line-height:1.25}
+.mod-fila .r{grid-column:2;font-size:14px;color:var(--ink-2);line-height:1.45;margin-top:3px}
+.mod-fila .c{font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.requisitos{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:14px;margin:0 0 36px}
+.req{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--surface)}
+.req .b{margin:0 0 7px}
+.req p{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+.colofon{margin-top:44px;padding-top:26px;border-top:1px solid var(--line)}
+.colofon .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+.colofon .quien{font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:-.014em;margin:0 0 6px}
+.colofon p{margin:0 0 10px;font-size:15px;line-height:1.55;color:var(--ink-2);max-width:56ch}
+.colofon a{color:var(--brass);text-decoration:underline;text-underline-offset:2px}
+.licencia{margin:22px 0 0;padding:12px 15px;border:1px dashed var(--line);border-radius:9px;background:var(--surface);font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ink-3)}
+.licencia b{color:var(--ink-2);font-weight:700}
+.rail-title-btn{display:block;width:100%;text-align:left;background:none;border:0;padding:0;cursor:pointer}
+.rail-title-btn:hover .rail-title{color:var(--brass)}
+
 .siguiente{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--brass);border-radius:10px;padding:18px 20px;margin:0 0 30px}
 .siguiente:hover{border-color:var(--brass)}
 .siguiente .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 7px}
@@ -275,7 +301,9 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
   <aside class="rail" id="rail" data-open="false">
     <div class="rail-head">
       <p class="eyebrow" id="eyebrow">Curso</p>
-      <h2 class="rail-title" id="railTitle">—</h2>
+      <button class="rail-title-btn" type="button" data-vista="inicio">
+        <h2 class="rail-title" id="railTitle">—</h2>
+      </button>
       <p class="rail-sub" id="railSub"></p>
     </div>
 
@@ -324,8 +352,11 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 (function(){
   "use strict";
   var $ = function(id){ return document.getElementById(id); };
-  var CFG = (typeof CONFIG !== "undefined") ? CONFIG : { supabaseUrl:"", supabaseAnonKey:"", accesoCerrado:false };
-  var NUBE = !!(CFG.supabaseUrl && CFG.supabaseAnonKey);
+  var CFG = (typeof CONFIG !== "undefined") ? CONFIG : {};
+  CFG.licencia = CFG.licencia || { nombre:"", email:"", emitida:"" };
+  CFG.autor = CFG.autor || {};
+  var LIC = !!(CFG.licencia.nombre);
+  var NUBE = !!(CFG.supabaseUrl && CFG.supabaseAnonKey) && !LIC;
   var LLAVE = "curso-claude-marketing:v2";
 
   /* =================================================== utilidades de texto */
@@ -448,6 +479,12 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 
   function pintarSesion(){
     var z = $("sesionZona");
+    if(LIC){
+      z.innerHTML = '<span class="avatar">' + esc(iniciales(CFG.licencia.nombre)) + '</span>' +
+        '<span class="sesion-txt"><b>' + esc(CFG.licencia.nombre) + '</b>' +
+        '<span>copia con licencia</span></span>';
+      return;
+    }
     if(sesion.usuario){
       z.innerHTML = '<span class="avatar">' + esc(iniciales(sesion.usuario.nombre)) + '</span>' +
         '<span class="sesion-txt"><b>' + esc(sesion.usuario.nombre) + '</b>' +
@@ -592,6 +629,11 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
          (hecho ? "&#10003; Completada" : "Marcar como completada") + "</button></div>";
 
     var ant = planas[actual-1], sig = planas[actual+1];
+    if(!sig){
+      h += '<div class="clave" style="margin-top:10px"><p>Hasta aquí el curso. ' +
+           'Lo que hayas construido —la skill de marca, las plantillas, los informes— ' +
+           'vale más que las lecciones: eso se queda contigo.</p></div>' + colofon();
+    }
     h += '<div class="nav">' +
          '<button class="nav-btn" type="button" data-ir="' + (actual-1) + '"' + (ant ? "" : " disabled") + '>' +
          '<span class="dir">Anterior</span><span class="t">' + (ant ? esc(ant.les.titulo) : "—") + "</span></button>" +
@@ -599,6 +641,87 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
          '<span class="dir">Siguiente</span><span class="t">' + (sig ? esc(sig.les.titulo) : "—") + "</span></button>" +
          "</div></div>";
     return h;
+  }
+
+  /* ===================================================== vista: portada */
+  function colofon(){
+    var a = CFG.autor || {};
+    var h = '<div class="colofon"><p class="k">Quién ha hecho este curso</p>';
+    h += '<p class="quien">' + esc(a.nombre || CURSO.autor || "") +
+         (a.empresa ? ' · ' + esc(a.empresa) : '') + '</p>';
+    if(a.frase) h += '<p>' + esc(a.frase) + '</p>';
+    var vias = [];
+    if(a.web)   vias.push('<a href="' + esc(a.web) + '" target="_blank" rel="noopener">' +
+                          esc(a.web.replace(/^https?:\/\//,"")) + '</a>');
+    if(a.email) vias.push('<a href="mailto:' + esc(a.email) + '">' + esc(a.email) + '</a>');
+    if(vias.length) h += '<p>' + vias.join(' · ') + '</p>';
+
+    if(LIC){
+      h += '<p class="licencia">Copia emitida para <b>' + esc(CFG.licencia.nombre) + '</b>' +
+           (CFG.licencia.email ? ' &lt;' + esc(CFG.licencia.email) + '&gt;' : '') +
+           (CFG.licencia.emitida ? ' el ' + esc(CFG.licencia.emitida) : '') +
+           '.<br>Es tuya para siempre: funciona sin conexión y no caduca. ' +
+           'Te pido que no la reenvíes — lleva tu nombre dentro.</p>';
+    }
+    return h + '</div>';
+  }
+
+  function vistaInicio(){
+    var total = planas.length;
+    var min = planas.reduce(function(a,p){ return a + (p.les.duracion||0); }, 0);
+    var nPrompts = todosLosPrompts().length;
+    var cowork = planas.filter(function(p){ return p.les.plataforma === "Cowork"; }).length;
+    var hechas = planas.filter(function(p){ return Almacen.hechas[p.les.id]; }).length;
+
+    var sig = 0;
+    for(var i=0;i<planas.length;i++){ if(!Almacen.hechas[planas[i].les.id]){ sig = i; break; } }
+
+    var h = '<div class="portada">';
+    h += '<p class="portada-eyebrow">' + (LIC ? "Licencia de " + esc(CFG.licencia.nombre)
+                                              : "Curso · v" + esc(CURSO.version || "1")) + '</p>';
+    h += '<h1>' + esc(CURSO.titulo) + '</h1>';
+    h += '<p class="lead">' + esc(CURSO.subtitulo || "") + '</p>';
+    h += '<p class="intro">Los doce casos de uso de marketing que publica Anthropic, ' +
+         'reordenados por ciclo de trabajo real y precedidos de lo que hay que saber ' +
+         'para que ninguno salga mediocre. Cada lección termina en algo que puedes ' +
+         'aplicar el lunes: un prompt listo para copiar, el error que la arruina y un ' +
+         'ejercicio sobre material tuyo, no de juguete.</p>';
+
+    h += '<div class="kpis">' +
+      '<div class="kpi"><p class="k">Lecciones</p><p class="v">' + total + '</p></div>' +
+      '<div class="kpi"><p class="k">Duración</p><p class="v">' + Math.round(min/60*10)/10 + '<small>h</small></p></div>' +
+      '<div class="kpi"><p class="k">Prompts listos</p><p class="v">' + nPrompts + '</p></div>' +
+      '<div class="kpi"><p class="k">Módulos</p><p class="v">' + CURSO.modulos.length + '</p></div>' +
+      '</div>';
+
+    h += '<button class="siguiente" type="button" data-ir="' + sig + '">' +
+         '<p class="k">' + (hechas ? "Continuar por aquí" : "Empezar por el principio") + '</p>' +
+         '<p class="t">' + esc(planas[sig].les.titulo) + '</p>' +
+         '<p class="d">Módulo ' + planas[sig].mi + ' · ' + planas[sig].les.duracion + ' min' +
+         (hechas ? ' · llevas ' + hechas + ' de ' + total : '') + '</p></button>';
+
+    h += '<h2 class="seccion">Lo que hay dentro</h2><div class="mods-lista">';
+    CURSO.modulos.forEach(function(mod, mi){
+      var idx = indicePorId(mod.lecciones[0].id);
+      var mm = mod.lecciones.reduce(function(a,l){ return a + (l.duracion||0); }, 0);
+      h += '<button class="mod-fila" type="button" data-ir="' + idx + '">' +
+           '<span class="n">M' + (mi+1) + '</span>' +
+           '<span class="t">' + esc(mod.titulo) + '</span>' +
+           '<span class="c">' + mod.lecciones.length + ' · ' + mm + ' min</span>' +
+           '<span class="r">' + esc(mod.resumen || "") + '</span></button>';
+    });
+    h += '</div>';
+
+    h += '<h2 class="seccion">Qué necesitas</h2><div class="requisitos">' +
+      '<div class="req"><p class="b"><span class="badge">Claude.ai</span></p>' +
+      '<p>' + (total - cowork) + ' lecciones. Con una cuenta gratuita se siguen; ' +
+      'las skills y los proyectos piden plan de pago.</p></div>' +
+      '<div class="req"><p class="b"><span class="badge cowork">Cowork</span></p>' +
+      '<p>' + cowork + ' lecciones. Necesita plan de pago de Claude. Si no lo tienes, ' +
+      'filtra el índice por Claude.ai y hazlas más adelante.</p></div>' +
+      '</div>';
+
+    return h + colofon() + '</div>';
   }
 
   /* =============================================== vista: panel de avance */
@@ -745,13 +868,17 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
   /* ============================================================== pintar */
   function pintar(){
     var h = "";
-    if(vista === "curso")         h = vistaCurso();
+    if(vista === "inicio")        h = vistaInicio();
+    else if(vista === "curso")    h = vistaCurso();
     else if(vista === "prompts")  h = vistaPrompts();
     else if(vista === "progreso") h = vistaProgreso();
     else                          h = vistaGlosario();
     $("vista").innerHTML = h;
 
-    $("zonaBusca").hidden = (vista === "progreso");
+    $("zonaBusca").hidden = (vista === "progreso" || vista === "inicio");
+    document.querySelectorAll(".pest").forEach(function(b){
+      b.setAttribute("aria-selected", b.getAttribute("data-vista") === vista ? "true" : "false");
+    });
     $("search").placeholder = vista === "curso" ? "Buscar lección…"
                             : vista === "prompts" ? "Buscar en los prompts…"
                             : "Buscar término…";
@@ -763,7 +890,8 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
       engancharNota();
     }else{
       $("topTitle").textContent = vista === "prompts" ? "Prompts"
-                                : vista === "progreso" ? "Avance" : "Glosario";
+                                : vista === "progreso" ? "Avance"
+                                : vista === "inicio" ? "Inicio" : "Glosario";
     }
     pintarArbol();
   }
@@ -1012,10 +1140,15 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
   var ult = leeLocal(LLAVE + ":ultima");
   if(ult){ var iu = indicePorId(ult); if(iu >= 0) actual = iu; }
 
-  try{
-    var guardado = leeLocal(LLAVE + ":sesion");
-    if(guardado) sesion.usuario = JSON.parse(guardado);
-  }catch(e){}
+  if(LIC){
+    sesion.usuario = { id:"lic", nombre:CFG.licencia.nombre, email:CFG.licencia.email || "" };
+  }else{
+    try{
+      var guardado = leeLocal(LLAVE + ":sesion");
+      if(guardado) sesion.usuario = JSON.parse(guardado);
+    }catch(e){}
+  }
+  if(!leeLocal(LLAVE + ":ultima")) vista = "inicio";
 
   pintarCabecera();
 

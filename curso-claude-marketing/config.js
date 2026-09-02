@@ -18,6 +18,25 @@
    ========================================================================== */
 
 const CONFIG = {
+  /* --- LICENCIA -----------------------------------------------------------
+     Lo rellena `emitir.py` al generar la copia de cada comprador. No se toca
+     a mano. Con nombre puesto, el curso no pide identificarse: ya sabe de
+     quién es la copia, y lo enseña en la portada y en el pie.
+     --------------------------------------------------------------------- */
+  licencia: { nombre: "", email: "", emitida: "" },
+
+  /* --- CONTACTO -----------------------------------------------------------
+     Aparece en la portada y al terminar el curso. Si el archivo circula, esto
+     es lo que convierte una copia filtrada en un contacto.
+     --------------------------------------------------------------------- */
+  autor: {
+    nombre: "Izan Gutiérrez",
+    empresa: "Ryu Ads",
+    web: "",
+    email: "",
+    frase: "Agencia de marketing digital: SEO, Google Ads, YouTube Ads, Meta Ads, desarrollo web, redes y automatización con IA."
+  },
+
   supabaseUrl: "",
   supabaseAnonKey: "",
 

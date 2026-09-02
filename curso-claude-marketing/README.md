@@ -11,7 +11,8 @@ instalación ni conexión (salvo las fuentes, que caen a las del sistema sin ell
 | `config.js` | Conexión con Supabase. Vacío = modo local | Solo al desplegar |
 | `index.html` | El motor: sesión, navegación, vistas, render | Solo para cambiar cómo se ve |
 | `supabase/esquema.sql` | Tablas y políticas de seguridad | Una vez, al montar la base |
-| `DESPLIEGUE.md` | Cómo poner acceso real | — |
+| `emitir.py` | Genera la copia personalizada de cada comprador | — |
+| `DESPLIEGUE.md` | Cómo poner acceso real, si algún día haces membresía | — |
 
 Para añadir material **nunca hay que abrir el `index.html`**. Todo va en
 `contenido.js`.
@@ -69,6 +70,41 @@ lección, quien la tuviera completada la verá otra vez pendiente.
 - **Avance** — porcentaje, tiempo hecho y restante, medidores por módulo, por
   dónde continuar, y todas tus notas recogidas.
 - **Glosario** — los términos, en orden alfabético.
+
+## El producto: un archivo que se vende
+
+El curso se vende **como archivo**. Un HTML de unos 150 KB que se abre con doble
+clic, funciona sin servidor y sin conexión, y no caduca. Lo que compra el
+comprador es suyo para siempre.
+
+```bash
+python3 emitir.py "Marta Ruiz" marta@sucorreo.com
+```
+
+Deja en `emitidas/` la copia de esa persona, con su nombre en la portada, en el
+pie y en la licencia. Esa copia entra directa: no pide identificarse, porque ya
+sabe de quién es.
+
+### Lo que esto protege, y lo que no
+
+**No protege nada técnicamente.** Quien reciba el archivo lo abre. El nombre se
+puede borrar con un editor de texto en dos minutos. Personalizar la copia es
+**fricción social**, no seguridad: frena el reenvío por vergüenza de que circule
+tu nombre, y ya.
+
+De ahí salen dos consecuencias que conviene tener asumidas antes de poner precio:
+
+1. **El precio tiene que aguantar la copia.** Un archivo copiable funciona a
+   precio bajo y volumen, o como extra de un servicio. Caro y suelto, acaba
+   circulando.
+2. **Si va a circular, que circule a tu favor.** Cada copia filtrada acaba en el
+   ordenador de alguien que compra marketing. Por eso el archivo lleva portada
+   con marca, colofón con contacto y la ficha del autor: la fuga deja de ser una
+   pérdida y pasa a ser distribución. Rellena `autor.web` y `autor.email` en
+   `config.js` antes de emitir la primera copia, o estarás regalando el curso
+   sin la parte que te devuelve algo.
+
+`emitidas/` está fuera de git: lleva nombres y correos de clientes.
 
 ## Sesión y acceso
 

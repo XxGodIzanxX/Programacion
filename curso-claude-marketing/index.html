@@ -346,11 +346,77 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 
 @media (max-width:900px){
   .app{grid-template-columns:1fr}
-  .rail{position:fixed;inset:0 auto 0 0;width:min(320px,86vw);z-index:40;height:100vh;transform:translateX(-101%);transition:transform .22s ease;box-shadow:var(--shadow)}
+  .rail{
+    position:fixed;inset:0 auto 0 0;width:min(330px,88vw);z-index:40;height:100dvh;
+    transform:translateX(-101%);transition:transform .22s ease;box-shadow:var(--shadow);
+    overscroll-behavior:contain;
+  }
   .rail[data-open="true"]{transform:none}
   .topbar{display:flex}
-  .lesson{padding:30px 20px 72px}
-  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:30}
+  .lesson{padding:26px 18px 72px}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:30}
+
+  /* el dedo necesita 44px; el ratón se apañaba con 28 */
+  .pest{min-height:44px;font-size:9.5px}
+  .chip{min-height:40px}
+  .ghost{min-height:40px;padding:9px 13px}
+  .les-btn{min-height:44px;align-items:center}
+  .mod-btn{min-height:46px;align-items:center}
+  .copy,.pf{min-height:38px;padding:8px 14px}
+  .marcar{min-height:46px;width:100%}
+  .rail-title-btn{min-height:44px;padding:6px 0}
+  .t-rapido{min-height:36px;padding:8px 13px}
+  .d button.ver{min-height:36px;padding:9px 0 3px}
+  .p-origen button{min-height:36px;padding:8px 0}
+  .p-origen{align-items:center}
+  .rail-foot{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+  .tree{padding-bottom:calc(28px + env(safe-area-inset-bottom))}
+
+  /* Safari amplía la página al enfocar un campo de menos de 16px */
+  .search,.campo input,.t-campo textarea,.notas textarea{font-size:16px}
+
+  /* anterior y siguiente, uno debajo del otro: en dos columnas no cabe el título */
+  .nav{flex-direction:column}
+  .nav-btn,.nav-btn.next{text-align:left}
+  .nav-btn[disabled]{display:none}
+
+  .aviso-demo{flex-direction:column;gap:9px}
+  .aviso-demo .copy{align-self:flex-start}
+  .prompt pre{font-size:12.5px;padding:14px}
+  .archivo pre{font-size:11.5px;padding:14px}
+  .lesson h1{font-size:clamp(27px,7.5vw,34px)}
+  .clave p{font-size:18px}
+  .body p{font-size:16.5px}
+  .objetivo{flex-direction:column;gap:6px}
+  .objetivo .lbl{flex:none}
+  .kpis{grid-template-columns:1fr 1fr}
+  .t-lado{position:static}
+}
+
+/* Una tabla de tres columnas no se lee en 390 px por mucho que haga scroll:
+   cada fila pasa a ser una tarjeta, y cada celda lleva su cabecera encima. */
+@media (max-width:640px){
+  .tabla-wrap{border:0;border-radius:0;overflow:visible}
+  table,tbody,tr,td{display:block;width:100%}
+  thead{display:none}
+  table{background:none}
+  tr{
+    border:1px solid var(--line);border-radius:9px;margin:0 0 10px;
+    background:var(--surface);overflow:hidden;
+  }
+  tr:last-child{margin-bottom:0}
+  td{padding:11px 14px;border-bottom:1px solid var(--line-soft)}
+  tr td:last-child{border-bottom:0}
+  td[data-th]:not([data-th=""])::before{
+    content:attr(data-th);display:block;font-family:var(--mono);font-size:9px;
+    letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin:0 0 4px;
+  }
+  .mod-fila{grid-template-columns:30px 1fr;gap:10px}
+  .mod-fila .c{grid-column:2;font-size:10.5px}
+  .mod-fila .r{grid-column:2}
+  .med-fila{grid-template-columns:1fr auto}
+  .hero-cifra .n{font-size:52px}
+  .av-btn{flex-direction:column;align-items:flex-start;gap:5px}
 }
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 </style>
@@ -621,7 +687,9 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
                (b.cabeceras||[]).map(function(c){ return "<th>" + esc(c) + "</th>"; }).join("") +
                '</tr></thead><tbody>' +
                (b.filas||[]).map(function(fila){
-                 return "<tr>" + fila.map(function(c){ return "<td>" + md(c) + "</td>"; }).join("") + "</tr>";
+                 return "<tr>" + fila.map(function(c, ci){
+                   return '<td data-th="' + esc((b.cabeceras || [])[ci] || "") + '">' + md(c) + "</td>";
+                 }).join("") + "</tr>";
                }).join("") + '</tbody></table></div>';
       case "cita":
         return "<blockquote><p>" + md(b.texto || "") + "</p>" +
@@ -643,8 +711,8 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
     if(!sesion.usuario){
       h += '<div class="aviso-demo"><span class="mark">DEMO</span><p>' +
            'Estás viendo el curso sin identificarte. Puedes leerlo entero; el avance y las notas ' +
-           'se guardan en este navegador y se pierden si lo cambias. ' +
-           '<button class="copy" type="button" id="entrarInline" style="margin-left:4px">Entrar</button></p></div>';
+           'se guardan en este navegador y se pierden si lo cambias.</p>' +
+           '<button class="copy" type="button" id="entrarInline">Entrar</button></div>';
     }
 
     h += '<p class="crumb">Módulo ' + p.mi + " · " + esc(mod.titulo) + " · Lección " + p.mi + "." + p.li + '</p>';

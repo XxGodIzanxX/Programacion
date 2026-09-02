@@ -137,6 +137,26 @@ juzgar si tu contexto es bueno: un prompt con todo en verde y un contexto flojo
 da un resultado flojo. El taller lo dice en su propio panel, para que nadie
 confunda el aprobado con una garantía.
 
+## Móvil
+
+Probado en 320, 360, 390 y 768 px: sin desbordamiento horizontal en ninguna
+vista. Lo que cambia por debajo de 900 px:
+
+- El índice pasa a ser un cajón lateral, con el botón **Índice** en la barra
+  superior. Se cierra solo al elegir lección o vista.
+- **Todo lo pulsable llega a 36-46 px de alto.** Con ratón bastaban 28; con el
+  dedo, no.
+- **Los campos suben a 16 px.** Safari amplía la página entera al enfocar un
+  campo de menos de 16 px, y luego el usuario se queda con la web descuadrada.
+  Es el fallo de móvil más común y no se ve en el escritorio.
+- Anterior y siguiente se apilan, y el que no aplica se oculta en vez de
+  quedarse en gris ocupando sitio.
+
+Por debajo de 640 px, **las tablas dejan de ser tablas**: cada fila pasa a ser
+una tarjeta y cada celda lleva encima su cabecera de columna, sacada del
+atributo `data-th` que pone el renderizador. Una tabla de tres columnas con
+scroll horizontal no se lee en un móvil por mucho que quepa.
+
 ## Sesión y acceso
 
 Hay dos modos, y los decide `config.js`:

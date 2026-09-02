@@ -2,6 +2,15 @@
    CONTENIDO DEL CURSO — este es el único archivo que hay que tocar para
    añadir o cambiar material. El index.html no se toca para meter contenido.
 
+   El temario sigue los 12 casos de uso de marketing publicados por Anthropic,
+   reordenados por ciclo de marketing (investigar -> marca -> producir -> medir)
+   en vez de por orden alfabético, y precedidos de un módulo de fundamentos.
+
+   Cada lección declara en qué producto se ejecuta:
+     plataforma: "Claude.ai"  |  "Cowork"
+   El índice permite filtrar por ese campo, para que quien no tenga Cowork vea
+   solo lo que puede hacer hoy.
+
    Bloques disponibles dentro de `bloques: [...]`:
 
      { t:"texto",   md:"Párrafo. Admite **negrita**, *cursiva*, `código` y [enlace](url)." }
@@ -21,22 +30,24 @@
 
 const CURSO = {
   titulo: "Claude para Marketing",
-  subtitulo: "Del prompt suelto al sistema que produce",
+  subtitulo: "Los 12 casos de uso, en orden de trabajo real",
   autor: "Izan Gutiérrez · Ryu Ads",
-  version: "0.1",
+  version: "0.2",
 
   modulos: [
 
-    /* ---------------------------------------------------------------- M1 */
+    /* ------------------------------------------------------------------ M1
+       Prerrequisito. Sin esto, los 12 casos se ejecutan a ciegas.          */
     {
       id: "m1",
-      titulo: "Fundamentos",
-      resumen: "Qué es Claude realmente, qué no es, y por qué eso decide la calidad de todo lo que salga después.",
+      titulo: "Antes de empezar",
+      resumen: "Los cuatro conceptos sin los que cualquiera de los 12 casos de uso sale mediocre. Es el módulo más corto y el que más rendimiento da.",
       lecciones: [
         {
           id: "m1-l1",
           titulo: "Cómo piensa Claude",
           duracion: 9,
+          plataforma: "Claude.ai",
           objetivo: "Entender que la salida es función del contexto que le das, no de lo listo que le pidas ser.",
           estado: "listo",
           bloques: [
@@ -71,47 +82,9 @@ const CURSO = {
         },
         {
           id: "m1-l2",
-          titulo: "Claude, ChatGPT y Gemini: cuándo usar cuál",
-          duracion: 7,
-          objetivo: "Elegir herramienta por criterio y no por costumbre.",
-          estado: "pendiente",
-          bloques: [],
-          ejercicio: "",
-          recursos: []
-        },
-        {
-          id: "m1-l3",
-          titulo: "La interfaz: Proyectos, Artifacts y Skills",
-          duracion: 10,
-          objetivo: "Conocer las tres piezas que convierten a Claude de chat en herramienta de trabajo.",
-          estado: "pendiente",
-          bloques: [],
-          ejercicio: "",
-          recursos: []
-        },
-        {
-          id: "m1-l4",
-          titulo: "Qué NO delegar en la IA",
-          duracion: 6,
-          objetivo: "Marcar la frontera antes de automatizar, no después del susto.",
-          estado: "pendiente",
-          bloques: [],
-          ejercicio: "",
-          recursos: []
-        }
-      ]
-    },
-
-    /* ---------------------------------------------------------------- M2 */
-    {
-      id: "m2",
-      titulo: "Prompting aplicado",
-      resumen: "La estructura repetible que hay debajo de todo prompt que funciona, y cómo dejar de improvisarla cada vez.",
-      lecciones: [
-        {
-          id: "m2-l1",
           titulo: "El esqueleto de un prompt que funciona",
           duracion: 12,
+          plataforma: "Claude.ai",
           objetivo: "Escribir cualquier petición sobre seis piezas fijas en vez de a ojo.",
           estado: "listo",
           bloques: [
@@ -145,30 +118,22 @@ const CURSO = {
           recursos: []
         },
         {
-          id: "m2-l2",
-          titulo: "Iterar sin empezar de cero",
-          duracion: 8,
-          objetivo: "Corregir una salida mala en dos mensajes en lugar de en quince.",
+          id: "m1-l3",
+          titulo: "Claude.ai, Proyectos, Skills y Cowork",
+          duracion: 10,
+          plataforma: "Claude.ai",
+          objetivo: "Saber qué es cada superficie y cuál necesitas para cada lección del curso.",
           estado: "pendiente",
           bloques: [],
           ejercicio: "",
           recursos: []
         },
         {
-          id: "m2-l3",
-          titulo: "Darle tu voz de marca",
-          duracion: 11,
-          objetivo: "Construir un documento de voz que se pega una vez y sirve todo el año.",
-          estado: "pendiente",
-          bloques: [],
-          ejercicio: "",
-          recursos: []
-        },
-        {
-          id: "m2-l4",
-          titulo: "Errores que arruinan un prompt",
-          duracion: 7,
-          objetivo: "Reconocer los cinco fallos que explican el 80% de los malos resultados.",
+          id: "m1-l4",
+          titulo: "Qué NO delegar en la IA",
+          duracion: 6,
+          plataforma: "Claude.ai",
+          objetivo: "Marcar la frontera antes de automatizar, no después del susto con un cliente.",
           estado: "pendiente",
           bloques: [],
           ejercicio: "",
@@ -177,55 +142,171 @@ const CURSO = {
       ]
     },
 
-    /* ---------------------------------------------------------------- M3 */
+    /* ------------------------------------------------------------------ M2 */
+    {
+      id: "m2",
+      titulo: "Investigar y definir",
+      resumen: "Lo que va antes de escribir una sola línea de copy: a quién le hablas, contra quién compites y qué vais a hacer exactamente.",
+      lecciones: [
+        {
+          id: "m2-l1",
+          titulo: "Crear personas de clientes",
+          duracion: 15,
+          plataforma: "Claude.ai",
+          objetivo: "Construir perfiles de cliente a partir de datos reales del negocio, no de suposiciones de sala de reuniones.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        },
+        {
+          id: "m2-l2",
+          titulo: "Construye el documento de comparación competitiva",
+          duracion: 10,
+          plataforma: "Cowork",
+          objetivo: "Montar la tabla comparativa que el equipo comercial usa cuando el cliente nombra a un competidor.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        },
+        {
+          id: "m2-l3",
+          titulo: "Crear un brief de campaña",
+          duracion: 10,
+          plataforma: "Cowork",
+          objetivo: "Convertir una idea suelta en un brief que otra persona puede ejecutar sin volver a preguntarte.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        }
+      ]
+    },
+
+    /* ------------------------------------------------------------------ M3 */
     {
       id: "m3",
-      titulo: "Copy y contenido",
-      resumen: "Anuncios, emails, landings y redes. La parte que todo el mundo espera de un curso de IA, hecha bien.",
+      titulo: "Marca",
+      resumen: "De tener un manual de marca en un PDF que nadie abre, a tener una marca que Claude aplica sola en cada pieza. Es el módulo con más recorrido del curso.",
       lecciones: [
-        { id:"m3-l1", titulo:"Anuncios: Meta, Google y YouTube", duracion:14, objetivo:"Producir variantes de anuncio que se puedan testear, no una sola opción.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m3-l2", titulo:"Email marketing y secuencias", duracion:12, objetivo:"Montar una secuencia completa partiendo del problema del cliente.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m3-l3", titulo:"Landing pages que convierten", duracion:13, objetivo:"Escribir la estructura de una landing antes que su texto.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m3-l4", titulo:"Contenido para redes sin sonar a IA", duracion:11, objetivo:"Detectar y eliminar los tics que delatan un texto generado.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m3-l5", titulo:"Guiones para vídeo corto", duracion:9, objetivo:"Pasar de idea a guion grabable en un solo paso.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] }
+        {
+          id: "m3-l1",
+          titulo: "Crear activos de marca",
+          duracion: 15,
+          plataforma: "Claude.ai",
+          objetivo: "Producir los elementos visuales y verbales que definen cómo se ve y cómo suena la marca.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        },
+        {
+          id: "m3-l2",
+          titulo: "Empaqueta tus guías de marca en una skill",
+          duracion: 20,
+          plataforma: "Claude.ai",
+          objetivo: "Convertir el manual de marca en una herramienta que Claude aplica igual siempre, sin que nadie se la recuerde.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        },
+        {
+          id: "m3-l3",
+          titulo: "Crea contenido alineado con tu marca",
+          duracion: 10,
+          plataforma: "Cowork",
+          objetivo: "Producir piezas que ya nacen dentro de las directrices, sin pasada posterior de corrección.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        },
+        {
+          id: "m3-l4",
+          titulo: "Audita una carpeta de recursos visuales",
+          duracion: 15,
+          plataforma: "Cowork",
+          objetivo: "Revisar cientos de archivos contra el manual de marca y salir con una lista concreta de qué corregir.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        }
       ]
     },
 
-    /* ---------------------------------------------------------------- M4 */
+    /* ------------------------------------------------------------------ M4 */
     {
       id: "m4",
-      titulo: "Estrategia y análisis",
-      resumen: "Donde la IA deja de ser un redactor barato y empieza a ser un analista que no se cansa.",
+      titulo: "Producir y distribuir",
+      resumen: "Una pieza buena vale por diez si sabes derivarla. Aquí se trabaja la multiplicación, no la creación desde cero.",
       lecciones: [
-        { id:"m4-l1", titulo:"Investigación de cliente y buyer persona", duracion:12, objetivo:"Construir un perfil de cliente a partir de datos reales, no de suposiciones.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m4-l2", titulo:"Análisis de competencia", duracion:10, objetivo:"Extraer el posicionamiento de un competidor a partir de su web y sus anuncios.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m4-l3", titulo:"Auditoría de una cuenta publicitaria", duracion:15, objetivo:"Pasarle datos de campaña y sacar decisiones, no descripciones.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m4-l4", titulo:"SEO: keywords, clusters y briefs", duracion:14, objetivo:"Montar un plan de contenidos SEO defendible ante un cliente.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] }
+        {
+          id: "m4-l1",
+          titulo: "Adaptar contenido entre plataformas",
+          duracion: 15,
+          plataforma: "Claude.ai",
+          objetivo: "Reescribir una pieza para cada canal respetando sus códigos, en vez de recortarla y pegarla igual.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        },
+        {
+          id: "m4-l2",
+          titulo: "Reutiliza contenido en todos los canales",
+          duracion: 10,
+          plataforma: "Cowork",
+          objetivo: "Convertir un activo grande en toda su batería de piezas derivadas de una sola tirada.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        }
       ]
     },
 
-    /* ---------------------------------------------------------------- M5 */
+    /* ------------------------------------------------------------------ M5 */
     {
       id: "m5",
-      titulo: "Automatización",
-      resumen: "Dejar de repetir el mismo prompt. Proyectos, Skills y flujos que trabajan solos.",
+      titulo: "Medir y decidir",
+      resumen: "La parte donde la IA deja de ser un redactor barato y pasa a ser un analista que no se cansa ni tiene sesgo con la campaña que propuso él.",
       lecciones: [
-        { id:"m5-l1", titulo:"Proyectos: memoria permanente de cliente", duracion:10, objetivo:"Montar un Proyecto por cliente para no volver a pegar el contexto.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m5-l2", titulo:"Skills: convertir tu método en una herramienta", duracion:16, objetivo:"Empaquetar un proceso propio para que Claude lo ejecute igual siempre.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m5-l3", titulo:"Conectar Claude con tus datos", duracion:12, objetivo:"Entender qué son los conectores y qué se puede enchufar.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m5-l4", titulo:"Flujos de trabajo de agencia", duracion:13, objetivo:"Diseñar un flujo de entrega completo con IA dentro.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] }
-      ]
-    },
-
-    /* ---------------------------------------------------------------- M6 */
-    {
-      id: "m6",
-      titulo: "Casos reales",
-      resumen: "Flujos completos de principio a fin. Aquí no se enseña una técnica: se entrega un trabajo.",
-      lecciones: [
-        { id:"m6-l1", titulo:"De brief a campaña completa", duracion:20, objetivo:"Recorrer una campaña entera aplicando todo lo anterior.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m6-l2", titulo:"Auditoría de cliente nuevo en 40 minutos", duracion:18, objetivo:"Preparar una propuesta comercial a partir de una web fría.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] },
-        { id:"m6-l3", titulo:"Un mes de contenido en una tarde", duracion:16, objetivo:"Producir y calendarizar un mes de piezas sin que se note el molde.", estado:"pendiente", bloques:[], ejercicio:"", recursos:[] }
+        {
+          id: "m5-l1",
+          titulo: "Analizar el rendimiento de campañas",
+          duracion: 10,
+          plataforma: "Claude.ai",
+          objetivo: "Pasar de datos de campaña a decisiones: qué se pausa, qué se escala y qué se reescribe.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        },
+        {
+          id: "m5-l2",
+          titulo: "Resume el rendimiento de tus anuncios",
+          duracion: 10,
+          plataforma: "Cowork",
+          objetivo: "Producir el informe semanal de anuncios que hoy te come media mañana.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        },
+        {
+          id: "m5-l3",
+          titulo: "Analizar el rendimiento de recaudación de fondos",
+          duracion: 15,
+          plataforma: "Claude.ai",
+          objetivo: "Aplicar el mismo análisis a captación de donantes, para cuentas de ONG y proyectos sin ánimo de lucro.",
+          estado: "pendiente",
+          bloques: [],
+          ejercicio: "",
+          recursos: []
+        }
       ]
     }
 

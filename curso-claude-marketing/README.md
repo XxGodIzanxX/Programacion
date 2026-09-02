@@ -20,8 +20,9 @@ El curso son `modulos`, y cada módulo tiene `lecciones`. Cada lección:
 ```js
 {
   id: "m3-l1",             // único, no se repite ni se cambia (guarda el progreso)
-  titulo: "Anuncios: Meta, Google y YouTube",
-  duracion: 14,            // minutos, alimenta el "quedan ~X min"
+  titulo: "Crear activos de marca",
+  duracion: 15,            // minutos, alimenta el "quedan ~X min"
+  plataforma: "Claude.ai", // "Claude.ai" o "Cowork" — pinta la etiqueta y el filtro
   objetivo: "Una frase: qué sabrá hacer el alumno al terminar.",
   estado: "listo",         // "pendiente" mientras no tenga contenido
   bloques: [ ... ],        // el cuerpo de la lección
@@ -67,8 +68,33 @@ Genera dos archivos en `dist/`:
 - `curso-artifact.html` — lo mismo sin la envoltura `<html>`, para publicarlo
   como Artifact.
 
-## Estado del temario
+## El temario
 
-6 módulos, 24 lecciones. Dos escritas enteras (1.1 y 2.1) como referencia de
-formato; el resto tiene el esqueleto puesto y sale marcada como pendiente en el
-índice, con el punto en ámbar.
+Son los **12 casos de uso de marketing publicados por Anthropic**, reordenados
+por ciclo de trabajo en vez de por orden alfabético, y precedidos de un módulo
+de fundamentos que es prerrequisito de todos ellos.
+
+| Módulo | Lecciones | De dónde salen |
+|---|---|---|
+| 1 · Antes de empezar | 4 | Propias. Sin esto los 12 casos se ejecutan a ciegas. |
+| 2 · Investigar y definir | 3 | Personas, comparativa competitiva, brief |
+| 3 · Marca | 4 | Activos, skill de marca, contenido alineado, auditoría visual |
+| 4 · Producir y distribuir | 2 | Adaptar entre plataformas, reutilizar en canales |
+| 5 · Medir y decidir | 3 | Campañas, anuncios, recaudación de fondos |
+
+16 lecciones, 192 minutos. Escritas enteras: 1.1 y 1.2, como referencia de
+formato. El resto tiene el esqueleto puesto —título, objetivo, duración,
+plataforma— y sale marcada como pendiente con el punto en ámbar.
+
+### Dos avisos sobre el temario original
+
+- **La mitad son de Cowork, que es otro producto.** Por eso cada lección declara
+  su `plataforma` y el índice tiene filtro: quien no tenga Cowork puede ver solo
+  las 10 que sí puede ejecutar. La franja de color a la izquierda de cada lección
+  en el índice es latón para Claude.ai y ciruela para Cowork.
+- **"Adaptar contenido entre plataformas" (4.1) y "Reutiliza contenido en todos
+  los canales" (4.2) se solapan mucho.** Se mantienen separadas porque una es
+  pieza a pieza en Claude.ai y la otra es por lotes en Cowork, pero si el curso
+  hay que acortar, ahí está el recorte más barato.
+- **"Recaudación de fondos" (5.3) es de ONG**, no de agencia. Está incluida por
+  fidelidad al listado original; si tu audiencia es solo comercial, sobra.

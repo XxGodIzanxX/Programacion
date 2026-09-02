@@ -840,7 +840,7 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
     if(tiene(todo, /[\w.+-]+@[\w-]+\.\w{2,}/) || tiene(todo, /\b\d{8,}\b/) ||
        tiene(todo, /\b(dni|nif|iban|n[úu]mero de tarjeta|contrase[ñn]a)\b/i)){
       add("error", "Hay datos personales aquí dentro",
-          "Un correo, un número largo o un identificador. Antes de pegar datos de un cliente en ninguna herramienta, mira qué firmaste con él. Que sea cómodo no significa que esté permitido.", "m1-l6");
+          "Un correo, un número largo o un identificador. Antes de pegar datos de un cliente en ninguna herramienta, mira qué firmaste con él. Que sea cómodo no significa que esté permitido.", "m1-l5");
     }
 
     /* --- las piezas ------------------------------------------------------ */
@@ -930,7 +930,7 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 
     if(vac(d.restricciones))
       add("aviso", "No has puesto ninguna prohibición",
-          "Las prohibiciones hacen más por la consistencia que cualquier descripción de tono, porque son inequívocas: seis palabras prohibidas se comprueban, \"cercano\" no.", "m1-l5");
+          "Las prohibiciones hacen más por la consistencia que cualquier descripción de tono, porque son inequívocas: seis palabras prohibidas se comprueban, \"cercano\" no.", "m1-l4");
     else
       add("bien", "Tienes prohibiciones puestas", "Es lo que más consistencia da.", null);
 

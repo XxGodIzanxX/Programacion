@@ -39,6 +39,7 @@ El curso son `modulos`, y cada módulo tiene `lecciones`. Cada lección:
 { t:"pasos",   items:["primero","segundo"] }        // numerada
 { t:"prompt",  titulo:"Para qué sirve", texto:"El prompt literal" }
 { t:"ejemplo", titulo:"Salida de Claude", texto:"Texto de ejemplo" }
+{ t:"archivo", nombre:"SKILL.md", texto:"Contenido literal del archivo" }
 { t:"aviso",   texto:"Advertencia o error común." }
 { t:"clave",   texto:"La idea que hay que recordar." }
 { t:"tabla",   cabeceras:["A","B"], filas:[["1","2"]] }
@@ -76,15 +77,21 @@ de fundamentos que es prerrequisito de todos ellos.
 
 | Módulo | Lecciones | De dónde salen |
 |---|---|---|
-| 1 · Antes de empezar | 4 | Propias. Sin esto los 12 casos se ejecutan a ciegas. |
+| 1 · Antes de empezar | 5 | Propias + la skill de marca |
 | 2 · Investigar y definir | 3 | Personas, comparativa competitiva, brief |
-| 3 · Marca | 4 | Activos, skill de marca, contenido alineado, auditoría visual |
+| 3 · Marca | 3 | Activos, contenido alineado, auditoría visual |
 | 4 · Producir y distribuir | 2 | Adaptar entre plataformas, reutilizar en canales |
 | 5 · Medir y decidir | 3 | Campañas, anuncios, recaudación de fondos |
 
-16 lecciones, 192 minutos. Escritas enteras: 1.1 y 1.2, como referencia de
-formato. El resto tiene el esqueleto puesto —título, objetivo, duración,
-plataforma— y sale marcada como pendiente con el punto en ámbar.
+16 lecciones, 192 minutos. Escritas enteras: 1.1, 1.2 y 1.4. El resto tiene el
+esqueleto puesto —título, objetivo, duración, plataforma— y sale marcada como
+pendiente con el punto en ámbar.
+
+**"Empaqueta tus guías de marca en una skill" está en el módulo 1 a propósito**,
+aunque en el listado original sea un caso de uso más. Es la única de las doce
+que construye una herramienta en vez de pedir un entregable, y todo lo que viene
+después la usa: el módulo 3 entero da por hecho que ya existe. Puesta al final
+sería una lección; puesta al principio es la infraestructura del curso.
 
 ### Dos avisos sobre el temario original
 

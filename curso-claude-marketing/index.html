@@ -255,6 +255,7 @@ h1{
   font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--ink-2);
 }
 .copy:hover{border-color:var(--plum);color:var(--plum)}
+.archivo .copy:hover{border-color:var(--brass);color:var(--brass)}
 .copy.ok{border-color:var(--ok);color:var(--ok)}
 .prompt pre{
   margin:0;padding:16px;overflow-x:auto;
@@ -262,6 +263,20 @@ h1{
   white-space:pre-wrap;word-break:break-word;
 }
 
+.archivo{margin:0 0 24px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.archivo-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:9px 14px;background:var(--brass-soft);border-bottom:1px solid var(--line-soft);
+}
+.archivo-lbl{
+  font-family:var(--mono);font-size:11px;color:var(--brass);font-weight:700;
+  letter-spacing:.03em;
+}
+.archivo pre{
+  margin:0;padding:16px;overflow-x:auto;
+  font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--ink);
+  white-space:pre;
+}
 .ejemplo{margin:0 0 24px;border-left:2px solid var(--line);padding:2px 0 2px 18px}
 .ejemplo .lbl{
   font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
@@ -539,6 +554,12 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
                '<span class="prompt-lbl">Prompt' + (b.titulo ? " · " + esc(b.titulo) : "") + '</span>' +
                '<button class="copy" type="button" data-copiar>Copiar</button>' +
                '</div><pre>' + esc(b.texto || "") + '</pre></div>';
+      case "archivo":
+        return '<div class="archivo">' +
+               '<div class="archivo-head">' +
+               '<span class="archivo-lbl">' + esc(b.nombre || "archivo") + '</span>' +
+               '<button class="copy" type="button" data-copiar>Copiar</button>' +
+               '</div><pre>' + esc(b.texto || "") + '</pre></div>';
       case "ejemplo":
         return '<div class="ejemplo"><p class="lbl">' + esc(b.titulo || "Ejemplo") + '</p>' +
                '<pre>' + esc(b.texto || "") + '</pre></div>';
@@ -651,7 +672,7 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 
     var cp = ev.target.closest("[data-copiar]");
     if(cp){
-      var pre = cp.closest(".prompt").querySelector("pre");
+      var pre = cp.closest(".prompt, .archivo").querySelector("pre");
       var texto = pre.textContent;
       var ok = function(){
         cp.textContent = "Copiado";

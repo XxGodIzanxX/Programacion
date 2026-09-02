@@ -7,8 +7,11 @@ instalación ni conexión (salvo las fuentes, que caen a las del sistema sin ell
 
 | Archivo | Qué es | ¿Se toca? |
 |---|---|---|
-| `contenido.js` | Todo el temario y todo el texto del curso | **Sí, siempre** |
-| `index.html` | El motor: navegación, progreso, render, temas | Solo para cambiar cómo se ve |
+| `contenido.js` | Todo el temario, el texto del curso y el glosario | **Sí, siempre** |
+| `config.js` | Conexión con Supabase. Vacío = modo local | Solo al desplegar |
+| `index.html` | El motor: sesión, navegación, vistas, render | Solo para cambiar cómo se ve |
+| `supabase/esquema.sql` | Tablas y políticas de seguridad | Una vez, al montar la base |
+| `DESPLIEGUE.md` | Cómo poner acceso real | — |
 
 Para añadir material **nunca hay que abrir el `index.html`**. Todo va en
 `contenido.js`.
@@ -56,6 +59,31 @@ Se guarda en el `localStorage` del navegador de cada alumno, con la clave
 `curso-claude-marketing:v1`. Vive solo en su equipo: no hay servidor, no se
 sincroniza entre dispositivos y no llega a nadie más. Si cambias el `id` de una
 lección, quien la tuviera completada la verá otra vez pendiente.
+
+## Las cuatro vistas
+
+- **Curso** — las lecciones, con notas propias al final de cada una.
+- **Prompts** — los 25 prompts y archivos del curso juntos, filtrables y
+  buscables, con enlace a la lección de origen. Es la vista que más se usa
+  cuando ya has hecho el curso.
+- **Avance** — porcentaje, tiempo hecho y restante, medidores por módulo, por
+  dónde continuar, y todas tus notas recogidas.
+- **Glosario** — los términos, en orden alfabético.
+
+## Sesión y acceso
+
+Hay dos modos, y los decide `config.js`:
+
+- **Vacío = modo local.** El curso se lee entero sin identificarse. La sesión es
+  opcional y sirve para separar a varias personas en el mismo equipo. El avance
+  y las notas viven en ese navegador. **No protege el contenido**, y la propia
+  web lo dice.
+- **Relleno = modo nube.** Registro e inicio de sesión reales contra Supabase,
+  avance sincronizado entre dispositivos, y contenido cerrado a quien no tenga
+  cuenta. Ver `DESPLIEGUE.md`.
+
+El mismo `index.html` sirve para los dos. Si la nube falla, cae a local sin
+romperse.
 
 ## Publicar como página única
 

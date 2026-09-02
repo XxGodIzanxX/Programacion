@@ -139,7 +139,8 @@ const CURSO = {
             { t: "texto", md: "Escribir tres anuncios es una conversación. Revisar los 400 archivos de la carpeta de gráficas de un cliente es una carpeta. Ninguna de las dos hace bien el trabajo de la otra." },
             { t: "clave", texto: "Conversación para pensar. Proyecto para recordar. Skill para repetir. Cowork para escalar." },
             { t: "texto", md: "El error típico del que empieza es hacerlo todo en conversaciones sueltas. Funciona las primeras semanas y luego se rompe siempre por el mismo sitio: acabas con veinte chats, ninguno encuentra nada, y el contexto del cliente lo vuelves a pegar cada vez." },
-            { t: "aviso", texto: "Seis de las doce lecciones de este curso se ejecutan en Cowork. Si no lo tienes, usa el filtro del índice para ver solo las que puedes hacer hoy: el método de cada una se entiende igual, pero el ejercicio no lo vas a poder completar." },
+            { t: "aviso", texto: "Cowork necesita un plan de pago de Claude. Si no lo tienes, usa el filtro del índice para ver solo las lecciones que puedes hacer hoy: el método de cada una se entiende igual, pero el ejercicio no lo vas a poder completar." },
+            { t: "texto", md: "Cowork se elige en el mismo cuadro de mensaje que el chat, no en otra aplicación. La lección siguiente lo deja montado y cubre la parte de seguridad, que en una agencia no es opcional." },
             { t: "texto", md: "La regla de decisión, en el orden en que hay que preguntársela:" },
             { t: "pasos", items: [
               "¿Voy a repetir esto en varios clientes? → **skill**.",
@@ -150,6 +151,54 @@ const CURSO = {
           ],
           ejercicio: "Coge las cinco cosas que más repites en tu semana. Clasifica cada una en las cuatro superficies con la regla de arriba. Si alguna cae en \"conversación\" y la haces más de una vez al mes, está mal clasificada: mírala otra vez.",
           recursos: []
+        },
+        {
+          id: "m1-cowork",
+          titulo: "Montar Cowork sin regalar la carpeta equivocada",
+          duracion: 12,
+          plataforma: "Cowork",
+          objetivo: "Dejar Cowork listo para las seis lecciones que lo usan, y entender por qué la carpeta que conectas importa más que el prompt que escribes.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Seis de las lecciones de este curso se ejecutan en Cowork. Esta las prepara todas de una vez, y de paso cubre la única parte del curso donde un error no se corrige reescribiendo: la carpeta que le das." },
+            { t: "texto", md: "**Qué necesitas.** Un plan de pago de Claude: Pro, Max, Team o Enterprise. Cowork no está en el plan gratuito. Está en la app de escritorio de macOS y Windows, en claude.ai, en móvil y en el panel lateral de Chrome — pero para trabajar con archivos de tu ordenador necesitas la app de escritorio **abierta**, porque la sesión corre en los servidores de Anthropic y llega a tus archivos a través de ella." },
+            { t: "clave", texto: "Chat y Cowork empiezan en el mismo sitio: en el cuadro de mensaje eliges uno u otro. No hay que irse a ninguna parte." },
+            { t: "pasos", items: [
+              "En el cuadro de mensaje, cambia de **Chat** a **Cowork**.",
+              "Conecta la carpeta sobre la que va a trabajar. Solo lee y escribe dentro de las carpetas que conectas explícitamente.",
+              "Describe el resultado que quieres, no los pasos. Cowork planifica los pasos.",
+              "**Lee el plan que te propone antes de autorizarlo.** Este es el paso que la gente se salta y el que evita el 90% de los sustos.",
+              "Mientras trabaja ves el progreso paso a paso, y puedes corregirle a mitad o pararlo."
+            ]},
+            { t: "texto", md: "**Los tres modos de permiso**, y cuál usar en cada lección del curso:" },
+            { t: "tabla",
+              cabeceras: ["Modo", "Qué hace", "Cuándo"],
+              filas: [
+                ["**Manual**", "Pregunta antes de cada acción", "Carpetas de cliente, primera vez con un flujo, cualquier cosa que borre o mueva"],
+                ["**Auto**", "Aprueba solo lo que pasa su revisión de seguridad", "Trabajo repetido que ya has visto funcionar"],
+                ["**Skip**", "No pregunta nada", "Casi nunca. Solo en carpetas tuyas, con material que puedes perder"]
+              ]
+            },
+            { t: "texto", md: "Ahora la parte que de verdad importa, y que no es una advertencia de manual sino el modelo de amenaza real de esta herramienta." },
+            { t: "texto", md: "Cowork lee contenido que tú no has escrito —webs, PDFs de terceros, correos, reseñas descargadas— y además puede actuar sobre tus archivos. Cuando esas dos cosas se juntan aparece la **inyección de prompts**: instrucciones escondidas dentro de un documento que Claude está leyendo, escritas para que las obedezca como si vinieran de ti." },
+            { t: "clave", texto: "El riesgo no vive en lo que le pides: vive en lo que le dejas leer, multiplicado por lo que le dejas hacer. Reduce cualquiera de los dos y el riesgo baja." },
+            { t: "texto", md: "De ahí salen cinco reglas de trabajo que en una agencia no son opcionales:" },
+            { t: "lista", items: [
+              "**Carpeta de trabajo dedicada, nunca la carpeta viva del cliente.** Copias dentro lo que necesita esa tarea y nada más. Cuesta dos minutos y es la medida que más protege.",
+              "**Nunca conectes carpetas con facturación, contratos, credenciales o datos personales.** Aunque la tarea no vaya de eso: si está conectada, está al alcance.",
+              "**Modo Manual siempre que la tarea toque material de cliente**, y siempre la primera vez que corres un flujo nuevo.",
+              "**Mira lo que hace mientras lo hace.** Si abre archivos que no venían a cuento o visita webs que tú no le has dado, para. Eso es exactamente la señal.",
+              "**Cuidado con las tareas programadas.** Corren solas y sin nadie mirando. Empieza por cosas simples, revisa sus resultados y pausa las que ya no uses."
+            ]},
+            { t: "aviso", texto: "Y la frase que hay que interiorizar antes de conectar la primera carpeta: eres tú quien responde de lo que haga en tu nombre. Lo que publique, lo que mueva, lo que envíe. \"Lo hizo la IA\" no es una explicación que le sirva a un cliente cuyo material has movido." },
+            { t: "texto", md: "Esto no es una razón para no usarlo: es lo que separa usarlo en la agencia de usarlo en tus cosas. Con una carpeta dedicada y el modo Manual, las seis lecciones que vienen se hacen sin exponer nada." },
+            { t: "texto", md: "Una limitación práctica que conviene saber ya: **las sesiones de Cowork no se comparten**. No puedes mandarle a un compañero la sesión para que siga. Lo que se comparte son los archivos que produce." }
+          ],
+          ejercicio: "Crea la carpeta de trabajo que vas a usar en el resto del curso: una carpeta nueva, vacía, fuera de donde tengas material de clientes. Conéctala en modo Manual y pídele algo trivial —que liste lo que hay dentro— solo para ver el flujo de plan, autorización y progreso antes de darle trabajo de verdad.",
+          recursos: [
+            { titulo: "Empezar con Claude Cowork (Anthropic)", url: "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" },
+            { titulo: "Usar Claude Cowork de forma segura (Anthropic)", url: "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely" }
+          ]
         },
         {
           id: "m1-l4",
@@ -233,7 +282,7 @@ const CURSO = {
             { t: "texto", md: "Al revés también hay una lista, y es más larga: casi todo lo demás sí se delega. Primeras versiones, variantes, reestructurar, traducir, resumir, buscar contradicciones en un documento largo, convertir un formato en otro. Ahí el coste de un error es que lo ves y lo corriges." },
             { t: "texto", md: "Si quieres una sola pregunta que resuelva el 90% de los casos: *si esto sale mal y nadie lo revisa, ¿me entero yo o se entera el cliente?*" }
           ],
-          ejercicio: "Escribe tu propia lista de \"esto no sale sin que lo mire yo\" para tu negocio, con nombres concretos de entregables y no categorías. Pégala como sección final en la skill de marca de la lección 1.4: así viaja contigo en cada conversación.",
+          ejercicio: "Escribe tu propia lista de \"esto no sale sin que lo mire yo\" para tu negocio, con nombres concretos de entregables y no categorías. Pégala como sección final en la skill de marca de la lección 1.5: así viaja contigo en cada conversación.",
           recursos: []
         }
       ]
@@ -292,6 +341,10 @@ const CURSO = {
           objetivo: "Montar la tabla comparativa que el equipo comercial usa cuando el cliente nombra a un competidor.",
           estado: "listo",
           bloques: [
+            { t: "texto", md: "**El montaje.** Cowork trabaja sobre lo que hay en la carpeta, así que la estructura de la carpeta es media tarea. Una subcarpeta por competidor y una de salida, para que lo que produzca no se mezcle con lo que le diste:" },
+            { t: "archivo", nombre: "comparativa-[cliente]/", texto: "comparativa-[cliente]/\n├── nuestra-marca/\n│   ├── precios.pdf\n│   └── resenas.csv\n├── competidor-1/\n│   ├── precios.pdf\n│   ├── pagina-producto.pdf\n│   └── resenas.csv\n├── competidor-2/\n├── competidor-3/\n└── salida/" },
+            { t: "texto", md: "Nombra las subcarpetas con el nombre real del competidor, no con \"competidor-1\". Va a citar la fuente de cada fila, y \"competidor-2\" no le sirve a nadie en una llamada." },
+            { t: "texto", md: "Modo **Manual**: es material de cliente. Y esta tarea solo lee y escribe en `salida/`, así que cualquier permiso que te pida para tocar otra cosa es una señal de que algo va mal." },
             { t: "texto", md: "Este documento no es de marketing: es de ventas. Lo usa la persona que está en una llamada cuando el cliente dice *\"es que estoy mirando también a [competidor]\"*. Si esa respuesta se improvisa, se pierde." },
             { t: "texto", md: "Y por eso el formato importa tanto como el contenido. Un análisis competitivo de 20 páginas no lo abre nadie en mitad de una llamada. Lo que se usa es **una tabla y tres frases**." },
             { t: "clave", texto: "El documento comparativo se escribe para el peor momento posible: alguien nervioso, en una llamada, con quince segundos para responder." },
@@ -315,6 +368,9 @@ const CURSO = {
           objetivo: "Convertir una idea suelta en un brief que otra persona puede ejecutar sin volver a preguntarte.",
           estado: "listo",
           bloques: [
+            { t: "texto", md: "**El montaje.** Aquí la entrada son tus notas en crudo y el material de contexto; la salida es un documento. Separa las dos cosas desde el principio:" },
+            { t: "archivo", nombre: "brief-[campana]/", texto: "brief-[campana]/\n├── entrada/\n│   ├── notas-reunion.md      ← tus notas, tal cual\n│   ├── perfiles-cliente.md   ← de la lección 2.1\n│   └── briefs-anteriores/    ← los que salieron bien\n└── salida/" },
+            { t: "texto", md: "`briefs-anteriores/` es la carpeta que casi nadie pone y la que más cambia el resultado: dos briefs tuyos que funcionaron enseñan tu formato mejor que cualquier instrucción sobre el formato." },
             { t: "texto", md: "Un brief no es un resumen de la campaña: es el documento que evita la discusión de dentro de tres semanas. Si al terminar la campaña alguien puede decir *\"yo esto no lo entendí así\"*, el brief estaba mal escrito." },
             { t: "clave", texto: "Un brief está terminado cuando alguien que no estuvo en la reunión puede ejecutarlo sin preguntarte nada." },
             { t: "texto", md: "Ese es el listón, y casi ningún brief lo pasa. Fallan siempre por los mismos dos sitios: no dicen cómo se mide el éxito, y no dicen qué está prohibido." },
@@ -385,9 +441,9 @@ const CURSO = {
             },
             { t: "texto", md: "El punto 5 es el test del sistema. Un sistema verbal que solo sabe sonar bien en un formato no es un sistema: es una plantilla de anuncio." },
             { t: "aviso", texto: "Sobre lo visual: puedes generar imágenes de dirección artística y sirven para acordar una dirección con el cliente. Pero no las publiques como activos definitivos sin mirar dos cosas — que la licencia de la herramienta te permita uso comercial, y que el resultado sea reproducible. Una imagen que no puedes volver a generar igual no es un activo de marca: es una ilustración suelta." },
-            { t: "texto", md: "Cuando el sistema verbal esté cerrado, no lo dejes en un documento. Vuelve a la lección 1.4 y conviértelo en la skill de la marca. Ese es el paso que hace que todo esto se aplique solo en vez de quedarse en una carpeta." }
+            { t: "texto", md: "Cuando el sistema verbal esté cerrado, no lo dejes en un documento. Vuelve a la lección 1.5 y conviértelo en la skill de la marca. Ese es el paso que hace que todo esto se aplique solo en vez de quedarse en una carpeta." }
           ],
-          ejercicio: "Construye el sistema verbal de una marca con la que trabajes. Cuando lo tengas, pásalo a SKILL.md siguiendo 1.4. Prueba a pedirle una pieza sin mencionar la marca: si no aplica el vocabulario de la columna del cliente, la description está mal.",
+          ejercicio: "Construye el sistema verbal de una marca con la que trabajes. Cuando lo tengas, pásalo a SKILL.md siguiendo 1.5. Prueba a pedirle una pieza sin mencionar la marca: si no aplica el vocabulario de la columna del cliente, la description está mal.",
           recursos: []
         },
         {
@@ -398,13 +454,17 @@ const CURSO = {
           objetivo: "Producir piezas que ya nacen dentro de las directrices, sin pasada posterior de corrección.",
           estado: "listo",
           bloques: [
-            { t: "texto", md: "Esta lección no enseña a escribir: enseña a **dejar de revisar**. Si has hecho la 1.4 tienes la marca empaquetada en una skill; aquí se usa en volumen, sobre una carpeta, en vez de pieza a pieza en un chat." },
+            { t: "texto", md: "**El montaje.** Las tres partes de arriba son tres sitios concretos en la carpeta:" },
+            { t: "archivo", nombre: "produccion-[campana]/", texto: "produccion-[campana]/\n├── brief.md                  ← de la lección 2.3\n├── perfiles.md               ← de la lección 2.1\n├── piezas-que-funcionaron/   ← material aprobado anterior\n└── salida/" },
+            { t: "texto", md: "La skill de marca no va en la carpeta: vive en tu cuenta y se activa sola. Esa es justamente la diferencia entre una skill y un archivo de contexto, y por qué la lección 1.5 está donde está." },
+            { t: "texto", md: "Modo **Auto** es razonable a partir de la segunda tanda: esta tarea solo escribe archivos nuevos en `salida/` y no toca nada existente. La primera vez, Manual, para ver qué hace." },
+            { t: "texto", md: "Esta lección no enseña a escribir: enseña a **dejar de revisar**. Si has hecho la 1.5 tienes la marca empaquetada en una skill; aquí se usa en volumen, sobre una carpeta, en vez de pieza a pieza en un chat." },
             { t: "clave", texto: "El objetivo no es que la pieza salga buena. Es que salga ya dentro de las directrices, para que la revisión sea una lectura y no una corrección." },
             { t: "texto", md: "La diferencia práctica es grande. Corregir el tono de doce piezas cuesta más que escribirlas: cada corrección es abrir el archivo, leerlo entero, decidir y reescribir. Que nazcan bien elimina ese paso, no lo acelera." },
             { t: "texto", md: "El montaje tiene tres partes, y las tres tienen que estar:" },
             { t: "pasos", items: [
               "**La carpeta**: el material de entrada. El brief de la lección 2.3, los perfiles de la 2.1, y las piezas anteriores que sí funcionaron.",
-              "**La skill de marca** de la lección 1.4, que aporta el criterio.",
+              "**La skill de marca** de la lección 1.5, que aporta el criterio.",
               "**La petición**, que dice qué piezas quieres y para qué canal."
             ]},
             { t: "texto", md: "Las piezas anteriores que funcionaron son la parte que casi nadie incluye y la que más cambia el resultado. Ya lo viste en la 1.2: dos ejemplos reales enseñan más que un párrafo describiendo el tono." },
@@ -427,6 +487,10 @@ const CURSO = {
           objetivo: "Revisar cientos de archivos contra el manual de marca y salir con una lista concreta de qué corregir.",
           estado: "listo",
           bloques: [
+            { t: "texto", md: "**El montaje, y aquí hay una regla que no se negocia.** Nunca conectes la carpeta viva de recursos del cliente. Trabaja sobre una copia:" },
+            { t: "archivo", nombre: "auditoria-[cliente]/", texto: "auditoria-[cliente]/\n├── manual/\n│   └── guia-marca.pdf\n├── recursos/        ← UNA COPIA, nunca el original\n└── salida/" },
+            { t: "texto", md: "El motivo es simple: esta es la tarea del curso que más se parece a una que sí podría mover o renombrar archivos. El prompt le dice que no toque nada, y aun así trabajas sobre una copia. Las dos cosas, no una." },
+            { t: "texto", md: "Modo **Manual**, sin excepción. Si en algún momento te pide permiso para escribir fuera de `salida/`, deniégalo y revisa el prompt: en esta tarea no hay ninguna razón legítima para hacerlo." },
             { t: "texto", md: "Toda agencia tiene esa carpeta: cientos de gráficas, presentaciones y creatividades acumuladas de años, hechas por gente distinta con criterios distintos. Nadie la audita porque abrir cuatrocientos archivos a mano no lo hace nadie por gusto." },
             { t: "texto", md: "Este es el caso donde Cowork gana de calle: el trabajo no es difícil, es **repetitivo y voluminoso**. Comprobar si un archivo usa el azul correcto es trivial. Hacerlo cuatrocientas veces sin saltarte ninguno, no." },
             { t: "clave", texto: "El entregable de una auditoría no es una opinión sobre la carpeta: es una lista priorizada de qué archivo hay que tocar y por qué." },
@@ -504,6 +568,9 @@ const CURSO = {
           objetivo: "Convertir un activo grande en toda su batería de piezas derivadas de una sola tirada.",
           estado: "listo",
           bloques: [
+            { t: "texto", md: "**El montaje.** El material de un activo grande siempre está repartido en formatos distintos. Júntalo antes de empezar:" },
+            { t: "archivo", nombre: "despiece-[activo]/", texto: "despiece-[activo]/\n├── fuente/\n│   ├── transcripcion.txt\n│   ├── diapositivas.pdf\n│   └── preguntas-audiencia.md   ← el oro de la carpeta\n└── salida/\n    ├── linkedin/\n    ├── video-corto/\n    └── newsletter/" },
+            { t: "texto", md: "Crear las subcarpetas de salida por canal antes de lanzar la tarea sirve para algo concreto: te devuelve las piezas ya repartidas, listas para pasar a quien las publique, en vez de un documento largo que hay que trocear a mano." },
             { t: "texto", md: "La lección anterior adapta una pieza a varios canales. Esta hace otra cosa: coge **un activo grande** —un webinar, un informe, una entrevista larga, un caso de éxito— y saca de él toda la batería de piezas derivadas de una sola tirada." },
             { t: "texto", md: "La diferencia no es de tamaño sino de dirección. En 4.1 partes de una pieza terminada y la traduces. Aquí partes de material en bruto y lo despiezas." },
             { t: "clave", texto: "Un webinar de una hora contiene entre veinte y treinta piezas. El problema nunca ha sido producirlas: es que despiezarlo a mano cuesta un día y siempre hay algo más urgente." },
@@ -552,7 +619,7 @@ const CURSO = {
             },
             { t: "aviso", texto: "La exigencia del volumen es la que evita el error más caro de todos: pausar un anuncio bueno o escalar uno malo por diferencias que son ruido. Con 40 clics no se sabe nada, y un modelo al que le pides conclusiones te va a dar conclusiones igualmente, con la misma seguridad que si tuviera 40.000." },
             { t: "texto", md: "El bloque PROBAR limitado a una sola hipótesis también es deliberado. Cinco tests a la vez sobre el mismo presupuesto no son cinco aprendizajes: son cinco muestras pequeñas y ninguna conclusión." },
-            { t: "texto", md: "Cuando el formato de tus datos sea siempre el mismo, este prompt es candidato a skill (lección 1.4): el contexto de negocio cambia por cliente y va en su Proyecto, pero la estructura de las tres decisiones es tuya y se repite en todos." }
+            { t: "texto", md: "Cuando el formato de tus datos sea siempre el mismo, este prompt es candidato a skill (lección 1.5): el contexto de negocio cambia por cliente y va en su Proyecto, pero la estructura de las tres decisiones es tuya y se repite en todos." }
           ],
           ejercicio: "Coge la última campaña que analizaste. Vuelve a analizarla con este prompt, añadiendo el margen y la tasa de cierre. Compara las decisiones que salen ahora con las que tomaste entonces: si no cambia ninguna, o ya lo hacías bien o te falta contexto por dar.",
           recursos: []
@@ -565,6 +632,10 @@ const CURSO = {
           objetivo: "Producir el informe semanal de anuncios que hoy te come media mañana.",
           estado: "listo",
           bloques: [
+            { t: "texto", md: "**El montaje.** Este es el único flujo del curso que vas a repetir cada semana, así que la carpeta se monta una vez y no se vuelve a tocar:" },
+            { t: "archivo", nombre: "informe-[cliente]/", texto: "informe-[cliente]/\n├── semana-actual/     ← vacías y rellenas cada lunes\n├── historico/         ← aquí se acumulan las semanas\n└── salida/" },
+            { t: "texto", md: "El rito semanal son tres movimientos: mueves lo de `semana-actual/` a `historico/`, sueltas las exportaciones nuevas, y lanzas la tarea. La comparación contra la media de cuatro semanas sale de `historico/`, así que esa carpeta no se vacía nunca." },
+            { t: "texto", md: "Cuando lleves tres o cuatro semanas con el formato ya cerrado, esto es candidato a **tarea programada**: corre solo y te deja el informe hecho. Antes de programarlo, léete otra vez la parte de tareas programadas de la lección 1.4 — corren sin nadie mirando, y eso cambia el cálculo." },
             { t: "texto", md: "El informe semanal de anuncios es la tarea perfecta para automatizar y la que más se resiste, porque cada semana parece más rápido hacerlo a mano que montar el sistema. Cinco meses después llevas cien horas en informes." },
             { t: "texto", md: "La diferencia con la lección anterior: aquella era un análisis puntual y profundo. Esta es **la misma salida, cada semana, sin pensar el formato**. Va en Cowork porque las exportaciones son archivos y son varios: una plataforma, o tres, más el histórico." },
             { t: "clave", texto: "Un informe recurrente no se diseña para informar. Se diseña para que quien lo recibe sepa en treinta segundos si tiene que hacer algo." },
@@ -618,3 +689,25 @@ const CURSO = {
 
   ]
 };
+
+/* ---------------------------------------------------------------------------
+   Glosario. Aparece en su propia vista y se busca desde ahí.
+   ------------------------------------------------------------------------- */
+const GLOSARIO = [
+  { t: "Activo pilar", d: "Una pieza grande —webinar, informe, entrevista— de la que se derivan muchas piezas pequeñas. Ver lección 4.2.", m: "Producción" },
+  { t: "Brief", d: "El documento que fija objetivo, métrica, público y límites de una campaña. Está terminado cuando alguien que no estuvo en la reunión puede ejecutarlo.", m: "Estrategia" },
+  { t: "Contexto", d: "Todo lo que Claude tiene delante al responder: tu mensaje, la conversación previa y los archivos adjuntos. La calidad de la salida depende de esto más que de cómo formules la orden.", m: "Fundamentos" },
+  { t: "Cowork", d: "La superficie de Claude que trabaja sobre carpetas de archivos en vez de sobre una conversación. Requiere plan de pago y, para archivos locales, la app de escritorio abierta.", m: "Superficies" },
+  { t: "CPA", d: "Coste por adquisición: lo que cuesta conseguir un cliente. En captación de donantes se compara contra la permanencia, no contra la primera donación.", m: "Medición" },
+  { t: "Inyección de prompts", d: "Instrucciones escondidas en contenido que Claude lee —una web, un PDF de un tercero— escritas para que las obedezca como si vinieran de ti. El riesgo aparece cuando además puede actuar sobre tus archivos.", m: "Seguridad" },
+  { t: "Modo de permiso", d: "En Cowork, cuánto pregunta antes de actuar: Manual (cada acción), Auto (aprueba lo que pasa su revisión) o Skip (no pregunta). Manual siempre que haya material de cliente.", m: "Seguridad" },
+  { t: "Perfil de cliente", d: "Descripción accionable de a quién le vendes, construida desde datos reales —reseñas, llamadas, bajas— y no desde suposiciones. Ver lección 2.1.", m: "Estrategia" },
+  { t: "Prompt", d: "La instrucción que le das. Un buen prompt tiene seis piezas: rol, contexto, tarea, formato, restricciones y ejemplos. Ver lección 1.2.", m: "Fundamentos" },
+  { t: "Proyecto", d: "Un espacio de Claude con instrucciones y archivos fijos, para un cliente o una marca concretos. Lo que caduca va aquí, no en una skill.", m: "Superficies" },
+  { t: "ROAS", d: "Retorno sobre la inversión publicitaria. Optimizar ROAS no es lo mismo que optimizar beneficio: sin el margen por producto, se optimiza el ingreso equivocado.", m: "Medición" },
+  { t: "Skill", d: "Un método tuyo empaquetado en una carpeta con un SKILL.md, que Claude activa sola cuando toca. Para criterios que repites en varios clientes. Ver lección 1.5.", m: "Superficies" },
+  { t: "SKILL.md", d: "El archivo de una skill: una cabecera con name y description, y debajo las instrucciones en texto normal. La description decide si la skill llega a activarse.", m: "Superficies" },
+  { t: "Sistema verbal", d: "Cómo suena una marca por escrito: tono, vocabulario y prohibiciones. Es el activo de marca que más se usa y el que menos se documenta.", m: "Marca" },
+  { t: "Tarea programada", d: "Un trabajo de Cowork que corre solo, en la nube, sin nadie mirando. Empieza por cosas simples y revisa sus resultados.", m: "Seguridad" },
+  { t: "Ventana de contexto", d: "El límite de cuánto cabe en una conversación. Es amplia pero no infinita: todo lo que metes compite por atención, así que pegar de más diluye.", m: "Fundamentos" }
+];

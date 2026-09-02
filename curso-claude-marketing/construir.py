@@ -12,8 +12,12 @@ import pathlib, re
 aqui = pathlib.Path(__file__).parent
 html = (aqui / "index.html").read_text(encoding="utf-8")
 datos = (aqui / "contenido.js").read_text(encoding="utf-8")
+conf = (aqui / "config.js").read_text(encoding="utf-8")
 
 unido = html.replace(
+    '<script src="config.js"></script>',
+    "<script>\n" + conf + "\n</script>",
+).replace(
     '<script src="contenido.js"></script>',
     "<script>\n" + datos + "\n</script>",
 )

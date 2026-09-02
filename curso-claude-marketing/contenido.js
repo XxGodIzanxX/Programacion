@@ -30,9 +30,9 @@
 
 const CURSO = {
   titulo: "Claude para Marketing",
-  subtitulo: "Los 12 casos de uso, en orden de trabajo real",
+  subtitulo: "De los 12 casos de uso a cobrar por ellos",
   autor: "Izan Gutiérrez · Ryu Ads",
-  version: "1.0",
+  version: "2.0",
 
   modulos: [
 
@@ -77,6 +77,15 @@ const CURSO = {
             },
             { t: "texto", md: "Es el mismo modelo. Lo único que ha cambiado es cuánto sabe sobre tu problema." }
           ],
+          duracionAvanzado: 6,
+          avanzado: [
+            { t: "texto", md: "**La misma pregunta no da la misma respuesta dos veces.** No es un fallo: genera la continuación más plausible, y hay muchas continuaciones plausibles. Esto tiene una consecuencia práctica que casi nadie aprovecha: si un resultado te gusta a medias, volver a pedirlo tal cual es gratis y a veces basta. Pero si te falla dos veces igual, el problema no es la tirada: es el contexto." },
+            { t: "texto", md: "**Cuándo empezar de cero.** Una conversación larga arrastra todo lo anterior, incluidos tus intentos fallidos y las correcciones que ya no aplican. Llega un punto en que ese peso empeora las respuestas en vez de mejorarlas. La señal es clara: cuando corriges lo mismo por tercera vez y vuelve a salir igual, no insistas — abre una conversación nueva y pega solo el contexto y la última versión buena." },
+            { t: "clave", texto: "Empezar de cero no es perder el trabajo hecho. Es quitarle de delante veinte mensajes de ruido para que vuelva a leer lo que importa." },
+            { t: "texto", md: "**Cuando \"no lo entiende\".** Casi siempre no es comprensión: es ambigüedad tuya que tú no ves porque conoces el negocio. La prueba rápida cuesta treinta segundos: pídele que te explique con sus palabras qué ha entendido que quieres, antes de producir nada. Lo que te devuelva te enseña exactamente dónde estaba el hueco." },
+            { t: "prompt", titulo: "Comprobar que habéis entendido lo mismo",
+              texto: "Antes de hacer nada, dime en tres frases qué has entendido que quiero,\ny qué has tenido que dar por supuesto porque yo no lo he dicho.\n\nEsa segunda parte es la que me interesa." }
+          ],
           ejercicio: "Coge la última cosa que le pediste a una IA y que te decepcionó. Reescríbela añadiendo tres cosas: quién es el cliente, qué objeción real tiene, y qué formato exacto quieres de vuelta. Compara.",
           recursos: []
         },
@@ -114,6 +123,17 @@ const CURSO = {
               texto: "Antes de escribir nada, hazlo en dos fases.\n\nFase 1: lista los 3 ángulos de venta posibles para este producto,\ncon una frase de por qué cada uno podría funcionar con este cliente.\nPara y espera mi respuesta.\n\nFase 2 (solo cuando yo elija ángulo): escribe las piezas."
             }
           ],
+          duracionAvanzado: 8,
+          avanzado: [
+            { t: "texto", md: "**Un prompt puede ser demasiado largo.** No por límite técnico, sino porque cada instrucción que añades compite con las demás. Un prompt con veinte reglas cumple quince. Si tienes veinte reglas, no van en el prompt: van en una skill (lección 1.5), donde se cargan como criterio de fondo en vez de como lista que hay que ir tachando." },
+            { t: "texto", md: "**Las prohibiciones tienen una trampa.** Decir \"no menciones el precio\" mete la palabra precio en el contexto, y a veces aparece. Cuando notes ese efecto, dale la vuelta: en vez de prohibir, sustituye. \"Habla de la cuota mensual\" funciona mejor que \"no hables del precio total\", porque le das dónde ir en vez de dónde no ir." },
+            { t: "clave", texto: "Una prohibición dice a dónde no ir. Una sustitución dice a dónde ir. La segunda se cumple mejor." },
+            { t: "texto", md: "**Orden cuando hay mucho material.** Con documentos largos adjuntos, la instrucción va **al final**, después del material, y no antes. Si primero lee una orden y luego cuarenta páginas, la orden queda lejos. Al revés, la orden es lo último que lee y lo tiene fresco. Con prompts cortos da igual; con material largo se nota." },
+            { t: "texto", md: "**Que critique su propia salida** es la técnica con mejor relación entre esfuerzo y resultado de todo el curso, y prácticamente nadie la usa:" },
+            { t: "prompt", titulo: "La segunda pasada",
+              texto: "Ahora hazme de editor de lo que acabas de escribir.\n\nLista los tres puntos más débiles, en concreto:\n  - qué frase no aguantaría una pregunta de \"¿y eso cómo lo sabes?\"\n  - qué parte podría haberse escrito para cualquier otra empresa del sector\n  - qué he pedido yo que no se haya cumplido del todo\n\nNo lo reescribas. Solo señálalo." },
+            { t: "texto", md: "Funciona porque juzgar un texto que ya existe es una tarea distinta —y más fácil— que producirlo. Y te deja a ti la decisión de qué corregir, que es donde tienes que estar." }
+          ],
           ejercicio: "Coge tu campaña activa. Rellena la plantilla base entera, sin saltarte la sección de ejemplos. Guárdala: es tu primera plantilla reutilizable.",
           recursos: []
         },
@@ -148,6 +168,19 @@ const CURSO = {
               "¿Son muchos archivos a la vez? → **Cowork**.",
               "¿Nada de lo anterior? → una **conversación** normal, y no le des más vueltas."
             ]}
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**Los casos límite de la regla.** Hay tres situaciones donde \"cliente al proyecto, criterio a la skill\" no resuelve sola:" },
+            { t: "tabla", cabeceras: ["Situación", "Dónde va"],
+              filas: [
+                ["Un cliente tan grande que su método es distinto del tuyo", "Skill propia con su nombre. Es la excepción que confirma la regla"],
+                ["Un criterio tuyo que solo aplicas a un sector", "Skill, con el sector en la descripción para que no se active fuera"],
+                ["Material del cliente que además define tu método", "Duplicado: el dato en el proyecto, el criterio en la skill"]
+              ] },
+            { t: "texto", md: "**Cuando dos superficies se pisan.** Si una skill y las instrucciones de un proyecto se contradicen, no hay una regla fija sobre cuál gana, y eso es exactamente el problema: el resultado depende de cómo estén redactadas. Por eso el proyecto no debe contener criterio, solo datos. Si en las instrucciones de un proyecto te encuentras escribiendo sobre tono o estilo, esa frase está en el sitio equivocado." },
+            { t: "clave", texto: "Datos en el proyecto, criterio en la skill. En cuanto los mezclas, dejas de poder predecir el resultado." },
+            { t: "texto", md: "**Y la superficie que se olvida:** la conversación normal sigue siendo la correcta para pensar. Explorar un ángulo, discutir si una idea aguanta, entender un sector nuevo. Nada de eso necesita montaje, y montarlo es la forma más común de perder una tarde." }
           ],
           ejercicio: "Coge las cinco cosas que más repites en tu semana. Clasifica cada una en las cuatro superficies con la regla de arriba. Si alguna cae en \"conversación\" y la haces más de una vez al mes, está mal clasificada: mírala otra vez.",
           recursos: []
@@ -193,6 +226,16 @@ const CURSO = {
             { t: "aviso", texto: "Y la frase que hay que interiorizar antes de conectar la primera carpeta: eres tú quien responde de lo que haga en tu nombre. Lo que publique, lo que mueva, lo que envíe. \"Lo hizo la IA\" no es una explicación que le sirva a un cliente cuyo material has movido." },
             { t: "texto", md: "Esto no es una razón para no usarlo: es lo que separa usarlo en la agencia de usarlo en tus cosas. Con una carpeta dedicada y el modo Manual, las seis lecciones que vienen se hacen sin exponer nada." },
             { t: "texto", md: "Una limitación práctica que conviene saber ya: **las sesiones de Cowork no se comparten**. No puedes mandarle a un compañero la sesión para que siga. Lo que se comparte son los archivos que produce." }
+          ],
+          duracionAvanzado: 7,
+          avanzado: [
+            { t: "texto", md: "**Cuando una tarea se queda a medias.** Pasa: se atasca, se desvía o produce algo raro a mitad de camino. Lo primero es no relanzarla desde cero sobre la misma carpeta, porque puede duplicar lo que ya hizo. Mira primero qué hay en `salida/`, quédate con lo válido, muévelo fuera y relanza sobre lo que falta." },
+            { t: "clave", texto: "Diseña las tareas para que se puedan relanzar sin duplicar. Una carpeta de salida separada de la de entrada no es orden: es lo que hace que un fallo a mitad no te obligue a empezar." },
+            { t: "texto", md: "**Verificar que hizo lo que dice.** Un resumen de la tarea diciendo \"he revisado 340 archivos\" no es prueba de que los revisara. Pídele el rastro:" },
+            { t: "prompt", titulo: "Pedir el rastro, no el resumen",
+              texto: "Cuando termines, además del entregable escribe un archivo REGISTRO.md con:\n  - la lista de archivos que has abierto, uno por línea\n  - los que has saltado y por qué\n  - las decisiones donde había más de una opción razonable y cuál tomaste\n\nSi la lista de archivos abiertos no coincide con los que hay en la carpeta,\ndímelo tú antes de que lo vea yo." },
+            { t: "texto", md: "**Carpetas grandes.** No hay un número mágico, pero cuando una tarea tarda mucho y el resultado se vuelve superficial, el problema suele ser volumen: está repartiendo atención entre demasiados archivos. Trocea por lotes —por año, por tipo, por cliente— y junta los informes al final. Cinco tareas de ochenta archivos rinden mejor que una de cuatrocientos." },
+            { t: "texto", md: "**Y lo que no se ve:** si conectas una carpeta que está sincronizada con una nube compartida, lo que escriba ahí lo va a ver todo el equipo del cliente en cuanto sincronice. Comprueba dónde apunta la carpeta antes de conectarla, no después." }
           ],
           ejercicio: "Crea la carpeta de trabajo que vas a usar en el resto del curso: una carpeta nueva, vacía, fuera de donde tengas material de clientes. Conéctala en modo Manual y pídele algo trivial —que liste lo que hay dentro— solo para ver el flujo de plan, autorización y progreso antes de darle trabajo de verdad.",
           recursos: [
@@ -257,6 +300,18 @@ const CURSO = {
             { t: "aviso", texto: "Si todavía no tienes manual de marca de ningún cliente, esta lección la puedes hacer con tu propia marca o con la de la agencia. Si prefieres construir los activos primero, ve a la lección 3.1 y vuelve aquí después: es la única lección del módulo que se puede saltar sin romper el orden." },
             { t: "clave", texto: "Todo lo que viene después de este módulo asume que tienes esta skill hecha. No es una lección: es la herramienta con la que se hace el resto del curso." }
           ],
+          duracionAvanzado: 9,
+          avanzado: [
+            { t: "texto", md: "**Versionar la skill.** Una skill que llevas seis meses ajustando ha cambiado veinte veces y no hay historial. Guarda el `SKILL.md` en una carpeta tuya con fecha en el nombre cada vez que hagas un cambio de fondo. Cuando un día los resultados empeoren sin motivo aparente, vas a querer saber qué cambiaste." },
+            { t: "texto", md: "**Cuando la marca cambia de verdad.** Un rebranding no se parchea: se reescribe la skill entera. Parchear deja frases del criterio viejo mezcladas con el nuevo, y eso produce resultados que oscilan entre dos marcas sin patrón. Reescribir cuesta veinte minutos; diagnosticar por qué a veces suena a la marca antigua cuesta semanas." },
+            { t: "clave", texto: "Una skill con dos criterios dentro es peor que una skill desactualizada. La desactualizada al menos es predecible." },
+            { t: "texto", md: "**El SKILL.md que crece demasiado.** Si pasa de unas 500 líneas, es señal de que dentro hay más de una cosa. La salida no es recortar: es partir. La estructura para eso es carpeta con subarchivos, y el SKILL.md principal apunta a ellos:" },
+            { t: "archivo", nombre: "Cuando una skill crece",
+              texto: "marca-nordclima/\n├── SKILL.md              ← el criterio general, corto\n└── references/\n    ├── canales.md        ← las reglas de cada canal\n    ├── normativa.md      ← lo que no se puede prometer\n    └── ejemplos.md       ← las piezas que sí funcionaron\n\nEn el SKILL.md, una línea por archivo diciendo cuándo consultarlo:\n\"Para escribir en un canal concreto, lee references/canales.md.\"" },
+            { t: "texto", md: "Así lo que se carga siempre es poco, y lo demás se consulta solo cuando hace falta. Es la misma lógica que el índice de un manual: nadie se lee un manual entero para responder una pregunta." },
+            { t: "texto", md: "**Skills que se contradicen.** Si tienes una skill de marca y otra de método y las dos opinan sobre lo mismo —por ejemplo, la longitud de un email— vas a tener resultados inconsistentes. La regla que funciona: **la marca manda sobre el método**, y se escribe explícitamente en la skill de método: *\"si la marca del cliente dice otra cosa sobre este punto, gana la marca\"*." },
+            { t: "aviso", texto: "Ninguna skill se prueba a sí misma. Cada vez que cambies una, corre otra vez los tres tests de la lección: nombrando la marca, sin nombrarla, y pisando una prohibición a propósito. El cambio que arregla una cosa rompe otra más veces de las que parece." }
+          ],
           ejercicio: "Coge la marca sobre la que más escribes —un cliente o la tuya— y escribe su SKILL.md entero, con la sección de prohibiciones más larga que la de estilo. Luego pásale los tres tests de arriba. Si el segundo falla, el problema está en la description: reescríbela nombrando situaciones, no la marca.",
           recursos: []
         },
@@ -281,6 +336,15 @@ const CURSO = {
             { t: "aviso", texto: "Y una que no es de calidad sino legal: los datos personales de clientes de tus clientes. Una lista de contactos, transcripciones con nombres, tickets de soporte. Antes de subir eso a ninguna herramienta, mira qué firmaste con ese cliente. Que sea cómodo no significa que esté permitido." },
             { t: "texto", md: "Al revés también hay una lista, y es más larga: casi todo lo demás sí se delega. Primeras versiones, variantes, reestructurar, traducir, resumir, buscar contradicciones en un documento largo, convertir un formato en otro. Ahí el coste de un error es que lo ves y lo corriges." },
             { t: "texto", md: "Si quieres una sola pregunta que resuelva el 90% de los casos: *si esto sale mal y nadie lo revisa, ¿me entero yo o se entera el cliente?*" }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**El caso intermedio: datos anonimizados.** Muchas veces lo que necesitas del material del cliente es el patrón, no los nombres. Treinta reseñas sirven igual sin el nombre de quien las escribió; un CSV de campaña sirve igual sin la columna de email. Quitar esa columna antes de subir nada resuelve la mayoría de los casos y no cuesta nada." },
+            { t: "clave", texto: "Antes de decidir si puedes subir un archivo, pregúntate si necesitas la parte que lo hace problemático. Muchas veces no." },
+            { t: "texto", md: "**El proceso de verificación rápido**, para lo que sí se delega. No hace falta revisar todo con la misma lupa: revisa **solo lo comprobable y lo caro**. En un texto de 400 palabras, eso son las cifras, los nombres propios, las promesas y las fechas. El resto lo lees una vez y decides si te gusta." },
+            { t: "prompt", titulo: "Que te señale lo que hay que verificar",
+              texto: "Al terminar, añade una lista aparte con todo lo del texto que sea\ncomprobable: cifras, fechas, nombres propios, promesas concretas\ny cualquier afirmación sobre la competencia.\n\nPara cada punto, di si sale del material que te he dado o si lo has\ninferido. Lo inferido es lo que voy a verificar yo." },
+            { t: "texto", md: "Esa lista convierte una revisión de veinte minutos en una de tres, y es la diferencia entre revisar de verdad y \"leerlo por encima\", que es lo que acaba haciendo todo el mundo cuando revisar cuesta mucho." }
           ],
           ejercicio: "Escribe tu propia lista de \"esto no sale sin que lo mire yo\" para tu negocio, con nombres concretos de entregables y no categorías. Pégala como sección final en la skill de marca de la lección 1.5: así viaja contigo en cada conversación.",
           recursos: []
@@ -330,6 +394,16 @@ const CURSO = {
             { t: "aviso", texto: "Si le pides un perfil sin darle material, te lo escribe igual de bien redactado. Esa es exactamente la trampa: la calidad de la prosa no te dice nada sobre la calidad de la información. Un perfil inventado con buena prosa es más peligroso que uno mal escrito, porque se cree." },
             { t: "texto", md: "La sección **\"lo que no sabemos\"** es lo que convierte esta lección en un proceso en vez de un entregable. Cada trimestre añades material nuevo, y los huecos se van cerrando con datos en vez de con suposiciones." }
           ],
+          duracionAvanzado: 6,
+          avanzado: [
+            { t: "texto", md: "**Cuando las fuentes se contradicen.** Es lo normal, no la excepción: las reseñas dicen una cosa y las llamadas otra. No las promedies — eso produce un perfil que no existe. Casi siempre la contradicción es real y significa que tienes **dos perfiles distintos**, no uno confuso." },
+            { t: "clave", texto: "Una contradicción entre fuentes no es ruido que limpiar: suele ser un segmento que no sabías que tenías." },
+            { t: "texto", md: "**El sesgo de las reseñas**, que hay que corregir a mano: quien escribe una reseña está en un extremo, encantado o enfadado. El cliente satisfecho normal —que es la mayoría de tu facturación— no escribe. Si construyes el perfil solo con reseñas, describes a los extremos. Por eso las transcripciones de llamadas valen más aunque cuesten más de conseguir." },
+            { t: "texto", md: "**Perfiles que nadie usa.** Si a los tres meses nadie ha abierto el documento, el problema no es que al equipo le dé igual: es que el perfil no dice nada que cambie una decisión. La prueba: coge tu último anuncio y pregúntate qué habría cambiado de haberlo escrito mirando el perfil. Si la respuesta es nada, el perfil sobra." },
+            { t: "texto", md: "**Actualizar sin rehacer.** Cada trimestre, añade solo el material nuevo y pide el diferencial:" },
+            { t: "prompt", titulo: "Actualización trimestral",
+              texto: "Este es el perfil vigente: [pégalo].\nEste es el material nuevo de los últimos tres meses: [reseñas, llamadas, bajas].\n\nNo lo reescribas. Dime solo:\n  - qué del perfil vigente ya no se sostiene con el material nuevo\n  - qué ha aparecido que antes no estaba\n  - qué se ha confirmado y ya podemos dar por sólido\n\nSi el material nuevo no cambia nada, dilo. Que no cambie también es\ninformación: significa que el perfil está estable." }
+          ],
           ejercicio: "Coge tu cliente con más reseñas. Exporta 30 reseñas y, si tienes, 3 transcripciones de llamada. Corre las dos fases. Compara el resultado con el buyer persona que ese cliente tenga hoy en su brief: la distancia entre los dos es lo que le vas a enseñar en la próxima reunión.",
           recursos: []
         },
@@ -356,6 +430,13 @@ const CURSO = {
             { t: "aviso", texto: "El apartado \"dónde nos gana de verdad\" es el que hay que leer primero, y el que la gente borra. Un comparativo donde ganas en las ocho filas no lo cree ni tu propio equipo comercial, y en cuanto el cliente detecta una fila falsa, deja de creerse las otras siete." },
             { t: "texto", md: "Sobre lo legal, y va en serio: comparar es legítimo, y en publicidad comparativa está regulado. Un dato objetivo, verificable y actual se puede publicar. Una valoración (\"su soporte es peor\") no es un dato: es una opinión, y publicarla como si fuera un hecho es un problema. Por eso el prompt separa lo verificado de lo que no lo está." },
             { t: "texto", md: "El documento caduca. Los precios cambian, las funcionalidades se lanzan. Ponle fecha en la cabecera y rehazlo cada trimestre: es media hora, y un comparativo con precios de hace un año hace más daño que no tener ninguno." }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**El competidor sin precios públicos.** Es lo habitual en B2B, y no se resuelve inventando un rango. Lo que sí funciona es cambiar la fila: en vez de \"precio\", pon \"cómo se compra\". Que exija demo y presupuesto es en sí mismo un dato comparativo, y en muchos casos es tu ventaja — o la suya." },
+            { t: "clave", texto: "Un dato que no tienes no se estima en un documento que va a usar tu equipo comercial. Se convierte en otra fila o se deja fuera." },
+            { t: "texto", md: "**Cuando pierdes en todo.** Pasa, y el documento no debe maquillarlo. Si un competidor te gana en las ocho filas, el problema no es de posicionamiento: es que estás compitiendo en el terreno equivocado. La salida es cambiar los criterios de la tabla por los que le importan a **tu** cliente, no por los que el mercado usa por costumbre. Si ni así aparece una fila donde ganes, eso es una conversación de estrategia con el cliente, no un documento de ventas." },
+            { t: "texto", md: "**El comparativo interno contra el público.** Son dos documentos distintos y conviene no confundirlos. El interno lleva las debilidades tuyas escritas sin filtro, porque su función es preparar a quien vende. Cualquier cosa que salga hacia fuera tiene otro listón legal: solo datos objetivos, verificables y actuales. Si dudas de si una fila es dato u opinión, es opinión." }
           ],
           ejercicio: "Elige un cliente y sus 3 competidores más nombrados en llamadas. Junta en una carpeta la página de precios de cada uno y 20 reseñas de cada uno. Corre el prompt. Manda la tabla a la persona que hace las llamadas y pregúntale una sola cosa: \"¿esto te serviría en directo?\". Si duda, sobra información.",
           recursos: []
@@ -401,6 +482,13 @@ const CURSO = {
             { t: "aviso", texto: "Si el cliente no sabe decirte la métrica de éxito, no es que falte un dato del brief: es que la campaña no está decidida. Escribirla igualmente no arregla nada, solo mueve la discusión al final, cuando ya está el dinero gastado." },
             { t: "texto", md: "El apartado de supuestos hace un trabajo silencioso: convierte tus suposiciones en algo que el cliente firma o corrige. Después, \"yo esto no lo entendí así\" ya no es una opinión contra otra." }
           ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**El cliente que no sabe qué quiere.** No es que no lo sepa: es que no lo ha decidido, y te está pidiendo que decidas tú sin decírtelo. El brief no arregla eso, pero lo hace visible, que ya es medio camino. Cuando el apartado de métrica se queda vacío después de preguntar dos veces, escríbelo así en el documento: *\"Métrica de éxito: pendiente de definir por [nombre]\"*, con el nombre puesto. Una casilla vacía con un responsable delante se rellena; una casilla vacía sin nadie detrás, no." },
+            { t: "clave", texto: "Un brief no crea decisiones. Las hace visibles, y le pone nombre a quien tiene que tomarlas." },
+            { t: "texto", md: "**El brief que cambia a mitad.** Va a pasar y no es un fracaso del brief. Lo que evita el desastre es no reescribirlo por encima: añade abajo un registro de cambios con fecha, qué cambió y quién lo pidió. Cuando en la reunión de resultados alguien diga que esto no era lo acordado, ese registro es la conversación entera." },
+            { t: "texto", md: "**Y el apartado que más discusiones evita** es el de \"qué NO hacemos\". No porque limite, sino porque obliga a decidir en la reunión de brief en vez de en la de entrega. La mayoría de los conflictos con clientes no son sobre lo que se hizo mal: son sobre lo que cada uno daba por hecho que estaba incluido." }
+          ],
           ejercicio: "Coge el brief de tu última campaña y compáralo contra los ocho campos. Cuenta cuántos faltan. Luego coge tus notas en crudo de la próxima y pásale las dos fases: mide cuánto tardas comparado con la vez anterior.",
           recursos: []
         }
@@ -443,6 +531,16 @@ const CURSO = {
             { t: "aviso", texto: "Sobre lo visual: puedes generar imágenes de dirección artística y sirven para acordar una dirección con el cliente. Pero no las publiques como activos definitivos sin mirar dos cosas — que la licencia de la herramienta te permita uso comercial, y que el resultado sea reproducible. Una imagen que no puedes volver a generar igual no es un activo de marca: es una ilustración suelta." },
             { t: "texto", md: "Cuando el sistema verbal esté cerrado, no lo dejes en un documento. Vuelve a la lección 1.5 y conviértelo en la skill de la marca. Ese es el paso que hace que todo esto se aplique solo en vez de quedarse en una carpeta." }
           ],
+          duracionAvanzado: 6,
+          avanzado: [
+            { t: "texto", md: "**La marca que ya existe y es mala.** Te encuentras un manual con adjetivos vacíos, un tono que no se sostiene y prohibiciones que nadie cumple. La tentación es rehacerlo entero. Casi siempre es error: el manual malo tiene detrás decisiones que alguien defendió, y tirarlo abre un frente político que no te interesa en el mes uno." },
+            { t: "clave", texto: "Lo que funciona es no tocar el manual y construir la capa que falta: traducir cada adjetivo suyo en una regla comprobable, y enseñar el resultado. Es difícil discutir con \"esto es lo que significa lo que ya decíais\"." },
+            { t: "prompt", titulo: "Traducir un manual vago sin discutirlo",
+              texto: "Te paso el manual de marca vigente de [CLIENTE]. No lo critiques y no\npropongas cambiarlo.\n\nPor cada adjetivo o concepto abstracto que encuentres, dame la regla\ncomprobable que lo haría verdad en un texto:\n\n  \"Cercano\"    → ¿qué se haría o no se haría en un email para que lo sea?\n  \"Innovador\"  → ¿qué se dice y qué no?\n\nDos columnas: lo que dice el manual, y la regla. Nada más.\nSi algún concepto admite dos reglas contradictorias, ponlas las dos y\nseñálalo: eso es una decisión pendiente que tiene que tomar el cliente." },
+            { t: "texto", md: "La última condición es la que convierte el ejercicio en algo que puedes llevar a una reunión: en vez de decir que su manual está mal, le enseñas dos interpretaciones posibles de su propia frase y le pides que elija. Eso no es una crítica: es un servicio." },
+            { t: "texto", md: "**Dos marcas del mismo cliente.** Una empresa con marca corporativa y marca de producto necesita **dos skills**, no una con condicionales dentro. Una skill con \"si es para la marca A haz esto, si es para la B haz lo otro\" acierta la mayoría de las veces y falla justo cuando no lo miras. Dos skills separadas, cada una con su descripción, no se equivocan." },
+            { t: "aviso", texto: "Sobre imágenes generadas: además de la licencia, mira la reproducibilidad. Si un activo visual no lo puedes volver a generar igual dentro de seis meses, no lo uses como elemento fijo de marca. Sirve para una campaña; no sirve para una identidad." }
+          ],
           ejercicio: "Construye el sistema verbal de una marca con la que trabajes. Cuando lo tengas, pásalo a SKILL.md siguiendo 1.5. Prueba a pedirle una pieza sin mencionar la marca: si no aplica el vocabulario de la columna del cliente, la description está mal.",
           recursos: []
         },
@@ -475,6 +573,14 @@ const CURSO = {
             { t: "texto", md: "Ese `[REVISAR]` es el mecanismo que hace que puedas leer en vez de corregir. En lugar de releer las seis piezas enteras buscando desviaciones, vas directo a los tres puntos donde hubo una decisión." },
             { t: "aviso", texto: "La primera tirada se revisa entera, siempre, aunque parezca perfecta. No es desconfianza: es que ahí es donde descubres los huecos de tu skill. Cada corrección que hagas en esa primera tirada es una regla que le falta a tu SKILL.md — anótala y añádela." },
             { t: "texto", md: "Ese bucle es lo que separa esta lección de \"pedirle textos a la IA\": cada tanda de producción mejora la herramienta. A la tercera campaña, la skill ya tiene las reglas que solo aparecen trabajando, y la revisión baja de horas a minutos." }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**Cuando la primera tirada sale mal entera.** No corrijas pieza por pieza: es la trampa más cara del módulo. Si las seis fallan en lo mismo, el fallo está en la skill o en el brief, y corregir seis salidas te deja con seis textos arreglados y el problema intacto para la próxima tanda." },
+            { t: "clave", texto: "Si el fallo se repite en todas las piezas, no está en las piezas. Arréglalo arriba y vuelve a tirar: sale más barato." },
+            { t: "texto", md: "**Piezas que cumplen y no funcionan.** Este es el caso incómodo: todo está dentro de las directrices, no hay nada que objetar, y aun así no venden. Significa que tu skill de marca describe bien **cómo suena** y no dice nada de **qué argumenta**. La marca no es solo tono: incluye qué prueba se enseña y qué objeción se ataca. Si tu SKILL.md no tiene la sección de arquitectura de mensaje de la lección 3.1, es esto lo que le falta." },
+            { t: "texto", md: "**El límite del volumen.** Producir doce piezas de una tirada sale mejor que doce tiradas de una, pero hay un punto en que la variedad se agota y empiezan a parecerse entre ellas. La señal: cuando la pieza siete en adelante es una variación de la tres. Cuando lo notes, no pidas más de lo mismo — cambia el ángulo o el perfil y vuelve a tirar." },
+            { t: "texto", md: "Y el bucle de la lección sigue vigente aquí: cada corrección que hagas es una regla que le falta a la skill. A la cuarta campaña las tandas salen limpias, y eso no es suerte: es que la herramienta ya tiene dentro lo que aprendiste corrigiendo." }
           ],
           ejercicio: "Produce una tanda de 6 piezas con tu skill de marca. Anota cada corrección que tengas que hacer. Cuando termines, añade esas correcciones como reglas al SKILL.md y repite con otra tanda: cuenta cuántas correcciones necesitas la segunda vez.",
           recursos: []
@@ -513,6 +619,14 @@ const CURSO = {
             { t: "texto", md: "La condición 3 es la importante. Sin ella, lo que no se puede evaluar tiende a desaparecer del informe, y una auditoría con huecos invisibles es peor que no tener auditoría: te da una confianza que no te has ganado." },
             { t: "aviso", texto: "Que no toque los archivos es innegociable. Una auditoría propone; la corrección la aprueba una persona. Un renombrado masivo o un movimiento de carpetas mal entendido en un repositorio de cliente es de las pocas cosas de este curso que no tienen deshacer." },
             { t: "texto", md: "El resultado útil no es la tabla completa: son las filas de gravedad ALTA. Suelen ser entre cinco y quince en una carpeta de cientos, y son las que arreglas esta semana. El resto es un plan a tres meses, o directamente material para archivar." }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**Los archivos que no puede evaluar.** Formatos propietarios de diseño, PDFs escaneados sin texto, vídeo. La lista de \"no evaluados\" del prompt no es un apaño: es la parte más importante del informe, porque es donde se esconde lo que nadie ha mirado. Revísala tú a mano, aunque sean cuarenta archivos: es una tarde y es la diferencia entre una auditoría y una auditoría con agujeros." },
+            { t: "clave", texto: "Un informe que no dice qué no ha mirado te da una confianza que no te has ganado." },
+            { t: "texto", md: "**Carpetas enormes.** Por encima de unos cientos de archivos, trocea por criterio —por año, por canal, por campaña— y junta los informes al final. Además de rendir mejor, el troceo te da una lectura que la auditoría completa no da: qué año o qué canal concentra los incumplimientos. Eso suele señalar a una persona o a una época, y esa es la conversación útil." },
+            { t: "texto", md: "**El informe que sí se lee.** La tabla completa no la abre nadie. Lo que se lee es una página con las filas de gravedad alta y una frase de contexto. Manda esa página, y la tabla como anexo. Si el cliente pide el resto, ya sabes que lo va a usar." },
+            { t: "texto", md: "**Y la segunda auditoría vale más que la primera:** al repetirla a los seis meses puedes comparar y decir cuánto ha bajado el incumplimiento. Eso convierte una auditoría puntual en un servicio recurrente con una métrica propia, que es exactamente lo que la lección 7.3 enseña a vender." }
           ],
           ejercicio: "Coge la carpeta de recursos de un cliente y su manual de marca. Corre la auditoría. Manda solo las filas de gravedad ALTA al cliente, sin la tabla completa: es la diferencia entre un informe que se lee y uno que se guarda.",
           recursos: []
@@ -557,6 +671,14 @@ const CURSO = {
             { t: "aviso", texto: "Y el permiso explícito para decir \"aquí no funciona\" es lo que evita el peor resultado: cinco piezas donde dos son buenas y tres diluyen la marca. Sin ese permiso, siempre te va a devolver las cinco, porque eso es lo que pediste." },
             { t: "texto", md: "Un apunte que ahorra disgustos: publicar el mismo texto literal en varios sitios no te penaliza en redes, pero en la web sí importa. Si el mismo artículo va a tu blog y a un medio, decide cuál es la versión canónica antes de publicar, no después." }
           ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**La pieza que no sobrevive a ningún canal.** Cuando el paso 3 te dice que en los cinco canales se pierde el argumento central, no tienes un problema de adaptación: tienes una pieza que depende de su formato original. Un caso de éxito con datos, gráficas y contexto no se convierte en un post de X, se convierte en un enlace a un post de X. Adaptar tiene un límite y reconocerlo ahorra tiempo." },
+            { t: "clave", texto: "Hay ideas que solo existen a su tamaño. Trocearlas no las hace más accesibles: las vacía." },
+            { t: "texto", md: "**El canal donde tu marca no debería estar.** La pregunta que casi nadie hace: ¿tiene sentido que esta marca hable aquí? Una asesoría fiscal en TikTok puede funcionar, pero necesita una voz que probablemente contradice su manual. Si adaptar a un canal te obliga a saltarte tus propias reglas de marca sistemáticamente, la respuesta correcta no es adaptar mejor: es no estar en ese canal." },
+            { t: "texto", md: "**Adaptar al revés.** Es más raro y funciona muy bien: coger algo que funcionó en un canal pequeño —un comentario tuyo que generó respuesta, un mensaje de LinkedIn que abrió una conversación— y crecerlo hasta artículo. Ahí no pierdes nada, ganas desarrollo, y sabes de antemano que la idea interesa porque ya lo demostró en pequeño." },
+            { t: "texto", md: "**Y sobre publicar lo mismo en varios sitios:** en redes no penaliza y te ahorra tiempo. En web sí importa. Si el mismo artículo va a tu blog y a un medio, decide cuál es la versión canónica antes de publicar. Después es más caro." }
+          ],
           ejercicio: "Coge tu pieza con mejor rendimiento del último trimestre. Adáptala a tres canales con el prompt de arriba, incluyendo el paso 3. Publica solo las versiones donde lo perdido no sea el argumento central.",
           recursos: []
         },
@@ -582,6 +704,14 @@ const CURSO = {
             { t: "texto", md: "Lo de las preguntas de la audiencia no es un detalle. En un webinar, la parte grabada es lo que tú querías contar; el turno de preguntas es lo que ellos querían saber. La segunda suele rendir mejor." },
             { t: "aviso", texto: "Producir treinta piezas no es el objetivo: es la trampa. Si publicas las treinta, durante tres semanas todo tu contenido dice lo mismo con distinta ropa, y tu audiencia lo nota antes que tú. Elige entre ocho y doce, y guarda el resto para dentro de dos meses." },
             { t: "texto", md: "Ahí está el segundo beneficio, que casi nadie aprovecha: el despiece no es solo producción, es **calendario**. Un activo grande bien despiezado cubre un trimestre sin repetirse, si te aguantas las ganas de publicarlo todo la primera semana." }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**El activo que no da para nada.** Si la fase 1 te devuelve tres ideas y dos solo se entienden en contexto, el activo no era tan bueno como parecía: era una hora de contenido con una idea dentro. No fuerces el despiece — produce esa pieza y ya. Un despiece forzado se nota, y lo que sale son ocho variaciones de lo mismo." },
+            { t: "clave", texto: "El despiece no crea ideas. Solo saca las que ya estaban, y a veces hay menos de las que parecía." },
+            { t: "texto", md: "**Canibalización.** Si el activo original es una pieza SEO que posiciona, y publicas ocho derivados que cubren las mismas búsquedas, compites contra ti mismo. La regla: los derivados van a canales sociales o a newsletter, no a más páginas indexables sobre el mismo término. Si algún derivado va a la web, que ataque una búsqueda distinta." },
+            { t: "texto", md: "**El calendario es la mitad del valor.** Publicar los treinta derivados en tres semanas es la forma más eficiente de agotar una idea. Repartidos en un trimestre, la misma idea se ve como una línea editorial coherente en vez de como una obsesión. Nadie percibe repetición cuando hay seis semanas de por medio." },
+            { t: "texto", md: "**Y una fuente que no está en la carpeta:** los comentarios que generen los derivados. Cada uno es material para el siguiente activo grande. El ciclo se cierra solo si lo recoges — y casi nadie lo recoge." }
           ],
           ejercicio: "Coge tu activo más largo del último año, el que costó producir y se usó una vez. Despiézalo con las dos fases. Reparte las piezas elegidas en un calendario de tres meses en vez de en dos semanas.",
           recursos: []
@@ -621,6 +751,16 @@ const CURSO = {
             { t: "texto", md: "El bloque PROBAR limitado a una sola hipótesis también es deliberado. Cinco tests a la vez sobre el mismo presupuesto no son cinco aprendizajes: son cinco muestras pequeñas y ninguna conclusión." },
             { t: "texto", md: "Cuando el formato de tus datos sea siempre el mismo, este prompt es candidato a skill (lección 1.5): el contexto de negocio cambia por cliente y va en su Proyecto, pero la estructura de las tres decisiones es tuya y se repite en todos." }
           ],
+          duracionAvanzado: 7,
+          avanzado: [
+            { t: "texto", md: "**Datos sucios**, que es como llegan siempre. Conversiones duplicadas, un píxel que estuvo roto dos semanas, una campaña pausada a mitad de mes. Si le pasas eso sin avisar, analiza el ruido con la misma seriedad que la señal. La solución no es limpiarlo tú antes: es hacérselo buscar." },
+            { t: "prompt", titulo: "Que audite los datos antes de analizarlos",
+              texto: "Antes de sacar ninguna conclusión, revisa la calidad de estos datos:\n\n  - filas con valores imposibles o duplicados\n  - cortes bruscos que sugieran que algo dejó de medir\n  - conjuntos con muestra tan pequeña que cualquier conclusión sería ruido\n  - periodos donde el gasto no cuadra con el volumen\n\nEnséñame esa auditoría y para. Si más del 20% de los datos es dudoso,\ndímelo y no analices: primero arreglo la medición." },
+            { t: "clave", texto: "Analizar datos rotos produce conclusiones convincentes y falsas, que es el peor resultado posible: te llevan a actuar." },
+            { t: "texto", md: "**La atribución.** Ninguna plataforma te dice la verdad sobre lo que causó una venta, y todas se atribuyen la misma. Si sumas las conversiones que reclama cada canal te salen más de las que tuviste. No le pidas que resuelva la atribución —no puede— pero sí que trabaje con ese límite explícito: díselo, y que te dé conclusiones que aguanten aunque la atribución esté sesgada." },
+            { t: "texto", md: "**Cuando los datos dicen que pares algo que tú sabes que funciona.** Antes de discutirlo, comprueba tres cosas: el periodo de conversión (si tu venta cierra a 40 días, un mes de datos no ha visto nada), la calidad del lead frente a la cantidad, y el papel de asistencia — hay campañas que no cierran y sin ellas no cierra ninguna. Si después de eso los datos siguen diciendo lo mismo, es que tenías razón el año pasado y ya no." },
+            { t: "texto", md: "**El análisis que más rinde y nadie pide:** en vez de qué funcionó, pregúntale qué habría que medir que no estás midiendo. Suele señalar el hueco por el que se te está escapando la mitad de la información." }
+          ],
           ejercicio: "Coge la última campaña que analizaste. Vuelve a analizarla con este prompt, añadiendo el margen y la tasa de cierre. Compara las decisiones que salen ahora con las que tomaste entonces: si no cambia ninguna, o ya lo hacías bien o te falta contexto por dar.",
           recursos: []
         },
@@ -647,6 +787,16 @@ const CURSO = {
             { t: "texto", md: "La comparación contra la media de cuatro semanas y no contra la semana anterior es lo que evita el informe histérico. Semana contra semana, todo sube y baja un 30% y todo parece urgente." },
             { t: "aviso", texto: "El permiso explícito para decir \"esta semana no ha pasado nada\" es lo que mantiene el informe vivo. Un informe que cada semana encuentra tres cosas urgentes está entrenando a tu cliente a ignorarlo, y el día que haya algo de verdad, tampoco lo va a leer." },
             { t: "texto", md: "Cuando el formato esté cerrado y hayas hecho tres o cuatro semanas sin retocarlo, conviértelo en skill. A partir de ahí el informe deja de ser una tarea del viernes: es soltar los archivos en la carpeta." }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**La semana rara.** Un festivo, una incidencia de servidor, un pico de un competidor. El informe automático lo va a leer como una caída de rendimiento y va a proponer acciones sobre un fantasma. La solución es barata: una nota de contexto en la carpeta que la tarea lee antes de analizar." },
+            { t: "archivo", nombre: "semana-actual/CONTEXTO.md",
+              texto: "# Qué ha pasado esta semana que no está en los datos\n\n- 15 y 16: festivo nacional, tráfico B2B a la mitad.\n- Miércoles: el formulario estuvo caído de 9 a 14 h.\n- Subimos el presupuesto de la campaña de marca el lunes.\n\n(Si este archivo está vacío, no ha pasado nada reseñable.)" },
+            { t: "texto", md: "Escribirlo cuesta un minuto los lunes y es lo que separa un informe que se cree de uno que hay que corregir a mano cada dos semanas." },
+            { t: "clave", texto: "Un informe automático sin contexto humano atribuye a la campaña lo que causó el calendario." },
+            { t: "texto", md: "**El cliente que no lo lee.** Si a las cuatro semanas nadie ha respondido nunca al informe, no insistas con más detalle: es señal de que llega en el formato o el momento equivocados. Prueba a mandarlo el lunes por la mañana en el cuerpo del correo, no como adjunto, y recortado al titular y las tres acciones. El anexo, en un enlace. Un informe que no se abre no existe, por bueno que sea." },
+            { t: "texto", md: "**Y una vez al trimestre**, haz el informe a mano y compáralo con el automático. Es la única forma de saber si el formato sigue diciendo lo que hace falta o se ha quedado dando siempre las mismas tres cosas." }
           ],
           ejercicio: "Monta el informe de un cliente con esta estructura y mándalo tal cual. A las dos semanas pregúntale una sola cosa: qué apartado lee primero. Ese es el informe; lo demás es anexo.",
           recursos: []
@@ -681,7 +831,336 @@ const CURSO = {
             { t: "aviso", texto: "Sobre el tono, y va más allá del análisis: en este sector las técnicas de presión que en comercial son agresivas aquí son directamente dañinas. Culpabilizar, exagerar una emergencia o usar imágenes que quitan dignidad a las personas retratadas capta una vez y quema la relación. Ponlo por escrito en la skill de marca de la organización, en la sección de prohibiciones." },
             { t: "texto", md: "Lo demás es igual que la 5.1: contexto que no está en los datos, exigencia de volumen antes de concluir, y un análisis que termina en decisiones y no en descripciones." }
           ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**Las campañas de emergencia rompen las series.** Un desastre natural o una crisis dispara donaciones puntuales que no se parecen a nada. Analizarlas junto a la captación ordinaria estropea las dos lecturas: la ordinaria parece mejor de lo que es y la de emergencia parece un canal replicable que no lo es." },
+            { t: "clave", texto: "Una emergencia no es un canal que funcionó: es una circunstancia que no se repite a voluntad. Se analiza aparte y no se planifica." },
+            { t: "texto", md: "**Lo que sí se puede analizar de una emergencia** es qué pasó después: cuántos de esos donantes puntuales se convirtieron en recurrentes, y qué se hizo con ellos en las semanas siguientes. Ese número —la conversión de puntual a recurrente— es lo único de la emergencia que sirve para el año que viene, y casi nadie lo mide." },
+            { t: "texto", md: "**El donante que se va.** La permanencia media esconde dos poblaciones distintas: quien se da de baja en los tres primeros meses y quien se queda años. Son problemas diferentes con causas diferentes: el primero suele ser un problema de expectativa en la captación, el segundo un problema de relación. Pide siempre que separe la baja temprana de la tardía, porque promediarlas no describe a nadie." },
+            { t: "aviso", texto: "Cuidado con optimizar la captación hasta el punto de captar donantes que se van a los dos meses. Sale más barato por donante y más caro por euro recaudado, y además quema una lista que en el tercer sector no se repone fácil." }
+          ],
           ejercicio: "Si llevas alguna organización sin ánimo de lucro, analiza su último año separando ordinaria de emergencias y midiendo por permanencia. Si no llevas ninguna, salta a la lección siguiente: esta no te aporta.",
+          recursos: []
+        }
+      ]
+    },
+
+    /* ------------------------------------------------------------------ M6 */
+    {
+      id: "m6",
+      titulo: "Sistemas",
+      resumen: "Dejar de usar Claude y empezar a tener algo que trabaja aunque tú no estés delante. Es el módulo que separa ir más rápido de tener capacidad nueva.",
+      lecciones: [
+        {
+          id: "m6-l1",
+          titulo: "De una skill a una biblioteca",
+          duracion: 14,
+          plataforma: "Claude.ai",
+          objetivo: "Decidir cuándo hace falta una skill nueva y cuándo estás partiendo mal una que ya tienes.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Una skill resuelve un problema. Diez skills sin criterio son un cajón: se solapan, compiten por activarse, y acabas sin saber cuál se disparó en un resultado que no te gustó." },
+            { t: "clave", texto: "Una skill es **una decisión que repites**, no un tema del que sabes. \"Marketing\" no es una skill. \"Cómo suena esta marca\" sí." },
+            { t: "texto", md: "De ahí sale la regla de granularidad. Si al describir la skill necesitas la palabra \"y\" para unir dos cosas distintas, son dos skills." },
+            { t: "tabla",
+              cabeceras: ["Esto sí es una skill", "Esto no"],
+              filas: [
+                ["La voz de un cliente concreto", "\"Copywriting\""],
+                ["Tu formato de informe semanal", "\"Analítica\""],
+                ["Tu método de auditoría de cuenta", "\"Google Ads\""],
+                ["Cómo estructuras un brief", "\"Estrategia\""],
+                ["Las prohibiciones legales de un sector regulado", "\"Escribir bien\""]
+              ]
+            },
+            { t: "texto", md: "Fíjate en el patrón: la columna de la izquierda son **procedimientos**, la de la derecha son **campos de conocimiento**. Un campo de conocimiento no necesita empaquetarse: el modelo ya lo tiene. Lo que no tiene es tu manera de hacer las cosas." },
+            { t: "texto", md: "La segunda decisión es marca contra método. Las skills de marca se multiplican por cliente y no comparten nada entre sí. Las de método son tuyas y valen para todos. Sepáralas en el nombre desde el primer día, porque a los quince archivos ya no te acuerdas:" },
+            { t: "archivo",
+              nombre: "Cómo nombrarlas",
+              texto: "marca-nordclima          ← una por cliente, no se tocan entre ellas\nmarca-ryuads\nmarca-fileforge\n\nmetodo-brief             ← tuyas, valen para todos los clientes\nmetodo-informe-semanal\nmetodo-auditoria-cuenta\nmetodo-despiece"
+            },
+            { t: "texto", md: "El problema que aparece cuando tienes varias es la **colisión**: dos skills cuyas descripciones cubren la misma situación. Se activan las dos, o peor, se activa la que no querías y no te enteras." },
+            { t: "prompt",
+              titulo: "Auditar tu propia biblioteca",
+              texto: "Te paso las descripciones de todas mis skills:\n[pega el campo `description` de cada SKILL.md, con su nombre]\n\nDime tres cosas:\n\n1. Qué pares se solapan: dos descripciones que cubren la misma situación.\n   Para cada par, cuál debería ganar y qué frase habría que quitar de la otra.\n\n2. Qué situaciones de mi trabajo no cubre ninguna. Aquí puedes proponer,\n   pero dime en qué te basas.\n\n3. Qué skill es en realidad dos cosas metidas en una: si su descripción\n   necesita una \"y\" para unir dos situaciones distintas, dímelo.\n\nNo reescribas nada todavía."
+            },
+            { t: "aviso", texto: "El síntoma de que tienes colisiones no es un error: es que a veces el resultado sale con un criterio que no esperabas y no sabes por qué. Si te pasa, no toques el prompt: mira qué skills se pudieron activar." },
+            { t: "texto", md: "Cuánto es demasiado: no hay número, pero si no puedes recitar de memoria para qué sirve cada una, ya son demasiadas o están mal nombradas." }
+          ],
+          ejercicio: "Lista todas tus skills en una hoja con dos columnas: marca o método. Si alguna no cabe en ninguna, o cabe en las dos, está mal definida. Corre el prompt de auditoría con sus descripciones.",
+          recursos: []
+        },
+        {
+          id: "m6-l2",
+          titulo: "Un proyecto por cliente, montado igual siempre",
+          duracion: 12,
+          plataforma: "Claude.ai",
+          objetivo: "Tener una plantilla de proyecto que se monta en diez minutos para cualquier cliente nuevo.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "En la lección 1.3 quedó la regla: lo que es de un cliente va en su Proyecto; lo que es criterio tuyo va en una skill. Esta lección es la parte aburrida y rentable de esa regla: montar el Proyecto siempre igual." },
+            { t: "clave", texto: "Si cada proyecto de cliente lo montas distinto, cada vez que entras tienes que recordar qué hay dentro. Montarlos iguales convierte diez clientes en un solo formato." },
+            { t: "texto", md: "Lo que va en el proyecto de un cliente, y solo esto:" },
+            { t: "archivo",
+              nombre: "Contenido del proyecto",
+              texto: "INSTRUCCIONES DEL PROYECTO\n  Qué es este negocio, en 5 líneas\n  Quién decide y qué le importa\n  Qué NO se puede decir (normativa, acuerdos, competencia)\n  Cómo se entrega el trabajo\n\nARCHIVOS\n  perfiles-cliente.md        ← lección 2.1\n  brief-vigente.md           ← lección 2.3\n  comparativa-competencia.md ← lección 2.2, con fecha\n  piezas-aprobadas/          ← lo que ya funcionó\n  datos-ultimo-trimestre.csv ← lo que caduca"
+            },
+            { t: "texto", md: "La skill de marca **no** va aquí: vive en tu cuenta y se activa sola en cualquier conversación. Meter una copia dentro del proyecto es el error más común, y crea dos versiones de la verdad que se separan en cuanto actualizas una." },
+            { t: "texto", md: "Lo que sí está aquí es todo lo que **caduca**, y esa es la razón de que exista el proyecto. Precios, datos del trimestre, quién manda ahora en el cliente. Cámbialo aquí y no toques la herramienta." },
+            { t: "prompt",
+              titulo: "Montar el proyecto de un cliente nuevo",
+              texto: "Voy a montar el espacio de trabajo de un cliente nuevo: [CLIENTE].\n\nTe paso todo lo que tengo, que es un desorden: [notas de la reunión de alta,\nla propuesta que firmó, su web, correos sueltos].\n\nSepárame ese material en dos montones:\n\n1. ESTABLE — lo que va a seguir siendo verdad dentro de un año.\n   Esto va a las instrucciones del proyecto.\n2. CADUCA — precios, datos, personas, campañas activas.\n   Esto va a archivos, y quiero que me digas cada cuánto habría que revisarlo.\n\nY una tercera lista: qué debería tener el proyecto y no me lo has encontrado\nen el material. No lo rellenes tú: es lo que le tengo que preguntar al cliente."
+            },
+            { t: "aviso", texto: "Un proyecto envejece en silencio. Nadie se entera de que los precios de dentro son de hace ocho meses hasta que sale un presupuesto mal. Ponle fecha de revisión a los archivos que caducan, dentro del propio archivo, en la primera línea." },
+            { t: "texto", md: "La tercera lista del prompt es la que más rinde: convierte el montaje del proyecto en las preguntas que te faltan por hacerle al cliente, y esas preguntas son las que hacen que la primera reunión de trabajo parezca la quinta." }
+          ],
+          ejercicio: "Monta la plantilla vacía con la estructura de arriba y guárdala. Luego aplícala a tu cliente más antiguo: te vas a encontrar información que no está escrita en ningún sitio y solo vive en tu cabeza. Eso es exactamente lo que buscabas.",
+          recursos: []
+        },
+        {
+          id: "m6-l3",
+          titulo: "Tareas programadas sin que se te vaya de las manos",
+          duracion: 13,
+          plataforma: "Cowork",
+          objetivo: "Decidir qué merece correr solo y montar el control que evita que falle en silencio.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Una tarea programada corre sola, en la nube, sin nadie mirando. Eso es toda su ventaja y todo su riesgo, y las dos cosas son la misma frase." },
+            { t: "clave", texto: "Programa solo lo que ya has hecho a mano cuatro o cinco veces sin sorpresas. Automatizar un proceso que todavía no es estable es multiplicar un error." },
+            { t: "texto", md: "El criterio para decidir qué merece programarse no es cuánto tiempo ahorra, sino **qué pasa si sale mal y nadie lo mira** — que es la misma pregunta de la lección 1.6, aplicada al tiempo:" },
+            { t: "tabla",
+              cabeceras: ["Buena candidata", "Mala candidata"],
+              filas: [
+                ["El informe semanal de anuncios (5.2)", "Publicar en redes automáticamente"],
+                ["Recopilar menciones de la marca", "Responder correos o reseñas"],
+                ["Vigilar cambios en la web de un competidor", "Cambiar pujas o presupuestos"],
+                ["Preparar el material del lunes en una carpeta", "Cualquier cosa que borre o mueva archivos"],
+                ["Resumir lo que ha entrado esta semana", "Nada que hable con un cliente sin que lo leas"]
+              ]
+            },
+            { t: "texto", md: "El patrón: **preparar sí, publicar no**. Una tarea que te deja el trabajo hecho encima de la mesa es un ahorro. Una que lo manda al mundo es un riesgo que corre mientras duermes." },
+            { t: "prompt",
+              titulo: "Definir una tarea programada",
+              texto: "Quiero programar esta tarea: [descríbela].\n\nAntes de montarla, contéstame:\n\n1. ¿Qué produce exactamente, y dónde lo deja?\n2. ¿Qué pasa si el material de entrada no está, está a medias o está en\n   otro formato del esperado? Quiero que falle de forma visible, no que\n   improvise. Dime cómo lo haría.\n3. ¿Qué tendría que ver yo en el resultado para saber que ha ido bien\n   sin revisarlo entero?\n\nY monta la tarea con esta condición: si algo no cuadra —falta un archivo,\nlos datos no tienen la forma esperada, hay menos filas de las normales—\nescribe un archivo AVISO.md explicando qué ha pasado y no produzcas el\nentregable. Prefiero un aviso a un informe con datos incompletos que\nparezca correcto."
+            },
+            { t: "clave", texto: "Una tarea programada que falla en silencio es peor que no tener la tarea, porque sigues confiando en ella." },
+            { t: "texto", md: "Ese es el fallo que hay que diseñar contra. Un informe que sale con la mitad de los datos porque faltaba un archivo tiene exactamente el mismo aspecto que uno correcto. Por eso la condición del prompt es que **prefiera no producir** a producir a medias." },
+            { t: "lista", items: [
+              "**Revisa las tres primeras a fondo.** Enteras, comparando contra lo que habrías hecho a mano.",
+              "**Ponle una fecha de caducidad.** Cada trimestre, revisa si sigue haciendo falta. Las tareas programadas se acumulan y nadie las quita.",
+              "**Empieza por una.** Cinco tareas programadas a la vez el primer mes es la forma más rápida de perderles el rastro.",
+              "**Pausa las que no uses.** Una tarea que corre y cuyo resultado nadie abre está gastando y arriesgando para nada."
+            ]},
+            { t: "aviso", texto: "Vuelve a leerte la parte de seguridad de la lección 1.4 antes de programar la primera. Todo lo que decía sobre carpetas y permisos vale doble aquí, porque en una tarea programada no estás delante para parar nada." }
+          ],
+          ejercicio: "Coge el proceso que más veces has hecho a mano este trimestre. Si no llegas a cuatro repeticiones sin sorpresas, no lo programes todavía: hazlo dos veces más. Si llegas, móntalo con la condición del AVISO.md y revisa las tres primeras salidas enteras.",
+          recursos: []
+        },
+        {
+          id: "m6-l4",
+          titulo: "Conectar Claude a tus herramientas",
+          duracion: 12,
+          plataforma: "Cowork",
+          objetivo: "Decidir qué conectas y en qué orden, sabiendo lo que cada conexión abre.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Un conector deja que Claude hable con una herramienta que ya usas: el correo, el calendario, tu gestor de documentos, tu CRM. Deja de trabajar con lo que le pegas y pasa a trabajar con lo que tienes." },
+            { t: "texto", md: "El salto de utilidad es real. También lo es el de riesgo, y conviene calcularlo antes en vez de después." },
+            { t: "clave", texto: "El riesgo de una conexión no está en lo que lee: está en lo que puede escribir después de haber leído. Leer un correo es inocuo. Leer un correo y poder responder no lo es." },
+            { t: "texto", md: "Eso es exactamente la inyección de prompts de la lección 1.4, ampliada: cuantas más herramientas conectas, más superficie hay por donde puede entrar contenido escrito por otra persona con instrucciones dentro." },
+            { t: "tabla",
+              cabeceras: ["Tipo de conexión", "Qué abre", "Cómo empezar"],
+              filas: [
+                ["Solo lectura de tus documentos", "Casi nada. Es tuyo y lo escribiste tú", "Por aquí"],
+                ["Lectura de correo entrante", "Contenido de terceros: la vía de entrada clásica", "Con modo Manual"],
+                ["Escritura de documentos", "Puede cambiar cosas que otros leen", "Cuando ya la hayas visto trabajar"],
+                ["Envío de correo o mensajes", "Puede hablar en tu nombre", "Solo con revisión previa, siempre"],
+                ["Acceso a datos de clientes o facturación", "Todo", "Antes de esto, mira qué firmaste"]
+              ]
+            },
+            { t: "texto", md: "El orden de la tercera columna no es casual: es la ruta que recomiendo. Empieza por lectura de material tuyo, que es donde toda la utilidad aparece y casi ningún riesgo, y no amplíes hasta que hayas visto cómo trabaja." },
+            { t: "aviso", texto: "Un conector es una decisión de negocio, no de productividad. Si trabajas con clientes que te han hecho firmar algo sobre tratamiento de datos, conectar su correo o su CRM puede incumplirlo aunque la herramienta sea segura. Léelo antes, no después de la primera tarea." },
+            { t: "texto", md: "Y la regla que se aplica igual aquí que en todo el módulo: **preparar sí, mandar no**. Que redacte la respuesta al correo y te la deje en borrador es un ahorro enorme y sin riesgo. Que la envíe, es otra conversación." }
+          ],
+          ejercicio: "Haz una lista de las herramientas que usas a diario y ordénalas por la tabla de arriba. Conecta solo la primera de la lista, la de lectura de material tuyo, y trabaja con ella un par de semanas antes de añadir la segunda.",
+          recursos: []
+        },
+        {
+          id: "m6-l5",
+          titulo: "Pasarle el sistema a alguien de tu equipo",
+          duracion: 14,
+          plataforma: "Claude.ai",
+          objetivo: "Que el sistema siga funcionando cuando lo usa alguien que no lo montó.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Hasta aquí has construido un sistema que funciona porque tú sabes por qué está montado así. Ese saber no está escrito en ninguna parte, y es justo lo que se pierde al delegarlo." },
+            { t: "clave", texto: "El test: si mañana no apareces una semana, ¿alguien puede sacar el trabajo? Si la respuesta es no, no tienes un sistema: tienes una manera personal de trabajar rápido." },
+            { t: "texto", md: "La diferencia entre las dos cosas es importante para una agencia, porque una se puede vender y contratar gente para ella, y la otra no." },
+            { t: "texto", md: "Lo que hay que documentar es menos de lo que parece, y no es lo que la gente documenta. Nadie necesita un manual de cómo se usa Claude: eso lo aprende en una tarde. Lo que necesita es **por qué vuestro sistema es así**." },
+            { t: "archivo",
+              nombre: "COMO-TRABAJAMOS.md",
+              texto: "# Cómo trabajamos con Claude\n\n## Qué hay montado\nUna línea por skill y por proyecto: qué hace y cuándo se activa.\n\n## Las decisiones y su motivo\nPor qué la voz de cada marca es así (y quién lo aprobó).\nPor qué el informe semanal compara contra 4 semanas y no contra la anterior.\nPor qué las prohibiciones de este cliente son las que son.\n\n## Lo que NO sale sin que lo mire una persona\nLa lista de la lección 1.6, con nombres de entregables concretos.\nQuién es esa persona para cada tipo de entregable.\n\n## Lo que ya probamos y no funcionó\nCon la fecha. Es la sección que evita repetir el mismo error dentro de un año,\ny la única que nadie escribe.\n\n## Cuando algo sale raro\nA quién se pregunta antes de publicarlo igualmente."
+            },
+            { t: "texto", md: "La sección de **lo que ya probamos y no funcionó** es la que más vale y la que se omite siempre. Sin ella, la persona nueva propone en su segundo mes exactamente lo que vosotros descartasteis el año pasado, y no tiene forma de saberlo." },
+            { t: "aviso", texto: "El riesgo de delegar esto no es que lo hagan mal: es que lo hagan sin criterio. Alguien que solo sabe pulsar el botón acepta el primer resultado, porque no tiene con qué compararlo. Por eso lo que se traspasa no es el procedimiento, sino los porqués — y por eso esta lección va al final del curso y no al principio." },
+            { t: "texto", md: "Cómo se traspasa, en la práctica: que la persona haga el trabajo **con** el sistema durante dos semanas mientras tú revisas todo, y que en la tercera revises solo lo que ella marque como dudoso. Si en la tercera semana no marca nada como dudoso, no está lista: está aceptando todo." },
+            { t: "clave", texto: "Alguien que nunca duda del resultado todavía no sabe leerlo." }
+          ],
+          ejercicio: "Escribe el COMO-TRABAJAMOS.md de tu sistema, empezando por la sección de lo que ya probasteis y no funcionó. Si esa sección te sale vacía, es que no llevas suficiente tiempo trabajando así como para delegarlo.",
+          recursos: []
+        }
+      ]
+    },
+
+    /* ------------------------------------------------------------------ M7 */
+    {
+      id: "m7",
+      titulo: "Vender esto",
+      resumen: "Cobrar por trabajo hecho con IA sin regalar margen ni credibilidad. Es el módulo que decide si todo lo anterior te da dinero o solo te da tiempo libre.",
+      lecciones: [
+        {
+          id: "m7-l1",
+          titulo: "¿Se lo dices al cliente?",
+          duracion: 10,
+          plataforma: "Claude.ai",
+          objetivo: "Tener una posición clara y defendible sobre la transparencia, en vez de improvisarla el día que te pregunten.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Es la primera pregunta que se hace todo el mundo y casi nadie la resuelve: la deja sin decidir y improvisa el día que un cliente la hace. Improvisar esa respuesta es como se pierde una cuenta." },
+            { t: "clave", texto: "Mi posición: sí se dice, siempre, y sin darle importancia. No por ética abstracta, sino porque el coste de que lo descubra por su cuenta es enorme y el de contarlo es cero." },
+            { t: "texto", md: "El cálculo es asimétrico. Si lo cuentas, en el 95% de los casos al cliente le da exactamente igual: te contrató por el resultado. Si lo oculta y lo descubre —y lo va a descubrir, porque cada vez sabe más— lo que se rompe no es la opinión sobre la IA: es la confianza. Y esa no vuelve." },
+            { t: "texto", md: "Ahora bien, **cómo** se dice lo cambia todo:" },
+            { t: "tabla",
+              cabeceras: ["Cómo lo cuenta la gente", "Cómo se cuenta"],
+              filas: [
+                ["\"Lo hacemos con IA\"", "\"Tenemos tu marca montada como herramienta, y por eso todo lo que sale ya suena a ti\""],
+                ["\"Usamos Claude para los textos\"", "\"El primer borrador sale en minutos, así que el tiempo se va en el criterio y no en teclear\""],
+                ["\"Vamos más rápido gracias a la IA\"", "\"Podemos probar cinco ángulos donde antes probábamos uno\""],
+                ["Sacarlo tú en la primera reunión", "Contestarlo con naturalidad cuando salga"]
+              ]
+            },
+            { t: "texto", md: "La columna de la derecha no oculta nada: describe lo mismo. La diferencia es que la izquierda habla de **tu herramienta** y la derecha de **su beneficio**. Un cliente no compra tu proceso; compra lo que le pasa a él." },
+            { t: "aviso", texto: "Un matiz que no es opcional: hay sectores donde la transparencia no es una decisión comercial sino un requisito — sanidad, finanzas, o cualquier cliente cuyo contrato diga algo sobre subcontratación o tratamiento de datos. Ahí no hay conversación: se dice y se pone por escrito." },
+            { t: "texto", md: "Y una cosa que sí me callaría: **qué herramienta concreta usas**. No por ocultarlo, sino porque no aporta nada y abre una conversación que no lleva a ningún sitio. Si te preguntan directamente, se contesta directamente. Si no, no es información que el cliente necesite para decidir." }
+          ],
+          ejercicio: "Escribe tu respuesta de tres frases a \"¿esto lo hace una IA?\", en tus palabras, y apréndetela. La vas a necesitar en una llamada, sin tiempo para pensarla, y esa es exactamente la situación para la que se prepara una respuesta.",
+          recursos: []
+        },
+        {
+          id: "m7-l2",
+          titulo: "Qué pasa con tus precios",
+          duracion: 14,
+          plataforma: "Claude.ai",
+          objetivo: "No regalar el margen que acabas de ganar.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Aquí es donde una agencia se arruina con una herramienta que la hace mejor. El razonamiento que lleva al desastre es este, y suena razonable: *\"ahora tardo la cuarta parte, así que puedo cobrar menos y ser más competitivo\"*." },
+            { t: "clave", texto: "Si cobras por horas, cada mejora de productividad es una bajada de sueldo que te haces tú. Es la única situación en la que trabajar mejor te hace ganar menos." },
+            { t: "texto", md: "El error de fondo es confundir lo que cuesta producir con lo que vale. Tu cliente no compra horas: compra que le entren clientes. Que tú tardes cuatro horas o cuarenta en conseguírselo no cambia lo que eso vale para él." },
+            { t: "tabla",
+              cabeceras: ["Modelo", "Qué le pasa con IA", "Veredicto"],
+              filas: [
+                ["Por horas", "Ganas menos cuanto mejor trabajas", "**Sal de aquí**"],
+                ["Por entregable", "Aguanta. Mismo precio, más margen", "Aceptable"],
+                ["Iguala mensual", "Aguanta bien y te deja meter servicios nuevos", "Bueno"],
+                ["Por resultado o con variable", "Es donde la ventaja se convierte en ingreso", "El destino"]
+              ]
+            },
+            { t: "texto", md: "Si estás en el primero, la migración no se anuncia: se hace en la siguiente renovación, presentando el precio por entregable o por iguala sin explicar de dónde sale. Un cliente que sabe tu tarifa por hora y ve que produces más rápido, va a pedirte la rebaja. Y va a tener razón dentro de ese modelo. Por eso hay que salir del modelo." },
+            { t: "texto", md: "Lo que sí puedes hacer con el margen recuperado, y es lo que separa una agencia que crece:" },
+            { t: "lista", items: [
+              "**Meter más iteraciones por el mismo precio.** Cinco ángulos probados donde antes uno. Eso el cliente lo nota en resultados, no en la factura.",
+              "**Incluir entregables que antes no cabían.** La comparativa competitiva, el informe semanal, la auditoría trimestral. Cosas que antes no rentaban.",
+              "**Bajar el mínimo de entrada**, no el precio. Coger clientes más pequeños que antes no salían a cuenta, sin tocar lo que cobras a los grandes.",
+              "**Quedártelo.** Es una opción legítima y nadie la dice: has invertido en montar el sistema y el margen es el retorno."
+            ]},
+            { t: "aviso", texto: "La espiral: bajas precios por eficiencia, el competidor de al lado hace lo mismo, y en un año todo el sector cobra la mitad por el mismo trabajo. Nadie ha ganado nada y la única forma de salir es subir precios en un mercado que ya se ha acostumbrado. No empieces esa carrera." },
+            { t: "texto", md: "Y una cuenta que conviene hacer, porque el ahorro no es tan grande como parece: el tiempo que ya no gastas en el primer borrador se va en criterio, revisión y en montar el sistema. La ganancia real está en lo que **ahora puedes ofrecer** y antes no, mucho más que en las horas que te quitas." }
+          ],
+          ejercicio: "Coge tu último presupuesto. Calcula qué margen tiene ahora con el tiempo real que te lleva. Si el modelo es por horas, escribe la versión por entregable con el mismo precio final para el cliente: esa es la que presentas en la próxima renovación.",
+          recursos: []
+        },
+        {
+          id: "m7-l3",
+          titulo: "Empaquetarlo como servicio, no como descuento",
+          duracion: 13,
+          plataforma: "Claude.ai",
+          objetivo: "Convertir lo que has montado en una línea de servicio que se pueda vender sola.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Todo lo que has construido en los seis módulos anteriores tiene una forma comercial que casi nadie explota: **son entregables que se venden solos**, no solo mejoras internas de tu proceso." },
+            { t: "clave", texto: "Un cliente no paga por que tú trabajes mejor. Paga por tener algo que antes no tenía." },
+            { t: "texto", md: "Repasa lo que sabes montar ahora y mira cada cosa como una línea de factura:" },
+            { t: "tabla",
+              cabeceras: ["Lo que sabes hacer", "Cómo se vende", "A quién"],
+              filas: [
+                ["La skill de marca (1.5)", "\"Montamos tu voz de marca como herramienta: todo lo que produzcáis vosotros sale ya dentro de las directrices\"", "Clientes con equipo interno"],
+                ["Auditoría de recursos (3.3)", "Revisión completa del material contra el manual, con lista priorizada", "Marcas con años de material acumulado"],
+                ["Informe semanal (5.2)", "Un servicio recurrente, no un extra del reporting", "Cualquiera con inversión publicitaria"],
+                ["Comparativa competitiva (2.2)", "Documento de apoyo para su equipo comercial", "B2B con ciclo de venta largo"],
+                ["Despiece de contenido (4.2)", "\"Nos dais un webinar y os devolvemos un trimestre de contenido\"", "Quien produce material grande y lo usa una vez"]
+              ]
+            },
+            { t: "texto", md: "La columna del medio es el trabajo real de esta lección: ninguna de esas frases menciona la herramienta. Describen el resultado, y por eso se pueden poner en un presupuesto." },
+            { t: "texto", md: "El más interesante es el primero, y merece pararse: **vender la skill de marca al cliente** cambia tu posición. Dejas de ser el proveedor que escribe los textos y pasas a ser quien monta el sistema con el que su equipo escribe. Se paga mejor, se renueva mejor, y te ata al cliente de una forma sana: si quiere cambiar de agencia, la herramienta sigue siendo suya pero nadie más sabe mantenerla." },
+            { t: "prompt",
+              titulo: "Convertir tu método en una oferta",
+              texto: "Esto es lo que sé montar para un cliente: [descríbelo como proceso interno,\ncon el detalle que quieras].\n\nConviértelo en una línea de servicio vendible:\n\n1. Un nombre que un cliente entienda sin explicación. Nada de nombres\n   con \"IA\", \"smart\" o \"360\".\n2. Qué recibe exactamente: la lista de entregables, en objetos, no en\n   actividades. \"Un documento de voz de marca\", no \"trabajo de definición\".\n3. Qué problema suyo resuelve, dicho con sus palabras y no con las mías.\n4. Qué tendría que estar pasándole para que esto le urja. Si no hay\n   respuesta clara, este servicio no se vende solo: es un extra.\n5. Los tres motivos por los que lo rechazaría, y qué desactiva cada uno.\n\nRestricción: no menciones la herramienta ni el proceso interno en ningún\npunto. Si el valor solo se entiende explicando cómo lo haces, no está\nempaquetado todavía."
+            },
+            { t: "aviso", texto: "El punto 4 es el filtro honesto. Si no encuentras qué le tiene que estar pasando al cliente para que esto le urja, no tienes un servicio: tienes una capacidad. Las capacidades se venden como extra dentro de otra cosa, no en su propia propuesta." },
+            { t: "texto", md: "Sobre poner precio a algo nuevo: **áncla­lo a lo que sustituye, no a lo que te cuesta**. Una skill de marca sustituye rondas de corrección durante un año. Un informe semanal sustituye la media mañana que alguien de su equipo dedicaba a hacerlo. Ese es el número del que se parte." }
+          ],
+          ejercicio: "Elige el entregable de la tabla que mejor encaje con tu cartera y pásale el prompt. Si el punto 4 te sale flojo, prueba con otro antes de montar una propuesta que no se va a vender.",
+          recursos: []
+        },
+        {
+          id: "m7-l4",
+          titulo: "Las tres objeciones que te van a poner",
+          duracion: 12,
+          plataforma: "Claude.ai",
+          objetivo: "Tener contestadas las tres, con el error que comete todo el mundo al contestarlas.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Son siempre las mismas tres, en este orden de frecuencia. Vale la pena llevarlas escritas, porque las tres se contestan mal por instinto." },
+            { t: "clave", texto: "\"Eso lo puedo hacer yo gratis con ChatGPT.\"" },
+            { t: "texto", md: "**El error:** ponerte a explicar por qué tu herramienta es mejor. Entras en una discusión técnica que no te interesa ganar, y además el cliente tiene bastante razón: la herramienta la tiene cualquiera." },
+            { t: "texto", md: "**Lo que funciona:** darle la razón y mover el terreno. *\"Puedes, sí. La herramienta la tenemos todos. Lo que estás pagando es saber qué pedirle, con qué contexto, y saber cuándo lo que devuelve no vale. Eso es lo que hemos tardado dos años en aprender, y es lo que hace que no publiques algo que suena a cualquiera.\"*" },
+            { t: "texto", md: "Y si quieres cerrarla del todo, enséñale la diferencia en vez de contarla: pídele que él le pida algo a la herramienta, y hazlo tú al lado con contexto. La lección 1.1 es literalmente esa demostración." },
+            { t: "clave", texto: "\"No quiero contenido hecho con IA.\"" },
+            { t: "texto", md: "**El error:** discutir la premisa o, peor, prometer que no la usas. Lo primero le pone a la defensiva; lo segundo es mentir y encima lo va a descubrir." },
+            { t: "texto", md: "**Lo que funciona:** traducir lo que de verdad está diciendo. Nadie rechaza \"contenido con IA\": rechaza **contenido que suena a IA**, que es otra cosa. *\"Lo que no quieres es que suene genérico y se note. En eso estamos de acuerdo, y es justo el problema que resolvemos: por eso tu marca está montada como herramienta con sus prohibiciones dentro.\"* Y le enseñas dos piezas para que las juzgue." },
+            { t: "clave", texto: "\"Si lo hace la IA, ¿por qué te pago a ti?\"" },
+            { t: "texto", md: "**El error:** justificarte enumerando tus horas. En cuanto entras a defender que sigues trabajando mucho, has aceptado que te paga por trabajar mucho — y esa discusión la pierdes, porque efectivamente ahora tardas menos." },
+            { t: "texto", md: "**Lo que funciona:** aceptar la premisa entera y reencuadrar. *\"Me pagas por las decisiones, no por la producción. Qué ángulo, a quién, qué no decimos, y qué de lo que sale no se publica. La producción ya no es el trabajo: es lo que queda después del trabajo.\"*" },
+            { t: "texto", md: "Las tres respuestas comparten una estructura, y por eso funcionan: **das la razón en lo que es verdad, y mueves la conversación a lo que sí vendes**. Discutir la premisa de un cliente es la forma más rápida de perder una venta que tenías ganada." },
+            { t: "aviso", texto: "Una advertencia sobre la tercera: solo se puede decir si es verdad. Si tu trabajo hoy es efectivamente pegar lo que sale sin criterio, el cliente tiene razón y no hay guion que arregle eso. Estas respuestas no son técnicas de venta: son la descripción de un trabajo que hay que estar haciendo." }
+          ],
+          ejercicio: "Escribe las tres respuestas con tus palabras y con un ejemplo real tuyo en cada una. Léelas en voz alta: si alguna suena a guion aprendido, no la vas a poder usar en una llamada.",
+          recursos: []
+        },
+        {
+          id: "m7-l5",
+          titulo: "Dónde te la puedes pegar",
+          duracion: 11,
+          plataforma: "Claude.ai",
+          objetivo: "Conocer los cuatro fallos que aparecen cuando esto ya lleva meses funcionando.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Los problemas de trabajar así no aparecen la primera semana. Aparecen al sexto mes, cuando ya te fías, y son cuatro." },
+            { t: "clave", texto: "1. Todos tus clientes empiezan a sonar igual." },
+            { t: "texto", md: "Es el riesgo más real y el más difícil de ver desde dentro, porque cada pieza suelta está bien. Pasa cuando reutilizas la misma estructura de prompt en todas las cuentas y las skills de marca son demasiado parecidas entre sí." },
+            { t: "texto", md: "**Cómo se detecta:** una vez al trimestre, pon tres piezas de tres clientes distintos, quítales el nombre y dáselas a alguien de tu equipo. Si no acierta cuál es de quién, tienes un problema de posicionamiento en las tres cuentas a la vez." },
+            { t: "clave", texto: "2. La calidad se degrada sin que nadie lo note." },
+            { t: "texto", md: "Al principio revisas todo. Al tercer mes revisas por encima. Al sexto apruebas. La caída es continua y por eso no hay un día en que se dispare ninguna alarma." },
+            { t: "texto", md: "**Cómo se detecta:** guarda las piezas del primer mes. Compáralas con las de ahora, sin mirar la fecha. Es incómodo y es la única forma." },
+            { t: "clave", texto: "3. Dependencia de una herramienta que no controlas." },
+            { t: "texto", md: "Cambian los precios, cambian los planes, cambia el modelo y tus prompts rinden distinto. No es catastrófico, pero conviene que tu método esté escrito en documentos que puedas leer y no solo dentro de una plataforma. Todo lo del módulo 6 —los SKILL.md, el COMO-TRABAJAMOS.md— son archivos de texto tuyos precisamente por esto." },
+            { t: "clave", texto: "4. El cliente se entera por el camino equivocado." },
+            { t: "texto", md: "No porque se lo cuentes: porque le entregas un texto con un giro que no es tuyo, o porque dos clientes suyos reciben la misma frase. Esto es la lección 7.1 pero al revés: lo que rompe la confianza no es la herramienta, es haberlo descubierto solo." },
+            { t: "texto", md: "Y por debajo de los cuatro, uno que no es un riesgo sino una comprobación: **¿sigues sabiendo hacerlo sin esto?** No por nostalgia. Porque el criterio con el que juzgas lo que sale se te formó haciéndolo a mano, y es lo único que la herramienta no te da." },
+            { t: "aviso", texto: "Si llevas un año sin escribir un anuncio desde cero, tu criterio se está oxidando aunque tus resultados no hayan bajado todavía. Los resultados bajan después. Escribe algo a mano de vez en cuando, aunque tardes más: no es el entregable lo que estás produciendo, es tu capacidad de juzgar el resto." },
+            { t: "texto", md: "Los cuatro tienen la misma forma: son lentos, no avisan, y se detectan solo si montas la comprobación a propósito. Ponlas en el calendario ahora, porque dentro de seis meses no se te va a ocurrir." }
+          ],
+          ejercicio: "Pon en el calendario, a tres meses vista, dos citas: la prueba de las tres piezas sin nombre, y la comparación con el material del primer mes. Es la única lección del curso cuyo ejercicio no se hace hoy.",
           recursos: []
         }
       ]
@@ -702,6 +1181,13 @@ const GLOSARIO = [
   { t: "Inyección de prompts", d: "Instrucciones escondidas en contenido que Claude lee —una web, un PDF de un tercero— escritas para que las obedezca como si vinieran de ti. El riesgo aparece cuando además puede actuar sobre tus archivos.", m: "Seguridad" },
   { t: "Modo de permiso", d: "En Cowork, cuánto pregunta antes de actuar: Manual (cada acción), Auto (aprueba lo que pasa su revisión) o Skip (no pregunta). Manual siempre que haya material de cliente.", m: "Seguridad" },
   { t: "Perfil de cliente", d: "Descripción accionable de a quién le vendes, construida desde datos reales —reseñas, llamadas, bajas— y no desde suposiciones. Ver lección 2.1.", m: "Estrategia" },
+  { t: "Atribución", d: "Qué canal se lleva el mérito de una venta. Ninguna plataforma dice la verdad y todas reclaman la misma conversión: si sumas lo que cada una se atribuye, te salen más ventas de las que tuviste.", m: "Medición" },
+  { t: "Canibalización", d: "Competir contra ti mismo. Pasa cuando publicas varias piezas atacando la misma búsqueda, típicamente al despiezar un activo SEO. Ver lección 4.2.", m: "Producción" },
+  { t: "Colisión de skills", d: "Dos skills cuyas descripciones cubren la misma situación. No da error: da resultados con un criterio que no esperabas y sin saber por qué. Ver lección 6.1.", m: "Sistemas" },
+  { t: "Conector", d: "Lo que permite a Claude hablar con una herramienta que ya usas: correo, documentos, CRM. El riesgo no está en lo que lee, sino en lo que puede escribir después de haber leído.", m: "Sistemas" },
+  { t: "Iguala", d: "Cobrar una cantidad fija mensual en vez de por horas o por pieza. Es el modelo que aguanta bien las mejoras de productividad, porque no te penaliza por trabajar más rápido.", m: "Negocio" },
+  { t: "Permanencia", d: "Cuánto tiempo se queda un cliente o un donante. En captación decide todo: un recurrente de 10 € al mes vale más que uno puntual de 300 €.", m: "Medición" },
+  { t: "Precio ancla", d: "Poner precio por lo que el servicio sustituye, no por lo que te cuesta producirlo. Un informe semanal se ancla a la media mañana que le ahorra a alguien de su equipo.", m: "Negocio" },
   { t: "Prompt", d: "La instrucción que le das. Un buen prompt tiene seis piezas: rol, contexto, tarea, formato, restricciones y ejemplos. Ver lección 1.2.", m: "Fundamentos" },
   { t: "Proyecto", d: "Un espacio de Claude con instrucciones y archivos fijos, para un cliente o una marca concretos. Lo que caduca va aquí, no en una skill.", m: "Superficies" },
   { t: "ROAS", d: "Retorno sobre la inversión publicitaria. Optimizar ROAS no es lo mismo que optimizar beneficio: sin el margen por producto, se optimiza el ingreso equivocado.", m: "Medición" },

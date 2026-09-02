@@ -214,6 +214,19 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 .med-relleno{display:block;height:100%;border-radius:4px;background:var(--brass);transition:width .5s ease}
 .med-relleno[data-lleno="true"]{background:var(--ok)}
 
+/* ------------------------------------------------------------- avanzado */
+.avanzado{margin:34px 0 0;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.av-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--surface-2);border:0;padding:15px 18px;text-align:left}
+.av-btn:hover{background:var(--brass-soft)}
+.av-btn .t{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-.012em}
+.av-btn .m{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-3);white-space:nowrap}
+.av-btn .m b{color:var(--brass)}
+.avanzado[data-abierto="false"] .av-cuerpo{display:none}
+.av-cuerpo{padding:22px 20px 6px;border-top:1px solid var(--line)}
+.av-cuerpo .intro{margin:0 0 22px;font-size:14.5px;color:var(--ink-3);line-height:1.5;max-width:60ch;font-style:italic}
+.av-cuerpo p{font-size:16px}
+.av-cuerpo li{font-size:15.5px}
+
 /* ---------------------------------------------------------------- taller */
 .taller{display:grid;grid-template-columns:1fr 340px;gap:26px;align-items:start}
 .t-campos{min-width:0;display:flex;flex-direction:column;gap:20px}
@@ -640,8 +653,9 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
       h += '<div class="objetivo"><span class="lbl">Objetivo</span><p>' + md(les.objetivo) + "</p></div>";
     }
     var plat = les.plataforma || "Claude.ai";
+    var mAv = (les.avanzado && les.avanzado.length) ? (les.duracionAvanzado || 0) : 0;
     h += '<div class="meta"><span class="badge' + (plat === "Cowork" ? " cowork" : "") + '">' + esc(plat) + "</span>" +
-         "<span>" + (les.duracion || "—") + " MIN</span><span>" +
+         "<span>" + (les.duracion || "—") + " MIN" + (mAv ? " + " + mAv : "") + "</span><span>" +
          (hecho ? "COMPLETADA" : (les.estado === "pendiente" ? "SIN CONTENIDO" : "PENDIENTE DE LEER")) +
          "</span></div>";
 
@@ -655,6 +669,17 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
        : '<div class="hueco"><p class="lbl">Contenido pendiente</p><p>Esta lección todavía no tiene ' +
          'material. El esqueleto está puesto: objetivo, duración y sitio en el temario.</p></div>';
     h += "</div>";
+
+    if(les.avanzado && les.avanzado.length){
+      h += '<div class="avanzado" data-abierto="false" id="avBloque">' +
+           '<button class="av-btn" type="button" data-avanzado="1">' +
+           '<span class="t">Cuando esto ya te funcione</span>' +
+           '<span class="m"><b>+' + (les.duracionAvanzado || 0) + ' min</b> · avanzado</span>' +
+           '</button><div class="av-cuerpo"><p class="intro">Esto es para la segunda vuelta: ' +
+           'casos donde lo de arriba se queda corto, qué hacer cuando falla, y las variantes ' +
+           'que solo hacen falta cuando ya trabajas así.</p><div class="body">' +
+           les.avanzado.map(pintarBloque).join("") + '</div></div></div>';
+    }
 
     h += '<div class="cierre">';
     if(les.ejercicio){
@@ -1044,6 +1069,8 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
   function vistaInicio(){
     var total = planas.length;
     var min = planas.reduce(function(a,p){ return a + (p.les.duracion||0); }, 0);
+    var minAv = planas.reduce(function(a,p){
+      return a + ((p.les.avanzado && p.les.avanzado.length) ? (p.les.duracionAvanzado||0) : 0); }, 0);
     var nPrompts = todosLosPrompts().length;
     var cowork = planas.filter(function(p){ return p.les.plataforma === "Cowork"; }).length;
     var hechas = planas.filter(function(p){ return Almacen.hechas[p.les.id]; }).length;
@@ -1064,7 +1091,8 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
 
     h += '<div class="kpis">' +
       '<div class="kpi"><p class="k">Lecciones</p><p class="v">' + total + '</p></div>' +
-      '<div class="kpi"><p class="k">Duración</p><p class="v">' + Math.round(min/60*10)/10 + '<small>h</small></p></div>' +
+      '<div class="kpi"><p class="k">Duración</p><p class="v">' + Math.round(min/60*10)/10 +
+      '<small>h' + (minAv ? " + " + Math.round(minAv/60*10)/10 : "") + '</small></p></div>' +
       '<div class="kpi"><p class="k">Prompts listos</p><p class="v">' + nPrompts + '</p></div>' +
       '<div class="kpi"><p class="k">Módulos</p><p class="v">' + CURSO.modulos.length + '</p></div>' +
       '</div>';
@@ -1170,15 +1198,17 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
   function todosLosPrompts(){
     var out = [];
     planas.forEach(function(p){
-      (p.les.bloques || []).forEach(function(b, bi){
-        if(b.t === "prompt" || b.t === "archivo"){
-          out.push({
-            tipo: b.t,
-            titulo: b.titulo || b.nombre || "",
-            texto: b.texto || "",
-            les: p.les, mi: p.mi, li: p.li, idx: indicePorId(p.les.id), bi: bi
-          });
-        }
+      [["bloques", false], ["avanzado", true]].forEach(function(par){
+        (p.les[par[0]] || []).forEach(function(b, bi){
+          if(b.t === "prompt" || b.t === "archivo"){
+            out.push({
+              tipo: b.t, av: par[1],
+              titulo: b.titulo || b.nombre || "",
+              texto: b.texto || "",
+              les: p.les, mi: p.mi, li: p.li, idx: indicePorId(p.les.id), bi: bi
+            });
+          }
+        });
       });
     });
     return out;
@@ -1191,6 +1221,7 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
       if(filtroPrompt === "prompt"  && x.tipo !== "prompt")  return false;
       if(filtroPrompt === "archivo" && x.tipo !== "archivo") return false;
       if(filtroPrompt === "cowork"  && x.les.plataforma !== "Cowork") return false;
+      if(filtroPrompt === "avanzado" && !x.av) return false;
       if(!f) return true;
       return (x.titulo + " " + x.texto + " " + x.les.titulo).toLowerCase().indexOf(f) >= 0;
     });
@@ -1205,6 +1236,7 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
       '<button class="pf" type="button" data-pf="prompt"  aria-pressed="' + (filtroPrompt==="prompt") + '">PROMPTS</button>' +
       '<button class="pf" type="button" data-pf="archivo" aria-pressed="' + (filtroPrompt==="archivo") + '">ARCHIVOS</button>' +
       '<button class="pf" type="button" data-pf="cowork"  aria-pressed="' + (filtroPrompt==="cowork") + '">DE COWORK</button>' +
+      '<button class="pf" type="button" data-pf="avanzado" aria-pressed="' + (filtroPrompt==="avanzado") + '">AVANZADOS</button>' +
       '</div>';
 
     if(!vis.length) return h + '<p class="vacio">Ningún prompt coincide con la búsqueda.</p>';
@@ -1212,6 +1244,7 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
     h += '<div class="body">';
     vis.forEach(function(x){
       h += '<p class="p-origen">' + x.mi + '.' + x.li + ' · ' + esc(x.les.titulo) +
+           (x.av ? ' · avanzado' : '') +
            ' <button type="button" data-ir="' + x.idx + '">ir a la lección</button></p>';
       h += pintarBloque(x.tipo === "prompt"
         ? { t:"prompt",  titulo:x.titulo, texto:x.texto }
@@ -1451,6 +1484,13 @@ blockquote cite{font-family:var(--mono);font-size:11px;letter-spacing:.08em;colo
         c.setAttribute("aria-pressed", c === chip ? "true" : "false");
       });
       pintarArbol();
+      return;
+    }
+
+    var av = ev.target.closest("[data-avanzado]");
+    if(av){
+      var caja = av.parentElement;
+      caja.setAttribute("data-abierto", caja.getAttribute("data-abierto") === "true" ? "false" : "true");
       return;
     }
 

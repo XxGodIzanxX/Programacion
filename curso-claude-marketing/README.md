@@ -177,9 +177,32 @@ de fundamentos que es prerrequisito de todos ellos.
 | 3 · Marca | 3 | Activos, contenido alineado, auditoría visual |
 | 4 · Producir y distribuir | 2 | Adaptar entre plataformas, reutilizar en canales |
 | 5 · Medir y decidir | 3 | Campañas, anuncios, recaudación de fondos |
+| 6 · Sistemas | 5 | Propias. Biblioteca de skills, proyectos, tareas programadas, conectores, traspaso |
+| 7 · Vender esto | 5 | Propias. Transparencia, precios, empaquetado, objeciones y riesgos |
 
-**16 lecciones, 192 minutos, todas escritas.** 163 bloques y 19 prompts o
-archivos con botón de copiar.
+**27 lecciones, 7,1 horas, todas escritas.** 393 bloques y 41 prompts o archivos
+con botón de copiar.
+
+Los módulos 6 y 7 no salen del listado de Anthropic. El 6 es lo que hace falta
+para que esto deje de ser una forma de ir rápido y pase a ser un sistema que
+funciona sin ti. El 7 es el que decide si todo lo anterior te da dinero o solo
+te da tiempo libre, y es el que no enseña nadie.
+
+## Los dos niveles de cada lección
+
+17 de las 27 lecciones llevan una sección plegable al final, **"Cuando esto ya te
+funcione"**, con los casos límite, qué hacer cuando falla y las variantes que
+solo hacen falta cuando ya trabajas así. Son 99 minutos más.
+
+Va plegada a propósito: quien hace el curso por primera vez necesita poder
+ejecutar, no saberlo todo. La profundidad es para la segunda vuelta.
+
+En `contenido.js` se declara igual que el cuerpo:
+
+```js
+duracionAvanzado: 8,
+avanzado: [ ...los mismos tipos de bloque... ],
+```
 
 Una lección nueva nace con `estado: "pendiente"` y `bloques: []`: sale marcada
 en el índice con el punto en ámbar y muestra un hueco en vez de fingir que

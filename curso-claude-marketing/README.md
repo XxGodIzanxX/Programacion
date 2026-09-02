@@ -83,9 +83,12 @@ de fundamentos que es prerrequisito de todos ellos.
 | 4 · Producir y distribuir | 2 | Adaptar entre plataformas, reutilizar en canales |
 | 5 · Medir y decidir | 3 | Campañas, anuncios, recaudación de fondos |
 
-16 lecciones, 192 minutos. Escritas enteras: 1.1, 1.2 y 1.4. El resto tiene el
-esqueleto puesto —título, objetivo, duración, plataforma— y sale marcada como
-pendiente con el punto en ámbar.
+**16 lecciones, 192 minutos, todas escritas.** 163 bloques y 19 prompts o
+archivos con botón de copiar.
+
+Una lección nueva nace con `estado: "pendiente"` y `bloques: []`: sale marcada
+en el índice con el punto en ámbar y muestra un hueco en vez de fingir que
+tiene contenido. Ahora mismo no hay ninguna en ese estado.
 
 **"Empaqueta tus guías de marca en una skill" está en el módulo 1 a propósito**,
 aunque en el listado original sea un caso de uso más. Es la única de las doce
@@ -103,5 +106,20 @@ sería una lección; puesta al principio es la infraestructura del curso.
   los canales" (4.2) se solapan mucho.** Se mantienen separadas porque una es
   pieza a pieza en Claude.ai y la otra es por lotes en Cowork, pero si el curso
   hay que acortar, ahí está el recorte más barato.
-- **"Recaudación de fondos" (5.3) es de ONG**, no de agencia. Está incluida por
-  fidelidad al listado original; si tu audiencia es solo comercial, sobra.
+- **"Recaudación de fondos" (5.3) es de ONG**, no de agencia. Está escrita para
+  que se pueda saltar sin romper el hilo, y la propia lección lo dice en su
+  primer párrafo.
+
+## Los hilos que atraviesan el curso
+
+No son 16 lecciones sueltas. Tres cosas se van encadenando, y si se edita una
+lección conviene no romperlas:
+
+- **La skill de marca (1.4) es la herramienta del curso.** 3.1 termina
+  mandándote a construirla, 3.2 la usa para producir, 3.3 la usa como criterio
+  de auditoría, 4.2 la aplica al despiece y 5.2 sugiere convertir el informe en
+  otra skill.
+- **El material del módulo 2 alimenta al 3.** Los perfiles de 2.1 son la
+  entrada del sistema verbal de 3.1; el brief de 2.3 es la entrada de 3.2.
+- **El patrón de dos fases** (analizar y parar, luego producir) aparece en 1.2 y
+  se reutiliza en 2.1, 2.3 y 4.2. Está enseñado una vez y referenciado después.

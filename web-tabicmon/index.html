@@ -372,6 +372,17 @@ input,select,textarea{
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-soft)}
 textarea{resize:vertical;min-height:92px}
 .form .btn{grid-column:1/-1;justify-self:start;margin-top:.3rem}
+.form .btn[disabled]{opacity:.6;cursor:progress}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.consent{
+  grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:.6rem;align-items:start;
+  font-family:var(--body);font-size:.84rem;letter-spacing:0;text-transform:none;color:var(--text);
+}
+.consent input{width:17px;height:17px;margin-top:.18rem;accent-color:var(--green);padding:0}
+.consent a{color:var(--green-ink)}
+.formmsg{grid-column:1/-1;font-size:.9rem;color:var(--text-2);min-height:1.3em}
+.formmsg.ok{color:var(--green-ink);font-weight:600}
+.formmsg.err{color:#C0392B}
 @media(max-width:620px){.form{grid-template-columns:1fr}}
 
 /* ---------- footer ---------- */
@@ -654,7 +665,7 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
         </div>
       </div>
 
-      <form class="form rv rv3" id="form">
+      <form class="form rv rv3" id="form" action="enviar.php" method="post" novalidate>
         <div class="field"><label for="nombre">Nombre</label><input id="nombre" name="nombre" type="text" required placeholder="Tu nombre"></div>
         <div class="field"><label for="tel">Teléfono</label><input id="tel" name="tel" type="tel" required placeholder="600 000 000"></div>
         <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="tu@empresa.com"></div>
@@ -669,7 +680,10 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
         <div class="field"><label for="m2">Superficie aproximada</label><input id="m2" name="m2" type="text" placeholder="m² de tabique o de techo"></div>
         <div class="field"><label for="plazo">Plazo</label><input id="plazo" name="plazo" type="text" placeholder="Fecha de inicio prevista"></div>
         <div class="field field--full"><label for="detalle">La obra</label><textarea id="detalle" name="detalle" placeholder="Ubicación, tipo de local, si hay proyecto redactado, exigencia EI o acústica…"></textarea></div>
+        <div class="hp"><label for="empresa_web">No rellenar este campo</label><input id="empresa_web" name="empresa_web" type="text" tabindex="-1" autocomplete="off"></div>
+        <label class="consent"><input type="checkbox" name="consentimiento" value="1" required><span>He leído y acepto la <a href="#">política de privacidad</a>. Mis datos se usan solo para responder a esta solicitud.</span></label>
         <button class="btn" type="submit">Enviar y pedir presupuesto</button>
+        <p class="formmsg" id="formmsg" role="status" aria-live="polite"></p>
       </form>
     </div>
   </section>
@@ -789,13 +803,35 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   }, {passive:true});
 
   /* ---------- formulario ---------- */
-  document.getElementById("form").addEventListener("submit", function(ev){
-    ev.preventDefault(); var f = ev.target;
+  var form = document.getElementById("form"), fmsg = document.getElementById("formmsg");
+  function porCorreo(f){
     var b = "Nombre: " + f.nombre.value + "\nTeléfono: " + f.tel.value + "\nEmail: " + f.email.value +
             "\nServicio: " + f.sistema.value + "\nSuperficie: " + f.m2.value + "\nPlazo: " + f.plazo.value +
             "\n\n" + f.detalle.value;
     location.href = "mailto:info@tabicmon.com?subject=" + encodeURIComponent("Presupuesto — " + f.sistema.value) +
                     "&body=" + encodeURIComponent(b);
+  }
+  form.addEventListener("submit", function(ev){
+    ev.preventDefault();
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    var btn = form.querySelector("button[type=submit]");
+    btn.disabled = true;
+    fmsg.className = "formmsg"; fmsg.textContent = "Enviando…";
+    fetch(form.action, {method:"POST", body:new FormData(form), headers:{Accept:"application/json"}})
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        btn.disabled = false;
+        fmsg.textContent = d.mensaje;
+        fmsg.className = "formmsg " + (d.ok ? "ok" : "err");
+        if(d.ok) form.reset();
+      })
+      .catch(function(){
+        /* sin PHP detrás (maqueta local o vista previa): se abre el correo del visitante */
+        btn.disabled = false;
+        fmsg.className = "formmsg";
+        fmsg.textContent = "Abrimos tu programa de correo para enviarlo.";
+        porCorreo(form);
+      });
   });
 
   /* ============================================================

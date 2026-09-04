@@ -135,7 +135,7 @@ h1 .hl{color:var(--green)}
 
 /* ---- escenario 3D ---- */
 .stage{
-  position:relative;aspect-ratio:1/.86;min-height:320px;
+  position:relative;aspect-ratio:1/.86;min-height:320px;overflow:hidden;
   border:1px solid var(--line);
   background:radial-gradient(65% 65% at 52% 42%, var(--green-soft) 0%, var(--paper) 62%, var(--white) 100%);
 }
@@ -154,6 +154,12 @@ h1 .hl{color:var(--green)}
 .lbl.on{opacity:1}
 .lbl b{color:var(--green-ink);font-weight:500}
 .lbl::after{content:"";position:absolute;left:-3px;top:100%;width:3px;height:var(--leg,12px);background:var(--green);opacity:.5}
+.stage__legend{
+  display:none;position:absolute;left:.6rem;top:.6rem;z-index:3;gap:.18rem;
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.02em;color:var(--ink);
+}
+.stage__legend span{background:rgba(255,255,255,.9);border-left:3px solid var(--green);padding:.12rem .35rem}
+.stage__legend b{color:var(--green-ink);font-weight:500}
 .stage__hud{
   position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:1rem;
   padding:.6rem .8rem;border-top:1px solid var(--line);background:rgba(255,255,255,.86);
@@ -278,7 +284,12 @@ h1 .hl{color:var(--green)}
 .tile--vent{background:repeating-linear-gradient(45deg,var(--white) 0 5px,var(--paper-2) 5px 10px)}
 
 /* ---------- proyectos: carrusel 3D ---------- */
-.carousel{position:relative;height:340px;perspective:1300px;margin-top:2.8rem}
+.carousel{position:relative;height:340px;perspective:1300px;margin-top:2.8rem;touch-action:pan-y}
+@media(max-width:640px){
+  .carousel{height:400px;perspective:900px}
+  .ring{transform:translateZ(-235px) rotateY(var(--rot,0deg))}
+  .pcard{transform:rotateY(calc(var(--i) * 90deg)) translateZ(235px)}
+}
 .ring{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(-330px) rotateY(var(--rot,0deg));transition:transform .85s var(--ease)}
 .pcard{
   position:absolute;left:50%;top:0;width:min(330px,80vw);height:100%;margin-left:calc(min(330px,80vw) / -2);
@@ -361,11 +372,41 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
 .rv.in{transform:none}
 .rv2{transition-delay:.09s}.rv3{transition-delay:.18s}.rv4{transition-delay:.27s}
 
+/* ---------- pantallas estrechas: etiquetas proyectadas fuera, leyenda dentro ---------- */
+@media (hover:none), (max-width:640px){
+  .labels{display:none}
+  .stage__legend{display:grid}
+}
+
+/* ---------- táctil: el 3D no puede depender de un cursor que no existe ---------- */
+@media (hover:none){
+  .svc{transform:rotateY(-11deg);transform-origin:left center}
+  .svc.seen{transform:rotateY(0deg)}
+  .svc.seen .svc__bar{transform:scaleY(1)}
+
+  .ei__card{transform:rotateY(var(--y,0deg))}
+  .ei__card.seen{transform:rotateY(0deg) translateZ(16px)}
+
+  .tile{animation:tilewave 7s var(--ease) infinite;animation-delay:calc(var(--d,0) * .09s)}
+  .owner__card{animation:sway 11s ease-in-out infinite}
+  .fact{animation:none}
+}
+@keyframes tilewave{
+  0%,70%,100%{transform:translateZ(0) rotateX(0deg)}
+  80%{transform:translateZ(34px) rotateX(-13deg)}
+}
+@keyframes sway{
+  0%,100%{transform:rotateX(4deg) rotateY(-7deg)}
+  50%{transform:rotateX(0deg) rotateY(6deg)}
+}
+
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
   .rv{transform:none!important}
   .pcard{opacity:1}
+  .tile,.owner__card{animation:none}
+  .svc,.ei__card{transform:none!important}
 }
 </style>
 </head>
@@ -409,6 +450,12 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
           <div class="lbl" data-i="1"><b>02</b> Perfilería metálica 48</div>
           <div class="lbl" data-i="2"><b>03</b> Lana mineral 45 mm</div>
           <div class="lbl" data-i="3"><b>04</b> Placa de yeso 15 mm</div>
+        </div>
+        <div class="stage__legend" aria-hidden="true">
+          <span><b>01</b> Placa de yeso 15 mm</span>
+          <span><b>02</b> Perfilería metálica 48</span>
+          <span><b>03</b> Lana mineral 45 mm</span>
+          <span><b>04</b> Placa de yeso 15 mm</span>
         </div>
         <div class="stage__hud">
           <span>Despiece · ejemplo de montaje</span>
@@ -677,13 +724,24 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   document.querySelectorAll(".svc").forEach(function(c){ tilt(c, 11, "0deg", "0deg"); });
   tilt(document.getElementById("ownerCard"), 14, "4deg", "-7deg");
 
-  /* ---------- techo registrable ---------- */
+  /* ---------- techo registrable: onda escalonada en diagonal ---------- */
   var ceiling = document.getElementById("ceiling"), LIT = [3,8,15,20], VENT = [6,17];
   for(var i = 0; i < 24; i++){
     var t = document.createElement("div");
     t.className = "tile" + (LIT.indexOf(i) > -1 ? " tile--lit" : VENT.indexOf(i) > -1 ? " tile--vent" : "");
+    t.style.setProperty("--d", (i % 6) + Math.floor(i / 6));
     ceiling.appendChild(t);
   }
+
+  /* ---------- en táctil no hay hover: el 3D se dispara al entrar en pantalla ---------- */
+  var sio = new IntersectionObserver(function(es){
+    es.forEach(function(e, n){
+      if(!e.isIntersecting) return;
+      var el = e.target; sio.unobserve(el);
+      setTimeout(function(){ el.classList.add("seen"); }, n * 90);
+    });
+  }, {threshold:.25});
+  document.querySelectorAll(".svc, .ei__card").forEach(function(el){ sio.observe(el); });
 
   /* ---------- carrusel 3D de proyectos ---------- */
   var ring = document.getElementById("ring"), cards = [].slice.call(ring.children);
@@ -704,6 +762,16 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   var carousel = document.querySelector(".carousel");
   carousel.addEventListener("pointerenter", function(){ clearInterval(timer); });
   carousel.addEventListener("pointerleave", auto);
+  /* arrastre y swipe: en táctil es la única forma de pasar tipología sin apuntar al botón */
+  var sx = null;
+  carousel.addEventListener("pointerdown", function(e){ sx = e.clientX; clearInterval(timer); });
+  carousel.addEventListener("pointerup", function(e){
+    if(sx === null) return;
+    var d = e.clientX - sx; sx = null;
+    if(Math.abs(d) > 36) go(idx + (d < 0 ? 1 : -1));
+    auto();
+  });
+  carousel.addEventListener("pointercancel", function(){ sx = null; auto(); });
   auto();
 
   /* ---------- banda 3D ligada al scroll ---------- */
@@ -779,6 +847,16 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   layers.forEach(function(l){ wall.add(l); });
 
   var GAP_OPEN = .62, GAP_SHUT = .105, spread = GAP_OPEN;
+  function frameCamera(){
+    /* en un escenario casi cuadrado el limite es el ancho: acercar y compactar el despiece */
+    /* el escenario mantiene su proporción a cualquier tamaño: decide el ancho real, no el aspect */
+    var narrow = w < 520;
+    GAP_OPEN = narrow ? .44 : .62;
+    camera.fov = narrow ? 37 : 38;
+    if(narrow) camera.position.set(3.2, 1.75, 5.2); else camera.position.set(3.4, 1.9, 4.6);
+    camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
+  }
   function layout(g){
     for(var i = 0; i < layers.length; i++) layers[i].position.z = (i - (layers.length - 1) / 2) * g;
   }
@@ -864,7 +942,8 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   function resize(){
     w = stage.clientWidth; h = stage.clientHeight;
     renderer.setSize(w, h, false);
-    camera.aspect = w / h; camera.updateProjectionMatrix();
+    camera.aspect = w / h;
+    frameCamera();
   }
   resize(); addEventListener("resize", resize);
 
@@ -878,10 +957,11 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
     stage.addEventListener("pointerleave", function(){ tx = 0; ty = 0; });
   }
 
-  var running = true, t0 = performance.now(), lastT = 0;
+  var running = true, raf = 0, t0 = performance.now(), lastT = 0;
+  function start(){ if(!raf && !reduce) raf = requestAnimationFrame(loop); }
   new IntersectionObserver(function(es){
     running = es[0].isIntersecting;
-    if(running && !reduce) requestAnimationFrame(loop);
+    if(running) start();
   }, {threshold:.01}).observe(stage);
 
   function spreadFromScroll(){
@@ -930,14 +1010,15 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   }
 
   function loop(now){
+    raf = 0;
     if(!running || reduce) return;
     var t = (now - t0) / 1000, dt = lastT ? t - lastT : 0; lastT = t;
     draw(t, dt);
-    requestAnimationFrame(loop);
+    raf = requestAnimationFrame(loop);
   }
 
   if(reduce){ draw(0, 0); lbls.forEach(function(l){ l.classList.add("on"); }); }
-  else{ requestAnimationFrame(loop); lbls.forEach(function(l, i){ setTimeout(function(){ l.classList.add("on"); }, 420 + i * 130); }); }
+  else{ start(); lbls.forEach(function(l, i){ setTimeout(function(){ l.classList.add("on"); }, 420 + i * 130); }); }
 })();
 </script>
 </body>

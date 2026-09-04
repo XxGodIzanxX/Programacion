@@ -142,7 +142,22 @@ h1 .hl{color:var(--green)}
 .stage::before,.stage::after{content:"";position:absolute;width:14px;height:14px;border:3px solid var(--green)}
 .stage::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
 .stage::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
-#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:2}
+/* Respaldo: si no hay WebGL (o no corre el JS) el escenario no puede quedar vacío. */
+.fb{position:absolute;inset:0;display:grid;place-items:center;perspective:900px;z-index:1}
+.fb__scene{
+  width:min(64%,230px);aspect-ratio:1/.76;position:relative;transform-style:preserve-3d;
+  animation:fbspin 18s ease-in-out infinite;
+}
+.fb__l{position:absolute;inset:0;border:1px solid rgba(16,18,24,.34);box-shadow:0 14px 34px -24px rgba(16,18,24,.75)}
+.fb__l:nth-child(1){transform:translateZ(-80px);background:rgba(255,255,255,.97)}
+.fb__l:nth-child(2){transform:translateZ(-27px);background:repeating-linear-gradient(90deg,#8E979F 0 8px,rgba(255,255,255,.04) 8px 40px)}
+.fb__l:nth-child(3){transform:translateZ(27px);background:#CDE9A6}
+.fb__l:nth-child(4){transform:translateZ(80px);background:rgba(255,255,255,.97)}
+@keyframes fbspin{
+  0%,100%{transform:rotateX(12deg) rotateY(-36deg)}
+  50%{transform:rotateX(6deg) rotateY(28deg)}
+}
 .labels{position:absolute;inset:0;pointer-events:none}
 .lbl{
   position:absolute;transform:translate(-50%,-100%);white-space:nowrap;
@@ -290,7 +305,7 @@ h1 .hl{color:var(--green)}
   .ring{transform:translateZ(-235px) rotateY(var(--rot,0deg))}
   .pcard{transform:rotateY(calc(var(--i) * 90deg)) translateZ(235px)}
 }
-.ring{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(-330px) rotateY(var(--rot,0deg));transition:transform .85s var(--ease)}
+.ring{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(-330px) rotateY(var(--rot,0deg));transition:transform .85s var(--ease);animation:ringspin 26s linear infinite}
 .pcard{
   position:absolute;left:50%;top:0;width:min(330px,80vw);height:100%;margin-left:calc(min(330px,80vw) / -2);
   background:var(--white);border:1px solid var(--line);padding:1.8rem 1.6rem;
@@ -380,17 +395,18 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
 
 /* ---------- táctil: el 3D no puede depender de un cursor que no existe ---------- */
 @media (hover:none){
-  .svc{transform:rotateY(-11deg);transform-origin:left center}
-  .svc.seen{transform:rotateY(0deg)}
+  .svc{transform-origin:left center}
+  .svc.seen{animation:swing .9s var(--ease) both}
   .svc.seen .svc__bar{transform:scaleY(1)}
 
-  .ei__card{transform:rotateY(var(--y,0deg))}
   .ei__card.seen{transform:rotateY(0deg) translateZ(16px)}
 
   .tile{animation:tilewave 7s var(--ease) infinite;animation-delay:calc(var(--d,0) * .09s)}
   .owner__card{animation:sway 11s ease-in-out infinite}
   .fact{animation:none}
 }
+@keyframes swing{from{transform:rotateY(-13deg)}to{transform:rotateY(0deg)}}
+@keyframes ringspin{to{transform:translateZ(-330px) rotateY(-360deg)}}
 @keyframes tilewave{
   0%,70%,100%{transform:translateZ(0) rotateX(0deg)}
   80%{transform:translateZ(34px) rotateX(-13deg)}
@@ -450,6 +466,9 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
           <div class="lbl" data-i="1"><b>02</b> Perfilería metálica 48</div>
           <div class="lbl" data-i="2"><b>03</b> Lana mineral 45 mm</div>
           <div class="lbl" data-i="3"><b>04</b> Placa de yeso 15 mm</div>
+        </div>
+        <div class="fb" id="fb" aria-hidden="true">
+          <div class="fb__scene"><span class="fb__l"></span><span class="fb__l"></span><span class="fb__l"></span><span class="fb__l"></span></div>
         </div>
         <div class="stage__legend" aria-hidden="true">
           <span><b>01</b> Placa de yeso 15 mm</span>
@@ -568,9 +587,9 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
           <p class="eyebrow rv">Techos registrables</p>
           <h2 class="rv rv2">Un techo que se<br>abre cuando toca.</h2>
         </div>
-        <p class="lede rv rv3">Registrable quiere decir que la instalación de arriba sigue siendo accesible: clima, electricidad, extinción. Pasa el cursor por las placas.</p>
+        <p class="lede rv rv3">Registrable quiere decir que la instalación de arriba sigue siendo accesible: clima, electricidad, extinción. Cada placa se levanta y se vuelve a poner.</p>
       </div>
-      <div class="ceiling" id="ceiling" aria-hidden="true"></div>
+      <div class="ceiling" id="ceiling" aria-hidden="true"><div class="tile" style="--d:0"></div><div class="tile" style="--d:1"></div><div class="tile" style="--d:2"></div><div class="tile tile--lit" style="--d:3"></div><div class="tile" style="--d:4"></div><div class="tile" style="--d:5"></div><div class="tile tile--vent" style="--d:1"></div><div class="tile" style="--d:2"></div><div class="tile tile--lit" style="--d:3"></div><div class="tile" style="--d:4"></div><div class="tile" style="--d:5"></div><div class="tile" style="--d:6"></div><div class="tile" style="--d:2"></div><div class="tile" style="--d:3"></div><div class="tile" style="--d:4"></div><div class="tile tile--lit" style="--d:5"></div><div class="tile" style="--d:6"></div><div class="tile tile--vent" style="--d:7"></div><div class="tile" style="--d:3"></div><div class="tile" style="--d:4"></div><div class="tile tile--lit" style="--d:5"></div><div class="tile" style="--d:6"></div><div class="tile" style="--d:7"></div><div class="tile" style="--d:8"></div></div>
     </div>
   </section>
 
@@ -596,7 +615,7 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
 
       <div class="carousel__nav">
         <button class="cbtn" id="prev" aria-label="Tipología anterior">‹</button>
-        <div class="dots" id="dots" aria-hidden="true"></div>
+        <div class="dots" id="dots" aria-hidden="true"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
         <button class="cbtn" id="next" aria-label="Tipología siguiente">›</button>
       </div>
       <p class="pnote">Cifras declaradas por la empresa. Las fotografías de obra se incorporan en cuanto estén disponibles.</p>
@@ -717,14 +736,6 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   tilt(document.getElementById("ownerCard"), 14, "4deg", "-7deg");
 
   /* ---------- techo registrable: onda escalonada en diagonal ---------- */
-  var ceiling = document.getElementById("ceiling"), LIT = [3,8,15,20], VENT = [6,17];
-  for(var i = 0; i < 24; i++){
-    var t = document.createElement("div");
-    t.className = "tile" + (LIT.indexOf(i) > -1 ? " tile--lit" : VENT.indexOf(i) > -1 ? " tile--vent" : "");
-    t.style.setProperty("--d", (i % 6) + Math.floor(i / 6));
-    ceiling.appendChild(t);
-  }
-
   /* ---------- en táctil no hay hover: el 3D se dispara al entrar en pantalla ---------- */
   var sio = new IntersectionObserver(function(es){
     es.forEach(function(e, n){
@@ -738,10 +749,7 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   /* ---------- carrusel 3D de proyectos ---------- */
   var ring = document.getElementById("ring"), cards = [].slice.call(ring.children);
   var dots = document.getElementById("dots"), idx = 0, timer = null;
-  cards.forEach(function(_, i){
-    var d = document.createElement("span");
-    d.className = "dot" + (i ? "" : " on"); dots.appendChild(d);
-  });
+  ring.style.animation = "none";   /* el giro por CSS era solo para cuando no hay JS */
   function go(n){
     idx = (n % cards.length + cards.length) % cards.length;
     ring.style.setProperty("--rot", (-idx * 90) + "deg");
@@ -794,11 +802,13 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
      DESPIECE 3D + PARTICULAS DE SONIDO (verde sobre blanco)
      ============================================================ */
   var canvas = document.getElementById("gl"), stage = document.getElementById("stage");
-  if(typeof THREE === "undefined" || !canvas) return;
+  if(typeof THREE === "undefined" || !canvas){ if(canvas) canvas.style.display = "none"; return; }
 
   var renderer;
   try{ renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:!coarse, alpha:true}); }
-  catch(e){ canvas.style.display = "none"; return; }
+  catch(e){ canvas.style.display = "none"; return; }   /* sin WebGL manda el respaldo en CSS */
+  var fb = document.getElementById("fb");
+  if(fb) fb.style.display = "none";
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, coarse ? 1.5 : 2));
 
   var scene = new THREE.Scene();

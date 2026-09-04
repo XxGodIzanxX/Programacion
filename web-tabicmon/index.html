@@ -885,14 +885,25 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   layers.forEach(function(l){ wall.add(l); });
 
   var GAP_OPEN = .62, GAP_SHUT = .105, spread = GAP_OPEN;
+  /* Encuadre calculado, no a ojo: se mete el despiece en una esfera y se retira la
+     cámara hasta que esa esfera cabe por el lado más estrecho del lienzo. Al ser una
+     esfera, el encuadre no baila mientras el tabique gira. */
+  var VIEW = new THREE.Vector3(.55, .30, .78).normalize();
+  var AIM  = new THREE.Vector3(0, .17, 0);   /* mira algo alto: deja aire arriba para las etiquetas */
+
   function frameCamera(){
-    /* en un escenario casi cuadrado el limite es el ancho: acercar y compactar el despiece */
-    /* el escenario mantiene su proporción a cualquier tamaño: decide el ancho real, no el aspect */
     var narrow = w < 520;
-    GAP_OPEN = narrow ? .44 : .62;
-    camera.fov = narrow ? 37 : 38;
-    if(narrow) camera.position.set(3.2, 1.75, 5.2); else camera.position.set(3.4, 1.9, 4.6);
-    camera.lookAt(0, 0, 0);
+    GAP_OPEN = narrow ? .46 : .62;   /* en pantalla pequeña las capas van más juntas */
+    camera.fov = 38;
+
+    var medioFondo = 1.5 * GAP_OPEN + .08;                      /* capas extremas + grosor de placa */
+    var radio  = Math.sqrt(1.25 * 1.25 + .9 * .9 + medioFondo * medioFondo);
+    var mitadV = camera.fov * Math.PI / 360;
+    var mitadH = Math.atan(Math.tan(mitadV) * camera.aspect);
+    var dist   = radio / Math.sin(Math.min(mitadV, mitadH)) * 1.16;
+
+    camera.position.copy(AIM).addScaledVector(VIEW, dist);
+    camera.lookAt(AIM);
     camera.updateProjectionMatrix();
   }
   function layout(g){

@@ -1,27 +1,27 @@
-# Subir la maqueta a prueba.ryuads.com
+# Subir la maqueta a pruebas.ryuads.com
 
 Guía para Hostinger (hPanel). Unos 15 minutos la primera vez.
 
 ---
 
-## 1. Crear el subdominio
+## 1. Localizar la carpeta del sitio
 
-hPanel → **Dominios → Subdominios**.
+`pruebas.ryuads.com` **ya existe** como sitio propio en la cuenta: aparece en la lista
+de dominios del panel. No hay que crear ningún subdominio.
 
-- Subdominio: `prueba`
-- Dominio: `ryuads.com`
-- Crear.
+hPanel → **Sitios web** → `pruebas.ryuads.com` → **Administrador de archivos**.
+Entra hasta el `public_html` de ESE sitio, normalmente
+`domains/pruebas.ryuads.com/public_html/`.
 
-Hostinger crea la carpeta `public_html/prueba/` (a veces `domains/prueba.ryuads.com/public_html/`).
-**Apunta la ruta exacta que te muestre**: ahí van los archivos, y en ningún otro sitio.
-
-> El DNS puede tardar de unos minutos a un par de horas en propagarse.
+**Escribe bien el nombre al probarlo en el navegador.** Es `pruebas`, en plural.
+Un nombre que no está configurado en el servidor no da "no encontrado": llega igual
+a la máquina y responde **403 Forbidden**, que despista mucho.
 
 ---
 
 ## 2. Activar el SSL
 
-hPanel → **Seguridad → SSL** → elegir `prueba.ryuads.com` → instalar el certificado gratuito.
+hPanel → **Seguridad → SSL** → elegir `pruebas.ryuads.com` → instalar el certificado gratuito.
 
 Sin esto el navegador marca la página como "No segura", que es lo peor
 que puede pasar al enseñarle una demo a un cliente.
@@ -30,7 +30,7 @@ que puede pasar al enseñarle una demo a un cliente.
 
 ## 3. Subir los archivos
 
-hPanel → **Archivos → Administrador de archivos** → entrar en la carpeta del subdominio.
+hPanel → **Archivos → Administrador de archivos** → entrar en la carpeta del sitio localizada en el paso 1.
 
 | Archivo | De dónde sale | Nombre en el servidor |
 |---|---|---|
@@ -70,7 +70,7 @@ Cuando esto pase al dominio del cliente, se vuelven a poner las de `tabicmon.com
 
 ## 5. Comprobar
 
-Abre `https://prueba.ryuads.com` y repasa:
+Abre `https://pruebas.ryuads.com` y repasa:
 
 - [ ] Sale el despiece 3D girando en la cabecera
 - [ ] Las etiquetas de las capas apuntan a su material
@@ -98,9 +98,10 @@ Abre `https://prueba.ryuads.com` y repasa:
 
 | Síntoma | Causa casi segura |
 |---|---|
+| **403, acceso denegado** | El nombre del navegador no coincide con el del panel (`pruebas`, en plural), o falta `index.html` en la carpeta del sitio: con `Options -Indexes` el servidor responde 403 en vez de listar. |
 | "No se puede acceder al sitio" | El DNS aún no ha propagado. Espera. |
 | Sale el listado de archivos | Falta `index.html` o está mal escrito el nombre. |
 | Se ve la web pero sin 3D | El navegador no da contexto WebGL: sale el despiece de respaldo en CSS. Normal en equipos muy viejos. |
-| El formulario descarga un archivo | El servidor no está ejecutando PHP. Revisa que la versión de PHP del subdominio sea 8.1 o superior. |
+| El formulario descarga un archivo | El servidor no está ejecutando PHP. Revisa que la versión de PHP del sitio sea 8.1 o superior. |
 | El formulario abre el correo del visitante | No encuentra `enviar.php`. Comprueba que está en la misma carpeta que `index.html`. |
 | El correo no llega | Remitente de un dominio distinto al del servidor, o falta la cuenta. Vuelve al paso 4. |

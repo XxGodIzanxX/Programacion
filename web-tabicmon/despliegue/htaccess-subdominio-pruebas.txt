@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------
-# Subdominio de pruebas — se sube renombrado a  .htaccess
+# Sitio de pruebas — se sube renombrado a  .htaccess
 # (con el punto delante; en el gestor de archivos hay que activar
 #  "mostrar archivos ocultos" para verlo después).
 #

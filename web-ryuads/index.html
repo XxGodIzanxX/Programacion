@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ryu Ads</title>
+<meta name="description" content="Agencia de marketing full-service: SEO, Google Ads, YouTube Ads, Meta Ads, desarrollo web, redes y automatizacion con IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* ============================================================
+   RYU ADS — sitio de agencia. Identidad: negro profundo + rojo dragon.
+   Regla de marca heredada del sistema de informes: el rojo es para
+   titulares, acentos y datos destacados. Nunca para parrafos de cuerpo.
+   Diseno de tema unico (dark) por decision de marca: todos los colores
+   se pintan explicitamente, nunca se heredan del host.
+   ============================================================ */
+
+:root{
+  --ink:#0A0A0B;
+  --ink-2:#101013;
+  --surface:#16161A;
+  --surface-2:#1E1F23;
+  --slate:#2F3236;
+  --line:rgba(255,255,255,.09);
+  --line-strong:rgba(255,255,255,.18);
+
+  --brand:#E01020;
+  --brand-bright:#FF5566;
+  --brand-deep:#7A0812;
+
+  --text:#F5F5F5;
+  --text-2:#C9C9CE;
+  --text-dim:#9E9E9E;
+
+  --sev-critico:#E01020;
+  --sev-medio:#F5A623;
+  --sev-bajo:#3FB27F;
+
+  --display:"Bodoni Moda","Didot",Georgia,"Times New Roman",serif;
+  --body:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+
+  --shell:min(1180px,92vw);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%}
+a{color:inherit}
+::selection{background:var(--brand);color:#fff}
+:focus-visible{outline:2px solid var(--brand-bright);outline-offset:3px;border-radius:2px}
+
+/* ---------- tipografia ---------- */
+h1,h2,h3{font-family:var(--display);font-weight:500;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(2.9rem,8vw,6.4rem);line-height:.94}
+h2{font-size:clamp(2rem,4.6vw,3.5rem);line-height:1.02}
+h3{font-size:1.28rem;line-height:1.2}
+p{margin:0}
+.eyebrow{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--brand-bright);display:flex;align-items:center;gap:.7rem;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--brand);flex:none}
+.lede{font-size:clamp(1.02rem,1.6vw,1.2rem);color:var(--text-2);max-width:60ch}
+.dim{color:var(--text-dim)}
+.red{color:var(--brand-bright)}
+
+/* ---------- estructura ---------- */
+.shell{width:100%;max-width:var(--shell);margin-inline:auto;padding-inline:0}
+section{position:relative;padding:clamp(5rem,11vw,9rem) 0}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent);border:0;margin:0}
+
+/* ---------- nav ---------- */
+.nav{
+  position:fixed;inset:0 0 auto 0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  width:100%;max-width:var(--shell);margin-inline:auto;padding:1.1rem 0;
+  transition:padding .35s var(--ease);
+}
+.nav::before{
+  content:"";position:fixed;inset:0 0 auto 0;height:var(--navh,74px);
+  background:rgba(10,10,11,.72);backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;z-index:-1;
+  opacity:0;transition:opacity .35s var(--ease),border-color .35s var(--ease);
+}
+body.scrolled .nav::before{opacity:1;border-bottom-color:var(--line)}
+.logo{display:flex;align-items:baseline;gap:.55rem;text-decoration:none;font-family:var(--display);font-size:1.35rem;letter-spacing:.01em}
+.logo b{color:var(--brand);font-weight:700}
+.logo i{font-style:italic;font-weight:400}
+.logo .kanji{font-family:var(--body);font-size:.78rem;color:var(--text-dim);letter-spacing:.3em;transform:translateY(-1px)}
+.navlinks{display:flex;gap:1.9rem;align-items:center}
+.navlinks a{
+  font-size:.86rem;text-decoration:none;color:var(--text-2);position:relative;padding-block:.2rem;
+  transition:color .25s var(--ease);
+}
+.navlinks a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--brand);
+  transition:right .3s var(--ease);
+}
+.navlinks a:hover{color:var(--text)}
+.navlinks a:hover::after{right:0}
+@media(max-width:820px){.navlinks{display:none}}
+
+/* ---------- boton ---------- */
+.btn{
+  --bg:var(--brand);
+  position:relative;display:inline-flex;align-items:center;gap:.7rem;
+  padding:.86rem 1.5rem;border:0;border-radius:2px;cursor:pointer;
+  font-family:var(--body);font-size:.9rem;font-weight:600;letter-spacing:.01em;
+  color:#fff;background:var(--bg);text-decoration:none;
+  transform-style:preserve-3d;transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+  box-shadow:0 8px 30px -14px rgba(224,16,32,.9);
+}
+.btn:hover{transform:translateY(-2px) rotateX(-9deg);box-shadow:0 18px 40px -18px rgba(224,16,32,1)}
+.btn .arrow{transition:transform .3s var(--ease)}
+.btn:hover .arrow{transform:translateX(4px)}
+.btn--ghost{background:transparent;color:var(--text);box-shadow:none;border:1px solid var(--line-strong)}
+.btn--ghost:hover{border-color:var(--brand);box-shadow:0 14px 34px -22px rgba(224,16,32,.8)}
+.btn--sm{padding:.62rem 1.1rem;font-size:.82rem}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;min-height:clamp(620px,92vh,900px);
+  display:grid;grid-template-rows:1fr auto;padding-top:clamp(7rem,14vh,10rem);padding-bottom:2.2rem;
+  overflow:hidden;
+  background:radial-gradient(58% 62% at 74% 44%, rgba(122,8,18,.30) 0%, rgba(224,16,32,.07) 42%, rgba(10,10,11,0) 72%);
+}
+.hero>.shell:first-of-type{align-self:center}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+.hero::after{ /* velo para que el tipo siempre gane al 3D */
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(70% 55% at 18% 46%, rgba(10,10,11,.92) 0%, rgba(10,10,11,.55) 45%, rgba(10,10,11,0) 78%),
+    linear-gradient(to bottom, rgba(10,10,11,.85) 0%, rgba(10,10,11,0) 26%, rgba(10,10,11,0) 62%, var(--ink) 100%);
+}
+.hero .shell{position:relative;z-index:2}
+.hero-copy{max-width:none}
+h1 .ln{display:block;overflow:hidden}
+h1 .ln>span{display:block;transform:translateY(102%) rotateX(-48deg);transform-origin:top center;will-change:transform}
+.loaded h1 .ln>span{transform:none;transition:transform 1.05s var(--ease)}
+.loaded h1 .ln:nth-child(2)>span{transition-delay:.09s}
+.loaded h1 .ln:nth-child(3)>span{transition-delay:.18s}
+h1 em{font-style:italic;color:var(--brand)}
+.hero-sub{margin-top:1.9rem;max-width:46ch}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2.4rem;perspective:700px}
+.hero-meta{
+  margin-top:3.4rem;display:flex;flex-wrap:wrap;gap:.55rem;font-family:var(--mono);
+  font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim);
+}
+.hero-meta span{border:1px solid var(--line);padding:.34rem .6rem;border-radius:2px;background:rgba(22,22,26,.6)}
+.scrollcue{
+  position:relative;z-index:2;align-self:end;display:flex;align-items:center;gap:.7rem;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);
+}
+.scrollcue i{display:block;width:44px;height:1px;background:var(--line-strong);position:relative;overflow:hidden}
+.scrollcue i::after{content:"";position:absolute;inset:0;background:var(--brand);animation:sweep 2.4s infinite var(--ease)}
+@keyframes sweep{0%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
+
+/* ---------- cifras ---------- */
+.figures{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-block:1px solid var(--line);background:var(--ink-2)}
+.fig{padding:2.4rem clamp(1rem,3vw,2.2rem);border-left:1px solid var(--line);transition:background .4s var(--ease)}
+.fig:first-child{border-left:0}
+.fig:hover{background:rgba(224,16,32,.05)}
+.fig b{display:block;font-family:var(--display);font-size:clamp(2.4rem,5vw,3.6rem);line-height:1;color:var(--brand-bright);font-weight:600}
+.fig span{display:block;margin-top:.7rem;font-size:.88rem;color:var(--text-2);max-width:26ch}
+@media(max-width:760px){.figures{grid-template-columns:1fr}.fig{border-left:0;border-top:1px solid var(--line)}.fig:first-child{border-top:0}}
+
+/* ---------- cabecera de seccion ---------- */
+.head{display:grid;grid-template-columns:1fr minmax(0,44ch);gap:2.4rem 4rem;align-items:end;margin-bottom:clamp(2.6rem,5vw,4rem)}
+@media(max-width:860px){.head{grid-template-columns:1fr}}
+
+/* ---------- servicios 3D ---------- */
+.grid7{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);perspective:1400px}
+.svc{
+  position:relative;background:var(--surface);padding:2rem 1.7rem 1.8rem;min-height:270px;
+  display:flex;flex-direction:column;gap:.85rem;
+  transform-style:preserve-3d;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0);
+  transition:transform .5s var(--ease),background .5s var(--ease);
+}
+.svc::before{
+  content:"";position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .5s var(--ease);
+  background:radial-gradient(340px 220px at var(--mx,50%) var(--my,50%),rgba(224,16,32,.16),transparent 70%);
+}
+.svc:hover{background:var(--surface-2)}
+.svc:hover::before{opacity:1}
+.svc__n{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;color:var(--text-dim);transform:translateZ(18px)}
+.svc h3{transform:translateZ(34px)}
+.svc h3 span{color:var(--brand)}
+.svc p{font-size:.93rem;color:var(--text-2);transform:translateZ(24px)}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:auto;transform:translateZ(14px)}
+.chip{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--text-dim);
+  border:1px solid var(--line);padding:.24rem .5rem;border-radius:2px;background:rgba(10,10,11,.5);
+}
+.svc:hover .chip{border-color:rgba(224,16,32,.4);color:var(--text-2)}
+
+/* ---------- banda 3D ---------- */
+.band{
+  border-block:1px solid var(--line);background:var(--ink-2);
+  padding:1.1rem 0;overflow:hidden;perspective:600px;
+}
+.band__inner{
+  display:flex;gap:3.2rem;width:max-content;
+  font-family:var(--mono);font-size:.76rem;letter-spacing:.28em;text-transform:uppercase;color:var(--text-dim);
+  transform:rotateX(var(--bx,0deg));transform-origin:center;
+  animation:slide 38s linear infinite;
+}
+.band__inner b{color:var(--brand);font-weight:500}
+@keyframes slide{to{transform:rotateX(var(--bx,0deg)) translateX(-50%)}}
+
+/* ---------- metodo (3 ejes) ---------- */
+.ejes{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);perspective:1500px}
+.eje{
+  background:var(--surface);display:grid;grid-template-columns:110px 1fr minmax(0,42ch);
+  gap:1.5rem 2.4rem;padding:2.2rem clamp(1.2rem,3vw,2.4rem);align-items:start;
+  transform-origin:center left;transition:background .45s var(--ease),transform .6s var(--ease);
+}
+.eje:hover{background:var(--surface-2)}
+.eje__n{
+  font-family:var(--display);font-size:3.1rem;line-height:.8;color:transparent;
+  -webkit-text-stroke:1px var(--brand);letter-spacing:-.03em;
+  transition:color .45s var(--ease);
+}
+.eje:hover .eje__n{color:var(--brand)}
+.eje h3{margin-bottom:.5rem}
+.eje p{font-size:.95rem;color:var(--text-2)}
+.eje ul{margin:.9rem 0 0;padding:0;list-style:none;display:grid;gap:.5rem}
+.eje li{font-size:.88rem;color:var(--text-dim);padding-left:1.1rem;position:relative}
+.eje li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;background:var(--brand-deep);transform:rotate(45deg)}
+@media(max-width:900px){.eje{grid-template-columns:1fr}}
+
+/* ---------- entregable + informe 3D ---------- */
+.deliver{display:grid;grid-template-columns:1fr minmax(0,480px);gap:clamp(2.6rem,6vw,5rem);align-items:center}
+@media(max-width:960px){.deliver{grid-template-columns:1fr}}
+.stage{perspective:1200px;perspective-origin:60% 45%}
+.report{
+  position:relative;background:var(--surface);border:1px solid var(--line-strong);border-radius:3px;
+  padding:1.7rem 1.6rem;transform-style:preserve-3d;
+  transform:rotateY(var(--ry,-16deg)) rotateX(var(--rx,7deg)) translateZ(0);
+  box-shadow:0 40px 80px -50px #000, 0 0 90px -50px rgba(224,16,32,.7);
+  transition:transform .25s linear;
+}
+.report::after{ /* segunda hoja detras, en profundidad real */
+  content:"";position:absolute;inset:14px -18px -18px 14px;background:var(--ink-2);
+  border:1px solid var(--line);border-radius:3px;transform:translateZ(-46px);z-index:-1;
+}
+.report__top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:.9rem;transform:translateZ(30px)}
+.report__top b{font-family:var(--display);font-size:1.1rem}
+.report__top b i{color:var(--brand);font-style:normal}
+.report__top span{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;color:var(--text-dim);text-transform:uppercase}
+.finding{display:grid;grid-template-columns:auto 1fr;gap:.5rem .8rem;align-items:baseline;padding:.9rem 0;border-bottom:1px solid var(--line);transform:translateZ(20px)}
+.finding:last-of-type{border-bottom:0}
+.badge{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.2rem .45rem;border-radius:2px;color:#0A0A0B;font-weight:500;
+}
+.badge--critico{background:var(--sev-critico);color:#fff}
+.badge--medio{background:var(--sev-medio)}
+.badge--bajo{background:var(--sev-bajo)}
+.finding p{font-size:.86rem;color:var(--text-2)}
+.finding small{grid-column:2;font-family:var(--mono);font-size:.68rem;color:var(--brand-bright);letter-spacing:.04em}
+.report__foot{margin-top:1rem;font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;transform:translateZ(30px)}
+.checks{display:grid;gap:1rem;margin-top:2rem}
+.check{display:grid;grid-template-columns:auto 1fr;gap:.9rem;align-items:start}
+.check i{width:22px;height:22px;flex:none;border:1px solid var(--brand);border-radius:50%;display:grid;place-items:center;color:var(--brand-bright);font-size:.7rem;font-style:normal;margin-top:.15rem}
+.check b{display:block;font-weight:600;font-size:.98rem}
+.check span{font-size:.9rem;color:var(--text-dim)}
+
+/* ---------- manifiesto ---------- */
+.manifest{background:var(--ink-2)}
+.kill{display:grid;gap:.9rem;margin:2.2rem 0 0;padding:0;list-style:none;perspective:900px}
+.kill li{
+  font-family:var(--display);font-size:clamp(1.5rem,3.6vw,2.6rem);line-height:1.15;color:var(--text-dim);
+  position:relative;display:inline-block;width:fit-content;
+  transform:rotateX(var(--k,0deg));transform-origin:left center;transition:transform .6s var(--ease),color .4s var(--ease);
+}
+.kill li::after{
+  content:"";position:absolute;left:0;top:52%;height:2px;width:0;background:var(--brand);
+  transition:width .55s var(--ease);
+}
+.kill li.struck::after{width:100%}
+.kill li.struck{color:#55555c}
+.manifest .after{margin-top:2.4rem;font-size:clamp(1.05rem,2vw,1.35rem);color:var(--text);max-width:52ch}
+.manifest .after b{color:var(--brand-bright);font-weight:600}
+
+/* ---------- contacto ---------- */
+.cta{position:relative;overflow:hidden}
+.cta::before{
+  content:"";position:absolute;inset:-40% -10% auto;height:120%;pointer-events:none;
+  background:radial-gradient(50% 50% at 50% 40%,rgba(224,16,32,.22),transparent 70%);
+}
+.cta .shell{position:relative}
+.form{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2.4rem;max-width:640px}
+.field{display:grid;gap:.4rem}
+.field--full{grid-column:1/-1}
+label{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim)}
+input,textarea,select{
+  font-family:var(--body);font-size:.95rem;color:var(--text);
+  background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:.8rem .9rem;
+  transition:border-color .3s var(--ease),background .3s var(--ease);
+}
+input:focus,textarea:focus,select:focus{border-color:var(--brand);background:var(--surface-2);outline:none}
+textarea{resize:vertical;min-height:96px}
+.form .btn{grid-column:1/-1;justify-self:start;margin-top:.4rem}
+@media(max-width:620px){.form{grid-template-columns:1fr}}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--ink)}
+.foot{display:flex;flex-wrap:wrap;gap:1.4rem;justify-content:space-between;align-items:center}
+.foot p,.foot a{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--text-dim);text-decoration:none}
+.foot a:hover{color:var(--brand-bright)}
+
+/* ---------- reveal: solo transform, el texto siempre es legible ---------- */
+.rv{transform:translateY(26px) rotateX(9deg);transform-origin:top center;transition:transform .85s var(--ease)}
+.rv.in{transform:none}
+.rv2{transition-delay:.1s}.rv3{transition-delay:.2s}.rv4{transition-delay:.3s}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .rv,h1 .ln>span{transform:none!important}
+  .band__inner{animation:none}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="logo" href="#top"><i>Ryu</i><b>Ads</b><span class="kanji">龍</span></a>
+  <nav class="navlinks">
+    <a href="#servicios">Servicios</a>
+    <a href="#metodo">Método</a>
+    <a href="#informe">El informe</a>
+    <a href="#manifiesto">Cómo trabajamos</a>
+  </nav>
+  <a class="btn btn--sm" href="#contacto">Auditoría gratuita <span class="arrow">→</span></a>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Agencia full-service · SEO · Ads · IA</p>
+        <h1>
+          <span class="ln"><span>Marketing que</span></span>
+          <span class="ln"><span>se mide en</span></span>
+          <span class="ln"><span><em>euros</em>.</span></span>
+        </h1>
+      </div>
+      <p class="lede hero-sub">No vendemos impresiones ni informes de PageSpeed. Auditamos tu negocio, encontramos el punto de fuga del funnel y lo traducimos a un plan de 5 acciones ordenadas por impacto.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#contacto">Pedir auditoría <span class="arrow">→</span></a>
+        <a class="btn btn--ghost" href="#metodo">Ver el método</a>
+      </div>
+      <div class="hero-meta">
+        <span>SEO</span><span>Google Ads</span><span>YouTube Ads</span><span>Meta Ads</span>
+        <span>Desarrollo web</span><span>Redes</span><span>Automatización IA</span>
+      </div>
+    </div>
+    <div class="scrollcue shell"><i></i> Desliza</div>
+  </section>
+
+  <!-- ============ CIFRAS ============ -->
+  <div class="figures">
+    <div class="fig"><b>7</b><span>líneas de servicio bajo un mismo equipo. Sin subcontratas ni intermediarios.</span></div>
+    <div class="fig"><b>3</b><span>ejes de auditoría: negocio primero, canales después, competencia al final.</span></div>
+    <div class="fig"><b>0</b><span>hallazgos inflados. Si no hay dato, se marca como hipótesis a validar.</span></div>
+  </div>
+
+  <!-- ============ SERVICIOS ============ -->
+  <section id="servicios">
+    <div class="shell">
+      <div class="head">
+        <div>
+          <p class="eyebrow rv">Servicios</p>
+          <h2 class="rv rv2" style="margin-top:1.1rem">Siete lentes<br>sobre el mismo negocio.</h2>
+        </div>
+        <p class="lede rv rv3">No todas aplican a todo cliente. La habilidad está en elegir las relevantes y, sobre todo, en detectar los canales que no estás usando y deberías.</p>
+      </div>
+
+      <div class="grid7" id="grid7">
+        <article class="svc"><p class="svc__n">01 / SEO</p><h3>Orgánico, <span>técnico</span> y de contenidos</h3><p>Indexación, arquitectura y autoridad. Keywords donde ya compites y donde deberías competir.</p><div class="chips"><span class="chip">indexación</span><span class="chip">on-page</span><span class="chip">sitemap</span><span class="chip">autoridad</span></div></article>
+        <article class="svc"><p class="svc__n">02 / Google Ads</p><h3>Search, Display y <span>Performance Max</span></h3><p>Estructura de campañas, calidad de la landing de destino y coste real por lead cualificado.</p><div class="chips"><span class="chip">search</span><span class="chip">display</span><span class="chip">pmax</span><span class="chip">CPL</span></div></article>
+        <article class="svc"><p class="svc__n">03 / YouTube Ads</p><h3>Vídeo, awareness y <span>remarketing</span></h3><p>El canal más barato para llenar la parte alta del funnel y el más ignorado por tu competencia.</p><div class="chips"><span class="chip">hook</span><span class="chip">awareness</span><span class="chip">retargeting</span></div></article>
+        <article class="svc"><p class="svc__n">04 / Meta Ads</p><h3>Facebook + Instagram, <span>prospecting</span> y retargeting</h3><p>Públicos fríos que aún no te conocen y calientes que se cayeron del carrito. Dos juegos distintos.</p><div class="chips"><span class="chip">prospecting</span><span class="chip">retargeting</span><span class="chip">pixel</span></div></article>
+        <article class="svc"><p class="svc__n">05 / Desarrollo web</p><h3>Sitio, landings y <span>CRO</span></h3><p>Core Web Vitals, móvil y claridad de propuesta de valor. Cada punto de fricción del formulario cuesta leads.</p><div class="chips"><span class="chip">Core Web Vitals</span><span class="chip">mobile</span><span class="chip">formularios</span></div></article>
+        <article class="svc"><p class="svc__n">06 / Redes sociales</p><h3>Contenido, <span>frecuencia</span> y comunidad</h3><p>Coherencia de marca y presencia donde está tu cliente, no donde es cómodo publicar.</p><div class="chips"><span class="chip">calendario</span><span class="chip">engagement</span><span class="chip">comunidad</span></div></article>
+        <article class="svc"><p class="svc__n">07 / Automatización IA</p><h3>Nurturing, chatbots y <span>flujos</span></h3><p>Respuesta al lead en minutos, no en días. Y los procesos manuales que hoy se comen tu margen.</p><div class="chips"><span class="chip">lead nurturing</span><span class="chip">chatbots</span><span class="chip">flujos</span></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BANDA ============ -->
+  <div class="band" id="band">
+    <div class="band__inner" aria-hidden="true">
+      <span>GA4</span><b>·</b><span>Meta Pixel</span><b>·</b><span>Core Web Vitals</span><b>·</b><span>Performance Max</span><b>·</b><span>Google Business Profile</span><b>·</b><span>CRO</span><b>·</b><span>Ticket medio</span><b>·</b><span>Lead nurturing</span><b>·</b><span>Benchmark</span><b>·</b>
+      <span>GA4</span><b>·</b><span>Meta Pixel</span><b>·</b><span>Core Web Vitals</span><b>·</b><span>Performance Max</span><b>·</b><span>Google Business Profile</span><b>·</b><span>CRO</span><b>·</b><span>Ticket medio</span><b>·</b><span>Lead nurturing</span><b>·</b><span>Benchmark</span><b>·</b>
+    </div>
+  </div>
+
+  <!-- ============ METODO ============ -->
+  <section id="metodo">
+    <div class="shell">
+      <div class="head">
+        <div>
+          <p class="eyebrow rv">Método</p>
+          <h2 class="rv rv2" style="margin-top:1.1rem">Nunca empezamos<br>por lo técnico.</h2>
+        </div>
+        <p class="lede rv rv3">Los tres ejes van en este orden y no en otro. El cliente no paga por un score de PageSpeed: paga por saber si eso le trae clientes.</p>
+      </div>
+
+      <div class="ejes">
+        <article class="eje rv">
+          <div class="eje__n">01</div>
+          <div>
+            <h3>Negocio</h3>
+            <p>Antes de tocar una sola herramienta: objetivo real, ticket medio y funnel actual. Si faltan estos datos, los preguntamos. Un informe técnico sin este eje es ruido, no consultoría.</p>
+          </div>
+          <ul>
+            <li>Objetivo real: leads, ventas, reservas o notoriedad</li>
+            <li>Ticket medio para traducir cada hallazgo a €, no a %</li>
+            <li>De dónde vienen las visitas y dónde se caen</li>
+          </ul>
+        </article>
+
+        <article class="eje rv">
+          <div class="eje__n">02</div>
+          <div>
+            <h3>Canales y servicios</h3>
+            <p>Recorremos las siete líneas. Por cada una: estado actual, hallazgo con severidad y oportunidad concreta. Sin GA4 o Pixel bien instalados, todo lo demás es a ciegas: eso se marca como bloqueante.</p>
+          </div>
+          <ul>
+            <li>Severidad por hallazgo: crítico, medio o bajo</li>
+            <li>Canales de pago que ignoras y te convienen</li>
+            <li>Analítica transversal como requisito, no como extra</li>
+          </ul>
+        </article>
+
+        <article class="eje rv">
+          <div class="eje__n">03</div>
+          <div>
+            <h3>Competencia</h3>
+            <p>Tres a cinco competidores directos, mismo sector y misma zona si el negocio es local. El objetivo no es quién tiene la web más bonita: es dónde hay una brecha explotable.</p>
+          </div>
+          <ul>
+            <li>Keywords clave y actividad detectable en Ads</li>
+            <li>Propuesta de valor comparada, no estética</li>
+            <li>La brecha se convierte en la primera acción del plan</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ INFORME ============ -->
+  <section id="informe">
+    <div class="shell deliver">
+      <div>
+        <p class="eyebrow rv">El entregable</p>
+        <h2 class="rv rv2" style="margin:1.1rem 0 1.4rem">Un informe<br>que se lee entero.</h2>
+        <p class="lede rv rv3">Máximo cinco líneas de resumen ejecutivo, hallazgos con severidad e impacto en euros cuando el dato existe, y un plan de acción priorizado por impacto/esfuerzo.</p>
+        <div class="checks">
+          <div class="check rv rv2"><i>1</i><div><b>Resumen ejecutivo</b><span>Contexto, los dos o tres hallazgos que mueven la aguja y su impacto en negocio.</span></div></div>
+          <div class="check rv rv3"><i>2</i><div><b>Hallazgos con severidad</b><span>Crítico, medio o bajo. Cada afirmación con un dato detrás o marcada como hipótesis.</span></div></div>
+          <div class="check rv rv4"><i>3</i><div><b>Plan de cinco acciones</b><span>Ordenadas por impacto/esfuerzo. Cada acción mapea a una línea de servicio concreta.</span></div></div>
+        </div>
+      </div>
+
+      <div class="stage rv rv2">
+        <div class="report" id="report">
+          <div class="report__top"><b>Auditoría <i>Ryu</i></b><span>Eje 2 · Canales</span></div>
+          <div class="finding"><span class="badge badge--critico">Crítico</span><p>Meta Pixel sin eventos de conversión: la inversión se optimiza a ciegas.</p><small>Bloqueante · medición</small></div>
+          <div class="finding"><span class="badge badge--medio">Medio</span><p>LCP de 4,1 s en móvil en la landing que recibe el 70 % del tráfico de pago.</p><small>Desarrollo web · CRO</small></div>
+          <div class="finding"><span class="badge badge--bajo">Bajo</span><p>Sin campañas de vídeo. El competidor principal ya está en YouTube.</p><small>Oportunidad · YouTube Ads</small></div>
+          <p class="report__foot">Plan de acción · 5 pasos · impacto / esfuerzo</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MANIFIESTO ============ -->
+  <section id="manifiesto" class="manifest">
+    <div class="shell">
+      <p class="eyebrow rv">Cómo trabajamos</p>
+      <h2 class="rv rv2" style="margin-top:1.1rem">Tres frases que<br>no vas a leer aquí.</h2>
+      <ul class="kill" id="kill">
+        <li>«Soluciones 360º»</li>
+        <li>«Estrategias innovadoras»</li>
+        <li>«Llevamos tu marca al siguiente nivel»</li>
+      </ul>
+      <p class="after rv rv3">Son las frases vacías de toda la competencia. Aquí cada afirmación lleva <b>un dato o una acción concreta</b> detrás — y nunca inflamos un diagnóstico para justificar más horas. La credibilidad del informe es el producto.</p>
+    </div>
+  </section>
+
+  <!-- ============ CONTACTO ============ -->
+  <section id="contacto" class="cta">
+    <div class="shell">
+      <p class="eyebrow rv">Contacto</p>
+      <h2 class="rv rv2" style="margin:1.1rem 0 1.3rem">Empecemos por<br>el eje uno.</h2>
+      <p class="lede rv rv3">Cuéntanos el objetivo, el ticket medio y por dónde entra hoy tu tráfico. Con eso ya se puede auditar de verdad.</p>
+
+      <form class="form rv rv3" id="form">
+        <div class="field"><label for="nombre">Nombre</label><input id="nombre" name="nombre" type="text" required placeholder="Tu nombre"></div>
+        <div class="field"><label for="empresa">Empresa o dominio</label><input id="empresa" name="empresa" type="text" required placeholder="miempresa.com"></div>
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="tu@empresa.com"></div>
+        <div class="field">
+          <label for="objetivo">Objetivo principal</label>
+          <select id="objetivo" name="objetivo">
+            <option>Más leads</option><option>Ventas ecommerce</option><option>Reservas</option><option>Notoriedad de marca</option>
+          </select>
+        </div>
+        <div class="field field--full"><label for="contexto">Ticket medio y de dónde viene hoy tu tráfico</label><textarea id="contexto" name="contexto" placeholder="Ticket medio aproximado, canales activos, qué has probado ya…"></textarea></div>
+        <button class="btn" type="submit">Enviar y pedir auditoría <span class="arrow">→</span></button>
+      </form>
+      <p class="dim rv rv4" style="margin-top:1rem;font-size:.82rem">Se abrirá tu cliente de correo con el mensaje ya redactado.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="shell foot">
+    <p>© <span id="year">2026</span> Ryu Ads · Agencia de marketing full-service</p>
+    <p><a href="mailto:hola@ryuads.com">hola@ryuads.com</a></p>
+    <p>SEO · Google Ads · YouTube Ads · Meta Ads · Web · Redes · IA</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var coarse = window.matchMedia("(pointer: coarse)").matches;
+
+  /* ---------- entrada del hero ---------- */
+  requestAnimationFrame(function(){ document.body.classList.add("loaded"); });
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- nav + altura ---------- */
+  var nav = document.querySelector(".nav");
+  function navH(){ document.documentElement.style.setProperty("--navh", nav.offsetHeight + 22 + "px"); }
+  navH(); addEventListener("resize", navH);
+
+  /* ---------- reveals (solo transform) ---------- */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, {rootMargin:"0px 0px -12% 0px", threshold:.15});
+  document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+
+  /* ---------- tachado del manifiesto ---------- */
+  var kio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var li = e.target, i = [].indexOf.call(li.parentNode.children, li);
+      setTimeout(function(){ li.classList.add("struck"); }, 220 * i);
+      kio.unobserve(li);
+    });
+  }, {threshold:.6});
+  document.querySelectorAll("#kill li").forEach(function(li){ kio.observe(li); });
+
+  /* ---------- tilt 3D de las tarjetas de servicio ---------- */
+  if(!coarse && !reduce){
+    document.querySelectorAll(".svc").forEach(function(card){
+      card.addEventListener("pointermove", function(ev){
+        var r = card.getBoundingClientRect();
+        var px = (ev.clientX - r.left) / r.width, py = (ev.clientY - r.top) / r.height;
+        card.style.setProperty("--ry", (px - .5) * 13 + "deg");
+        card.style.setProperty("--rx", (.5 - py) * 13 + "deg");
+        card.style.setProperty("--mx", px * 100 + "%");
+        card.style.setProperty("--my", py * 100 + "%");
+      });
+      card.addEventListener("pointerleave", function(){
+        card.style.setProperty("--ry","0deg"); card.style.setProperty("--rx","0deg");
+      });
+    });
+  }
+
+  /* ---------- scroll: banda y maqueta del informe en 3D ---------- */
+  var band = document.getElementById("band"), report = document.getElementById("report");
+  var bandInner = band.querySelector(".band__inner");
+  var ticking = false;
+  function onScroll(){
+    document.body.classList.toggle("scrolled", scrollY > 20);
+    if(reduce || ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var vh = innerHeight;
+      var br = band.getBoundingClientRect();
+      var bp = 1 - (br.top + br.height/2) / vh;          /* -1 .. 1 */
+      bandInner.style.setProperty("--bx", (bp * -26).toFixed(2) + "deg");
+
+      var rr = report.getBoundingClientRect();
+      var rp = 1 - (rr.top + rr.height/2) / vh;
+      report.style.setProperty("--ry", (-16 + rp * 22).toFixed(2) + "deg");
+      report.style.setProperty("--rx", (7 - rp * 12).toFixed(2) + "deg");
+      ticking = false;
+    });
+  }
+  addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- formulario -> mailto ---------- */
+  document.getElementById("form").addEventListener("submit", function(ev){
+    ev.preventDefault();
+    var f = ev.target;
+    var cuerpo =
+      "Nombre: " + f.nombre.value + "\n" +
+      "Empresa: " + f.empresa.value + "\n" +
+      "Email: " + f.email.value + "\n" +
+      "Objetivo: " + f.objetivo.value + "\n\n" +
+      f.contexto.value;
+    location.href = "mailto:hola@ryuads.com?subject=" +
+      encodeURIComponent("Auditoría — " + f.empresa.value) +
+      "&body=" + encodeURIComponent(cuerpo);
+  });
+
+  /* ============================================================
+     HERO 3D — nucleo deformado + malla + polvo de particulas.
+     Se pausa cuando el hero sale de pantalla: cero coste al scrollear.
+     ============================================================ */
+  var canvas = document.getElementById("gl");
+  if(typeof THREE === "undefined" || !canvas){ return; }
+
+  var renderer;
+  try{
+    renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:!coarse, alpha:true, powerPreference:"high-performance"});
+  }catch(e){ canvas.style.display = "none"; return; }
+
+  var hero = document.querySelector(".hero");
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, coarse ? 1.5 : 2));
+  renderer.setSize(hero.clientWidth, hero.clientHeight, false);
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(46, hero.clientWidth / hero.clientHeight, .1, 100);
+  camera.position.set(0, 0, 6.1);
+
+  var group = new THREE.Group();
+  scene.add(group);
+
+  var uniforms = {
+    uTime:   {value:0},
+    uAmp:    {value:.30},
+    uDeep:   {value:new THREE.Color(0x7A0812)},
+    uBright: {value:new THREE.Color(0xFF5566)},
+    uBrand:  {value:new THREE.Color(0xE01020)}
+  };
+
+  var VERT = [
+    "uniform float uTime; uniform float uAmp;",
+    "varying float vD; varying vec3 vN; varying vec3 vP;",
+    "float wob(vec3 p, float t){",
+    "  float a = sin(p.x*2.1 + t) * cos(p.y*1.9 - t*.8) * sin(p.z*2.3 + t*.6);",
+    "  float b = sin(p.y*4.3 - t*1.3) * cos(p.z*3.7 + t*.9) * .45;",
+    "  float c = sin(p.z*7.9 + t*1.7) * .18;",
+    "  return a + b + c;",
+    "}",
+    "void main(){",
+    "  vN = normalize(normalMatrix * normal);",
+    "  float d = wob(position, uTime);",
+    "  vD = d;",
+    "  vec3 p = position + normal * d * uAmp;",
+    "  vP = p;",
+    "  gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);",
+    "}"
+  ].join("\n");
+
+  var FRAG = [
+    "uniform vec3 uDeep; uniform vec3 uBright; uniform vec3 uBrand;",
+    "varying float vD; varying vec3 vN; varying vec3 vP;",
+    "void main(){",
+    "  float f = pow(1.0 - abs(dot(normalize(vN), vec3(0.0,0.0,1.0))), 2.2);",
+    "  vec3 base = mix(uDeep * 0.25, uBrand, clamp(vD*0.5+0.5, 0.0, 1.0));",
+    "  vec3 col  = mix(base, uBright, f);",
+    "  float a   = 0.30 + f * 0.70;",
+    "  gl_FragColor = vec4(col, a);",
+    "}"
+  ].join("\n");
+
+  var geo = new THREE.IcosahedronGeometry(1.75, coarse ? 3 : 5);
+  var core = new THREE.Mesh(geo, new THREE.ShaderMaterial({
+    uniforms:uniforms, vertexShader:VERT, fragmentShader:FRAG,
+    transparent:true, depthWrite:false
+  }));
+  group.add(core);
+
+  var wire = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.78, coarse ? 2 : 3),
+    new THREE.ShaderMaterial({
+      uniforms:uniforms, vertexShader:VERT, fragmentShader:FRAG,
+      wireframe:true, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+    })
+  );
+  group.add(wire);
+
+  var shell = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(2.85, 1),
+    new THREE.MeshBasicMaterial({color:0xE01020, wireframe:true, transparent:true, opacity:.10})
+  );
+  group.add(shell);
+
+  /* polvo */
+  var N = coarse ? 700 : 1900;
+  var pos = new Float32Array(N * 3), col = new Float32Array(N * 3);
+  var cA = new THREE.Color(0xE01020), cB = new THREE.Color(0xF5F5F5);
+  for(var i = 0; i < N; i++){
+    var r = 3.2 + Math.random() * 5.4;
+    var th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+    pos[i*3]   = r * Math.sin(ph) * Math.cos(th);
+    pos[i*3+1] = r * Math.sin(ph) * Math.sin(th) * .62;
+    pos[i*3+2] = r * Math.cos(ph);
+    var c = Math.random() < .78 ? cA : cB;
+    col[i*3] = c.r; col[i*3+1] = c.g; col[i*3+2] = c.b;
+  }
+  var pg = new THREE.BufferGeometry();
+  pg.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  pg.setAttribute("color", new THREE.BufferAttribute(col, 3));
+  var dust = new THREE.Points(pg, new THREE.PointsMaterial({
+    size:.028, vertexColors:true, transparent:true, opacity:.75,
+    depthWrite:false, blending:THREE.AdditiveBlending, sizeAttenuation:true
+  }));
+  scene.add(dust);
+
+  /* raton */
+  var mx = 0, my = 0, tx = 0, ty = 0;
+  if(!coarse){
+    addEventListener("pointermove", function(e){
+      tx = (e.clientX / innerWidth - .5) * 2;
+      ty = (e.clientY / innerHeight - .5) * 2;
+    }, {passive:true});
+  }
+
+  function resize(){
+    var w = hero.clientWidth, h = hero.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  addEventListener("resize", resize);
+
+  var running = true, t0 = performance.now();
+  new IntersectionObserver(function(es){
+    running = es[0].isIntersecting;
+    if(running && !reduce) requestAnimationFrame(loop);
+  }, {threshold:.01}).observe(hero);
+
+  function draw(t){
+    uniforms.uTime.value = t;
+    mx += (tx - mx) * .045; my += (ty - my) * .045;
+    group.rotation.y = t * .16 + mx * .5;
+    group.rotation.x = Math.sin(t * .22) * .12 - my * .32;
+    shell.rotation.y = -t * .1;
+    shell.rotation.z = t * .06;
+    dust.rotation.y = t * .035 + mx * .18;
+    dust.rotation.x = -my * .12;
+    camera.position.x = mx * .42;
+    camera.position.y = -my * .3;
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+  }
+
+  function loop(now){
+    if(!running || reduce) return;
+    draw((now - t0) / 1000);
+    requestAnimationFrame(loop);
+  }
+
+  if(reduce){ draw(1.2); }
+  else{ requestAnimationFrame(loop); }
+})();
+</script>
+</body>
+</html>

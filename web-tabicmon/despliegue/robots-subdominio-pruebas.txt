@@ -1,0 +1,6 @@
+# Subdominio de pruebas. No indexar nada.
+# Se sube como robots.txt SOLO al subdominio de pruebas.
+# Nunca al dominio definitivo del cliente.
+
+User-agent: *
+Disallow: /

@@ -17,9 +17,37 @@ ni build.
 | Contadores | Animación con `requestAnimationFrame` + easing cúbico, disparada por `IntersectionObserver` |
 | Reserva de cita | Formulario en 3 pasos con validación, resumen y pantalla de confirmación |
 | Tema claro / oscuro | Tokens CSS en `:root`, `prefers-color-scheme` y `[data-theme]`, con persistencia en `localStorage` |
+| Modo grabación | Chrome oculto, animaciones ralentizadas y recorrido automático por secciones con `requestAnimationFrame` |
 | Otros | Barra de progreso de scroll, nav activo por sección, menú móvil, marquesina, acordeón FAQ, CTA flotante |
 
 Todo respeta `prefers-reduced-motion`: sin autoplay, sin rotación y sin reveals.
+
+## Modo grabación
+
+Pensado para grabar la web sin que se vea la interfaz ni el ratón, y con las animaciones
+lo bastante lentas como para que se aprecien.
+
+Se activa de tres formas: tecla **G**, el botón del punto dorado en la barra, o abriendo
+el archivo con `#grabacion` al final de la URL.
+
+Mientras está activo:
+
+- desaparecen la barra de navegación, la barra de progreso y el botón flotante;
+- el molar gira al 45 % de velocidad, los reveals pasan de 0,7 s a 1,5 s, la marquesina
+  de 34 s a 78 s y los contadores de 1,4 s a 2,8 s;
+- el cursor se oculta solo tras 2 s sin moverlo;
+- los reveals y los contadores se rearman, así que la toma empieza siempre desde cero.
+
+**Recorrido guiado** (evita el scroll a trompicones del trackpad):
+
+| Tecla | Acción |
+|---|---|
+| `espacio` | inicia o pausa el recorrido automático por las 9 secciones |
+| `← →` | salta a la parada anterior o siguiente |
+| `↑ ↓` | ritmo del recorrido, de 0,5× a 2× |
+| `G` / `esc` | salir del modo grabación |
+
+El recorrido se mueve a ~250 px/s con easing cúbico y se detiene 2,8 s en cada sección.
 
 ## Decisiones
 

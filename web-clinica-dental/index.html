@@ -75,7 +75,7 @@ button,input,select,textarea{font:inherit; color:inherit}
 /* ---------- nav ---------- */
 .progress{position:fixed; top:0; left:0; height:2px; width:0; background:linear-gradient(90deg,var(--accent),var(--gold)); z-index:60}
 header.nav{
-  position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--ground) 82%, transparent);
+  position:sticky; top:0; z-index:50; background:var(--ground); background:color-mix(in srgb, var(--ground) 82%, transparent);
   backdrop-filter:saturate(180%) blur(14px); -webkit-backdrop-filter:saturate(180%) blur(14px);
   border-bottom:1px solid transparent; transition:border-color .3s ease, background .3s ease;
 }
@@ -143,7 +143,7 @@ header.nav.stuck{border-bottom-color:var(--line)}
 .stage-tag{
   position:absolute; display:flex; align-items:center; gap:8px; padding:8px 13px; border-radius:999px;
   background:rgba(10,26,24,.55); color:#E7EFEC; border:1px solid rgba(150,200,190,.24);
-  backdrop-filter:blur(8px); font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
   box-shadow:var(--shadow); white-space:nowrap;
 }
 .stage-tag i{width:6px; height:6px; border-radius:50%; background:#5FD6C1; box-shadow:0 0 0 4px rgba(95,214,193,.18); font-style:normal}
@@ -212,7 +212,7 @@ section{padding:clamp(56px,8vw,110px) 0}
   aspect-ratio:16/10; user-select:none; box-shadow:var(--shadow); touch-action:pan-y; background:var(--surface-2);
 }
 .ba svg{position:absolute; inset:0; width:100%; height:100%; display:block}
-.ba .after{clip-path:inset(0 0 0 50%)}
+.ba .after{-webkit-clip-path:inset(0 0 0 50%); clip-path:inset(0 0 0 50%)}
 .ba-handle{position:absolute; top:0; bottom:0; left:50%; width:2px; background:var(--gold); cursor:ew-resize; z-index:3}
 .ba-handle::after{
   content:"⇆"; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
@@ -360,6 +360,29 @@ footer a:hover{color:var(--accent)}
 .fab:hover{box-shadow:0 22px 50px -16px var(--accent)}
 .fab svg{width:18px; height:18px}
 
+/* modo grabación */
+.rec-dot{position:relative}
+.rec-dot::after{content:""; position:absolute; top:7px; right:7px; width:6px; height:6px; border-radius:50%; background:var(--gold)}
+body.rec header.nav, body.rec .progress, body.rec .fab{display:none !important}
+body.rec .rv{transition-duration:1.5s}
+body.rec .marquee{animation-duration:78s}
+body.rec .tag-a{animation-duration:13s} body.rec .tag-b{animation-duration:16s} body.rec .tag-c{animation-duration:18s}
+body.rec .card{transition-duration:.75s}
+body.rec .quote{transition:opacity 1.2s ease, transform 1.2s ease}
+body.rec .panel.on{animation-duration:.9s}
+body.rec.nocursor, body.rec.nocursor *{cursor:none !important}
+.hud{
+  position:fixed; left:18px; bottom:18px; z-index:70; pointer-events:none;
+  font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  background:rgba(9,20,19,.86); color:#DDE9E5; border:1px solid rgba(150,200,190,.22);
+  padding:9px 14px; border-radius:999px; display:flex; gap:14px; align-items:center;
+  opacity:0; transition:opacity .45s ease;
+}
+.hud.show{opacity:1}
+.hud b{color:#E0B463; font-weight:500}
+.hud i{width:7px; height:7px; border-radius:50%; background:#E05A4F; font-style:normal; animation:blink 1.6s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
 /* reveal */
 .rv{transition:opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1)}
 .rv.pre{opacity:0; transform:translateY(26px)}
@@ -393,6 +416,9 @@ footer a:hover{color:var(--accent)}
       <a href="#precios">Precios</a>
       <a href="#cita">Cita</a>
     </nav>
+    <button class="icon-btn rec-dot" id="recBtn" aria-label="Modo grabación" title="Modo grabación (G)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+    </button>
     <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" id="themeIcon">
         <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
@@ -404,6 +430,8 @@ footer a:hover{color:var(--accent)}
     <a class="btn btn-primary" href="#cita">Pedir cita</a>
   </div>
 </header>
+
+<div class="hud" id="hud" hidden></div>
 
 <main id="top">
 <section class="hero">
@@ -826,22 +854,28 @@ var run = claims.map(function(c){ return "<span>" + c + "</span>"; }).join("");
 mq.innerHTML = run + run;
 
 /* ---------------- revelado al hacer scroll ---------------- */
-var revealer = ("IntersectionObserver" in window) ? new IntersectionObserver(function(entries){
-  entries.forEach(function(en){
-    if (en.isIntersecting){ en.target.classList.remove("pre"); revealer.unobserve(en.target); }
+var revealer = null;
+function armReveals(){
+  if (!("IntersectionObserver" in window) || reduce) return;
+  if (revealer) revealer.disconnect();
+  revealer = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){ en.target.classList.remove("pre"); revealer.unobserve(en.target); }
+    });
+  }, {threshold:0.12, rootMargin:"0px 0px -60px 0px"});
+  $$(".rv").forEach(function(el){
+    var r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight - 60){ el.classList.remove("pre"); return; }  /* ya visible: en reposo */
+    el.classList.add("pre");
+    revealer.observe(el);
   });
-}, {threshold:0.12, rootMargin:"0px 0px -60px 0px"}) : null;
-$$(".rv").forEach(function(el){
-  if (!revealer || reduce) return;
-  var r = el.getBoundingClientRect();
-  if (r.top < window.innerHeight - 60) return;   /* ya visible: se queda en reposo */
-  el.classList.add("pre");
-  revealer.observe(el);
-});
+}
+armReveals();
 
 /* ---------------- contadores ---------------- */
+var countDur = 1400;
 function animateCount(el){
-  var to = parseFloat(el.dataset.to), suffix = el.dataset.suffix || "", t0 = performance.now(), dur = 1400;
+  var to = parseFloat(el.dataset.to), suffix = el.dataset.suffix || "", t0 = performance.now(), dur = countDur;
   if (reduce){ el.textContent = to.toLocaleString("es-ES") + suffix; return; }
   (function tick(now){
     var p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
@@ -849,13 +883,17 @@ function animateCount(el){
     if (p < 1) requestAnimationFrame(tick);
   })(t0);
 }
-var counters = $("#counters");
-if ("IntersectionObserver" in window){
-  var co = new IntersectionObserver(function(en){
-    if (en[0].isIntersecting){ $$("b", counters).forEach(animateCount); co.disconnect(); }
+var counters = $("#counters"), countObs = null;
+function armCounters(){
+  if (countObs) countObs.disconnect();
+  if (!("IntersectionObserver" in window)){ $$("b", counters).forEach(animateCount); return; }
+  $$("b", counters).forEach(function(el){ el.textContent = "0"; });
+  countObs = new IntersectionObserver(function(en){
+    if (en[0].isIntersecting){ $$("b", counters).forEach(animateCount); countObs.disconnect(); }
   }, {threshold:0.4});
-  co.observe(counters);
-} else { $$("b", counters).forEach(animateCount); }
+  countObs.observe(counters);
+}
+armCounters();
 
 /* ---------------- carrusel de tratamientos ---------------- */
 var ICONS = {
@@ -981,7 +1019,9 @@ smile($("#smileAfter"), true);
 var ba = $("#ba"), handle = $("#baHandle"), afterLayer = $("#smileAfter");
 function setSplit(pct){
   pct = Math.max(2, Math.min(98, pct));
-  afterLayer.style.clipPath = "inset(0 0 0 " + pct + "%)";
+  var ins = "inset(0 0 0 " + pct + "%)";
+  afterLayer.style.clipPath = ins;
+  afterLayer.style.webkitClipPath = ins;
   handle.style.left = pct + "%";
   handle.setAttribute("aria-valuenow", Math.round(pct));
 }
@@ -1049,11 +1089,11 @@ showQuote(0);
 $("#qNext").addEventListener("click", function(){ showQuote(qi + 1); resetAuto(); });
 $("#qPrev").addEventListener("click", function(){ showQuote(qi - 1); resetAuto(); });
 qDotBtns.forEach(function(b, i){ b.addEventListener("click", function(){ showQuote(i); resetAuto(); }); });
-var auto = null;
+var auto = null, quoteMs = 6000;
 function resetAuto(){
   if (reduce) return;
   clearInterval(auto);
-  auto = setInterval(function(){ showQuote(qi + 1); }, 6000);
+  auto = setInterval(function(){ showQuote(qi + 1); }, quoteMs);
 }
 resetAuto();
 
@@ -1214,7 +1254,8 @@ $("#confirm").addEventListener("click", function(){
     pMat.opacity = dark ? 0.85 : 0.7;
   }
   applyTheme(currentDark());
-  window.__aureaScene = {theme: applyTheme};
+  var slowF = 1;
+  window.__aureaScene = {theme: applyTheme, slow: function(on){ slowF = on ? 0.45 : 1; }};
 
   function resize(){
     var w = stage.clientWidth, h = stage.clientHeight;
@@ -1260,21 +1301,137 @@ $("#confirm").addEventListener("click", function(){
     var t = (now - t0) / 1000;
     if (!dragging){
       velY *= 0.94; velX *= 0.9;
-      rotY += velY + (reduce ? 0 : 0.0032);
+      rotY += velY + (reduce ? 0 : 0.0032 * slowF);
       rotX += velX;
     }
     rotX = Math.max(-0.75, Math.min(0.75, rotX));
     group.rotation.y = rotY + scrollRot;
-    group.rotation.x = rotX + (reduce ? 0 : Math.sin(t * 0.6) * 0.05);
-    group.position.y = reduce ? 0 : Math.sin(t * 0.8) * 0.07;
-    ringA.rotation.z = t * 0.18;
-    ringB.rotation.z = -t * 0.12;
-    dust.rotation.y = -t * 0.05;
+    group.rotation.x = rotX + (reduce ? 0 : Math.sin(t * 0.6 * slowF) * 0.05);
+    group.position.y = reduce ? 0 : Math.sin(t * 0.8 * slowF) * 0.07;
+    ringA.rotation.z = t * 0.18 * slowF;
+    ringB.rotation.z = -t * 0.12 * slowF;
+    dust.rotation.y = -t * 0.05 * slowF;
     camera.position.x += (pointerX * 0.85 - camera.position.x) * 0.05;
     camera.position.y += (0.15 - pointerY * 0.6 - camera.position.y) * 0.05;
     camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
   })(t0);
+})();
+
+/* ---------------- modo grabación ---------------- */
+(function(){
+  var hud = $("#hud"), body = document.body;
+  var TOUR = ["#top","#tratamientos","#casos","#tecnologia","#equipo","#opiniones","#precios","#faq","#cita"];
+  var on = false, idle = null, hudTimer = null;
+  var tour = {run:false, i:0, phase:"hold", t0:0, from:0, to:0, dur:0, speed:1, raf:null};
+
+  function say(html, keep){
+    hud.hidden = false;
+    hud.innerHTML = html;
+    hud.classList.add("show");
+    clearTimeout(hudTimer);
+    if (!keep) hudTimer = setTimeout(function(){ hud.classList.remove("show"); }, 2600);
+  }
+  function hideHud(){ clearTimeout(hudTimer); hud.classList.remove("show"); }
+
+  function setMode(v){
+    on = v;
+    body.classList.toggle("rec", on);
+    countDur = on ? 2800 : 1400;
+    quoteMs = on ? 9000 : 6000;
+    resetAuto();
+    if (window.__aureaScene) window.__aureaScene.slow(on);
+    if (on){
+      document.documentElement.style.scrollBehavior = "auto";
+      window.scrollTo(0, 0);
+      tour.i = 0;
+      setTimeout(function(){ armReveals(); armCounters(); }, 60);
+      say('<i></i> Grabación · <b>espacio</b> recorrido · <b>← →</b> saltar · <b>↑ ↓</b> ritmo · <b>G</b> salir');
+      idleWatch();
+    } else {
+      stopTour();
+      document.documentElement.style.scrollBehavior = "";
+      body.classList.remove("nocursor");
+      window.removeEventListener("mousemove", onMove);
+      say("Modo grabación desactivado");
+    }
+  }
+
+  function onMove(){
+    body.classList.remove("nocursor");
+    clearTimeout(idle);
+    idle = setTimeout(function(){ if (on) body.classList.add("nocursor"); }, 2200);
+  }
+  function idleWatch(){ window.addEventListener("mousemove", onMove); onMove(); }
+
+  function maxScroll(){ return Math.max(0, document.body.scrollHeight - window.innerHeight); }
+  function stopAt(i){
+    var el = $(TOUR[i]);
+    if (!el) return 0;
+    return Math.min(el.getBoundingClientRect().top + window.scrollY - 26, maxScroll());
+  }
+  function ease(x){ return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+
+  function travelTo(i){
+    tour.i = Math.max(0, Math.min(TOUR.length - 1, i));
+    tour.from = window.scrollY;
+    tour.to = stopAt(tour.i);
+    var dist = Math.abs(tour.to - tour.from);
+    tour.dur = Math.max(900, Math.min(7000, (dist / (250 * tour.speed)) * 1000));
+    tour.phase = "move";
+    tour.t0 = performance.now();
+  }
+  function tick(now){
+    if (!tour.run) return;
+    tour.raf = requestAnimationFrame(tick);
+    var el = now - tour.t0;
+    if (tour.phase === "move"){
+      var p = Math.min(1, el / tour.dur);
+      window.scrollTo(0, tour.from + (tour.to - tour.from) * ease(p));
+      if (p === 1){ tour.phase = "hold"; tour.t0 = now; }
+    } else {
+      if (el > 2800 / tour.speed){
+        if (tour.i >= TOUR.length - 1){ stopTour(); say("Fin del recorrido"); return; }
+        travelTo(tour.i + 1);
+      }
+    }
+  }
+  function startTour(){
+    if (!on) setMode(true);
+    tour.run = true;
+    hideHud();
+    tour.phase = "hold";
+    tour.t0 = performance.now() - 2000;
+    cancelAnimationFrame(tour.raf);
+    tour.raf = requestAnimationFrame(tick);
+  }
+  function stopTour(){
+    tour.run = false;
+    cancelAnimationFrame(tour.raf);
+  }
+
+  $("#recBtn").addEventListener("click", function(){ setMode(!on); });
+
+  window.addEventListener("keydown", function(e){
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    var k = e.key.toLowerCase();
+    if (k === "g"){ setMode(!on); e.preventDefault(); return; }
+    if (!on) return;
+    if (k === "escape"){ setMode(false); return; }
+    if (k === " " || k === "spacebar"){
+      e.preventDefault();
+      if (tour.run){ stopTour(); say('<i></i> Recorrido en pausa'); }
+      else startTour();
+      return;
+    }
+    if (k === "arrowright"){ e.preventDefault(); startTour(); travelTo(tour.i + 1); return; }
+    if (k === "arrowleft"){ e.preventDefault(); startTour(); travelTo(tour.i - 1); return; }
+    if (k === "arrowup"){ e.preventDefault(); tour.speed = Math.min(2, tour.speed + 0.25); say("Ritmo <b>" + tour.speed.toFixed(2) + "×</b>"); return; }
+    if (k === "arrowdown"){ e.preventDefault(); tour.speed = Math.max(0.5, tour.speed - 0.25); say("Ritmo <b>" + tour.speed.toFixed(2) + "×</b>"); return; }
+  });
+
+  if (/grabacion|rec/.test(location.hash) || /grabacion|rec/.test(location.search)) setMode(true);
 })();
 })();
 </script>

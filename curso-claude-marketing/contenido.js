@@ -32,7 +32,7 @@ const CURSO = {
   titulo: "Claude para Marketing",
   subtitulo: "De los 12 casos de uso a cobrar por ellos",
   autor: "Izan Gutiérrez · Ryu Ads",
-  version: "2.0",
+  version: "3.0",
 
   modulos: [
 
@@ -1164,6 +1164,352 @@ const CURSO = {
           recursos: []
         }
       ]
+    },
+
+    /* ------------------------------------------------------------------ M8 */
+    {
+      id: "m8",
+      titulo: "La terminal de Claude",
+      resumen: "Claude Code: el mismo Claude, pero dentro de tu ordenador y con tus archivos delante. Aquí viven los plugins, y aquí es donde tu método deja de ser tuyo y pasa a ser del equipo.",
+      lecciones: [
+        {
+          id: "m8-l1",
+          titulo: "Qué es Claude Code y por qué te importa aunque no programes",
+          duracion: 12,
+          plataforma: "Claude.ai",
+          objetivo: "Entender qué gana un marketer al bajar de la web a la terminal, y tenerlo instalado.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Claude Code se vende como herramienta para programadores y por eso la mayoría de la gente de marketing ni lo mira. Es un error de etiqueta: lo que hace es **darle a Claude una carpeta de tu ordenador y dejarle trabajar en ella**, y eso no tiene nada de específicamente técnico." },
+            { t: "clave", texto: "En la web, Claude trabaja con lo que le pegas. En la terminal, trabaja con lo que tienes." },
+            { t: "texto", md: "Si has hecho el módulo 1, la comparación es directa: Cowork y Claude Code hacen algo parecido —trabajar sobre archivos— pero por sitios distintos. Cowork es la versión de escritorio, con interfaz y pensada para cualquiera. Claude Code es la versión de terminal, más cruda y con dos cosas que Cowork no te da: **los plugins** y el control fino de cómo se comporta." },
+            { t: "texto", md: "Qué gana concretamente una agencia:" },
+            { t: "tabla",
+              cabeceras: ["Lo que haces hoy", "Lo que cambia en la terminal"],
+              filas: [
+                ["Pegar archivos en el chat", "Trabaja directamente en la carpeta del cliente"],
+                ["Repetir tu método a mano", "El método empaquetado en un plugin que se instala"],
+                ["Tu criterio vive en tu cabeza", "Vive en archivos que tu equipo instala"],
+                ["Cada uno hace las cosas a su manera", "Todos arrancan con las mismas skills"]
+              ]
+            },
+            { t: "texto", md: "**Instalarlo.** Una línea. En macOS, Linux o WSL:" },
+            { t: "archivo", nombre: "Instalación",
+              texto: "# macOS, Linux, WSL\ncurl -fsSL https://claude.ai/install.sh | bash\n\n# Windows PowerShell\nirm https://claude.ai/install.ps1 | iex\n\n# Comprobar que ha ido bien\nclaude --version" },
+            { t: "texto", md: "Necesitas un plan de pago de Claude (Pro, Max, Team o Enterprise) o una cuenta de Console. La primera vez que escribes `claude` te pide iniciar sesión en el navegador y ya no vuelve a pedírtelo." },
+            { t: "aviso", texto: "En Windows conviene tener instalado Git for Windows: sin él, Claude Code usa PowerShell en vez de Bash y algunas cosas cambian. En WSL no hace falta." },
+            { t: "texto", md: "**Arrancar una sesión** es entrar en la carpeta y escribir el comando. Nada más:" },
+            { t: "archivo", nombre: "Primera sesión",
+              texto: "cd /ruta/a/la/carpeta/del/cliente\nclaude" },
+            { t: "texto", md: "A partir de ahí le hablas como en el chat. La diferencia es que ahora puede leer, escribir y ejecutar cosas en esa carpeta — con permiso, que es de lo que va la lección siguiente." },
+            { t: "clave", texto: "No hace falta saber programar. Hace falta saber qué le pides y qué carpeta le enseñas: exactamente las dos cosas que llevas practicando desde el módulo 1." }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**Dónde más vive Claude Code.** No es solo terminal: hay app de escritorio, extensión de VS Code y de JetBrains, versión web en claude.ai/code, integración con Slack y con GitHub Actions. Lo que aprendas en la terminal se traslada a todas, porque el motor es el mismo." },
+            { t: "texto", md: "**Actualizaciones.** El instalador nativo se actualiza solo en segundo plano. Si lo instalaste con Homebrew o WinGet, **no**: ahí toca lanzar `brew upgrade claude-code` o `winget upgrade Anthropic.ClaudeCode` de vez en cuando. Muchos problemas de \"esto no me funciona\" son una versión vieja." },
+            { t: "clave", texto: "Antes de investigar un fallo raro, comprueba la versión. Es la causa más común y la más rápida de descartar." },
+            { t: "texto", md: "**Y una carpeta que conviene conocer:** `~/.claude/` es donde vive tu configuración: skills, plugins instalados, ajustes y sesiones. Todo lo que montes en las lecciones siguientes acaba ahí, y todo es texto plano que puedes leer, copiar y llevarte." }
+          ],
+          ejercicio: "Instálalo y arranca una sesión dentro de la carpeta de un cliente. No le pidas nada complicado: pregúntale qué hay en esa carpeta y cómo la organizarías. Es la forma más rápida de ver la diferencia con el chat.",
+          recursos: [
+            { titulo: "Guía de inicio de Claude Code (Anthropic)", url: "https://code.claude.com/docs/en/quickstart" }
+          ]
+        },
+        {
+          id: "m8-l2",
+          titulo: "Los comandos que se usan de verdad",
+          duracion: 14,
+          plataforma: "Claude.ai",
+          objetivo: "Manejar la sesión sin buscar en la documentación: arrancar, retomar, cambiar permisos y limpiar.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "La documentación lista decenas de comandos. En el trabajo real se usan ocho. Estos:" },
+            { t: "tabla",
+              cabeceras: ["Comando", "Qué hace", "Cuándo lo usas"],
+              filas: [
+                ["`claude`", "Abre una sesión en la carpeta actual", "Siempre"],
+                ["`claude \"lo que sea\"`", "Abre y arranca con esa petición", "Cuando ya sabes qué quieres"],
+                ["`claude -p \"...\"`", "Una pregunta, responde y sale", "Consultas rápidas sin conversación"],
+                ["`claude -c`", "Continúa la última conversación de esa carpeta", "Volver a lo de ayer"],
+                ["`claude -r`", "Elegir entre conversaciones anteriores", "Recuperar una concreta"]
+              ]
+            },
+            { t: "texto", md: "Esos cinco se escriben **antes** de entrar. Dentro de la sesión hay otros tres que se usan a diario:" },
+            { t: "tabla",
+              cabeceras: ["Dentro de la sesión", "Qué hace"],
+              filas: [
+                ["`/help`", "Todo lo disponible, incluidas tus skills"],
+                ["`/clear`", "Borra el historial y empieza limpio, sin salir"],
+                ["`/exit`", "Salir (o Ctrl+D dos veces)"]
+              ]
+            },
+            { t: "clave", texto: "`/clear` es el equivalente en terminal de \"abre una conversación nueva\" de la lección 1.1. Cuando llevas cuarenta mensajes dando vueltas, es lo que hay que pulsar." },
+            { t: "texto", md: "**Los cuatro atajos que cambian la experiencia**, y que no están a la vista:" },
+            { t: "lista", items: [
+              "**Escribe `/`** y salen todos los comandos y todas tus skills. Es el menú de todo lo que tienes montado.",
+              "**Tab** completa lo que estás escribiendo.",
+              "**Flecha arriba** recupera lo que escribiste antes, como en cualquier terminal.",
+              "**Shift+Tab** cambia el modo de permiso de la sesión. Este es el importante."
+            ]},
+            { t: "texto", md: "**Los modos de permiso** son la misma idea que en Cowork, en la lección 1.4: cuánto pregunta antes de actuar. En los planes Pro, Max y Team las sesiones interactivas arrancan en **modo automático**, donde un clasificador revisa las acciones en tu lugar y Claude edita y ejecuta casi todo sin preguntarte. En otros planes arrancan en manual." },
+            { t: "aviso", texto: "Ese arranque en automático es cómodo y es exactamente lo que **no** quieres la primera vez que trabajas sobre la carpeta de un cliente. Pulsa Shift+Tab y baja a manual hasta que hayas visto cómo se comporta en ese material. La regla de la lección 1.4 vale igual aquí: manual siempre que haya material de cliente." },
+            { t: "texto", md: "**El flujo de un día normal**, que no se parece al de un chat:" },
+            { t: "pasos", items: [
+              "`cd` a la carpeta del cliente y `claude`.",
+              "Le dejas mirar antes de pedir nada: *\"¿qué hay aquí y cómo está organizado?\"*.",
+              "Le pides el trabajo, con el contexto del módulo 1.",
+              "Revisas lo que propone antes de aprobarlo.",
+              "Al terminar el tema, `/clear` antes de empezar otro distinto."
+            ]},
+            { t: "texto", md: "Ese paso 2 es el que la gente se salta y el que más rinde: en la terminal, Claude no ha visto la carpeta hasta que se la enseñas. Un minuto de reconocimiento evita que trabaje a ciegas." }
+          ],
+          duracionAvanzado: 6,
+          avanzado: [
+            { t: "texto", md: "**`claude -p` es la puerta a automatizar cosas fuera de la conversación.** Como responde y sale, se puede meter en un script o encadenar con otras órdenes de la terminal. Ejemplo real para una agencia: recorrer una carpeta de transcripciones y sacar un resumen de cada una sin abrir una sesión por archivo." },
+            { t: "clave", texto: "`-p` convierte a Claude en un comando más de tu terminal. Ahí es donde empieza la automatización de verdad, y donde también empieza el riesgo de que corra sin nadie mirando." },
+            { t: "texto", md: "**El archivo CLAUDE.md.** Si pones un archivo llamado `CLAUDE.md` en la raíz de una carpeta, Claude Code lo lee al arrancar ahí. Es el equivalente a las instrucciones de un Proyecto (lección 6.2), pero atado a la carpeta en vez de a la cuenta. Para una agencia es el sitio natural del contexto de ese cliente." },
+            { t: "archivo", nombre: "CLAUDE.md de un cliente",
+              texto: "# Nordclima\n\nClimatización para comunidades de vecinos, norte de España.\nEl material de campaña está en `campanas/`, los datos en `datos/`.\n\n## Reglas\n- No se prometen porcentajes de ahorro sin haber visto la instalación.\n- Los informes se entregan en PDF, nunca en Word.\n- Antes de tocar nada en `entregado/`, pregunta." },
+            { t: "texto", md: "**Y el comando que más tiempo ahorra a la larga:** `/clear` entre temas distintos. Una sesión larga que ha hecho tres trabajos diferentes arrastra el ruido de los tres. Es la misma degradación de la lección 1.1, y en la terminal se nota más porque las sesiones duran horas." }
+          ],
+          ejercicio: "Escribe un CLAUDE.md para la carpeta de tu cliente principal, con las tres o cuatro reglas que le dirías a alguien que entra nuevo. Arranca una sesión ahí y comprueba que las respeta sin que se las recuerdes.",
+          recursos: []
+        },
+        {
+          id: "m8-l3",
+          titulo: "Skills, plugins y marketplaces: qué es cada cosa",
+          duracion: 13,
+          plataforma: "Claude.ai",
+          objetivo: "Distinguir las tres capas y saber cuál necesitas en cada caso.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Aquí hay tres palabras que se confunden constantemente, y la confusión cuesta tiempo. Van de menor a mayor:" },
+            { t: "tabla",
+              cabeceras: ["", "Qué es", "Ejemplo"],
+              filas: [
+                ["**Skill**", "Un método tuyo en un `SKILL.md`. Lo viste en la lección 1.5", "La voz de marca de un cliente"],
+                ["**Plugin**", "Un paquete que agrupa skills, agentes, hooks y conexiones", "Tu método de agencia entero"],
+                ["**Marketplace**", "Un catálogo de plugins que alguien publica", "El catálogo oficial de Anthropic"]
+              ]
+            },
+            { t: "clave", texto: "Una skill es una herramienta. Un plugin es la caja de herramientas. Un marketplace es la tienda donde se cogen las cajas." },
+            { t: "texto", md: "**Cuándo pasa una skill a ser plugin.** La documentación lo resuelve con un criterio limpio: una skill suelta en tu carpeta `.claude/` sirve para ti; un plugin sirve para **repartir**." },
+            { t: "tabla",
+              cabeceras: ["Skill suelta", "Plugin"],
+              filas: [
+                ["Solo tuya, o solo de ese proyecto", "Se instala en el equipo con un comando"],
+                ["Se llama `/mi-skill`", "Se llama `/nombre-del-plugin:mi-skill`"],
+                ["Para probar rápido", "Para versionar y distribuir"],
+                ["Copiar y pegar para compartirla", "`/plugin install`"]
+              ]
+            },
+            { t: "texto", md: "Ese prefijo del nombre no es cosmético: **evita choques**. Si dos plugins traen una skill llamada `informe`, sin prefijo no habría manera de saber cuál se activa. Es la colisión de la lección 6.1, resuelta por diseño." },
+            { t: "texto", md: "**Qué puede llevar dentro un plugin**, que es bastante más que skills:" },
+            { t: "lista", items: [
+              "**Skills** — métodos que Claude activa solo, como los del módulo 1.",
+              "**Agentes** — perfiles especializados a los que se les delega una tarea concreta.",
+              "**Hooks** — cosas que se ejecutan solas al pasar algo: antes de editar un archivo, después de una orden. Automatización que no depende de que Claude se acuerde.",
+              "**Servidores MCP** — conexiones a herramientas externas: tu CRM, Notion, Slack, GitHub. Es lo que la lección 6.4 llamaba conectores.",
+              "**Monitores** — vigilan un archivo o un log en segundo plano y avisan cuando pasa algo."
+            ]},
+            { t: "texto", md: "Los dos catálogos que existen de serie:" },
+            { t: "tabla",
+              cabeceras: ["Marketplace", "Qué es", "Cómo se añade"],
+              filas: [
+                ["`claude-plugins-official`", "Curado por Anthropic", "Ya viene puesto"],
+                ["`claude-community`", "De terceros, tras revisión automática de seguridad", "`/plugin marketplace add anthropics/claude-plugins-community`"]
+              ]
+            },
+            { t: "aviso", texto: "Un plugin puede ejecutar código en tu ordenador con tus permisos. Anthropic no controla qué trae dentro un plugin de terceros ni puede garantizar que haga lo que dice. Instala solo lo que venga de una fuente en la que confíes, y en una agencia eso significa: del catálogo oficial, o del tuyo propio." }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**Lo que ya hay hecho en el catálogo oficial** y que una agencia puede usar mañana, sin construir nada:" },
+            { t: "lista", items: [
+              "**Integraciones externas** con MCP ya configurado: `notion`, `slack`, `linear`, `asana`, `figma`, `github`, `sentry`, `vercel`, `supabase`. Instalar el plugin te ahorra montar la conexión a mano.",
+              "**`security-guidance`** — revisa cada cambio buscando problemas de seguridad. Si tocáis código de clientes, esto es gratis y no está de más.",
+              "**`plugin-dev`** — el kit para construir tus propios plugins, que es la lección 8.6.",
+              "**Estilos de salida** — `explanatory-output-style` y `learning-output-style` cambian cómo te explica las cosas. Útiles mientras aprendes."
+            ]},
+            { t: "clave", texto: "Antes de construir un plugin, mira si ya existe. Media hora en el catálogo ahorra dos días de montaje." },
+            { t: "texto", md: "**Cada plugin cuesta contexto.** Al mirar uno en el catálogo verás una estimación de **coste de contexto**: cuántos tokens añade a cada turno. Un plugin instalado y sin usar sigue pagando ese peaje. Por eso Claude Code marca los que llevas dos semanas sin usar en un apartado de **no usados recientemente**: revísalo cada cierto tiempo y quita lo que sobre." },
+            { t: "texto", md: "**Y una distinción que se olvida:** añadir un marketplace **no instala nada**. Solo registra el catálogo. Los plugins se instalan de uno en uno, y eso está bien: te obliga a elegir." }
+          ],
+          ejercicio: "Abre `/plugin`, ve a la pestaña Discover y mira el catálogo oficial entero sin instalar nada. Anota los tres que te resolverían algo que hoy haces a mano. Instálalos en la lección siguiente, no ahora.",
+          recursos: [
+            { titulo: "Crear plugins (Anthropic)", url: "https://code.claude.com/docs/en/plugins" },
+            { titulo: "Descubrir e instalar plugins (Anthropic)", url: "https://code.claude.com/docs/en/discover-plugins" }
+          ]
+        },
+        {
+          id: "m8-l4",
+          titulo: "Lo que ya tienes instalado, explicado",
+          duracion: 16,
+          plataforma: "Claude.ai",
+          objetivo: "Saber exactamente qué hay montado en tu cuenta, para qué sirve cada cosa y qué sobra.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Esta lección es un inventario real, no un ejemplo. Son las **diez skills** que hay ahora mismo en esta cuenta, agrupadas por de dónde vienen. Si alguna te suena a nueva, esa es exactamente la razón de la lección: se acumulan sin que nadie las mire." },
+            { t: "clave", texto: "Cada skill instalada se anuncia en cada turno. Diez skills que no sabes que tienes son diez descripciones compitiendo por activarse." },
+            { t: "texto", md: "**Las cuatro de documentos** (vienen de Anthropic). Son las que convierten a Claude en productor de entregables de oficina, y para una agencia son las más rentables porque atacan la parte que nadie quiere hacer:" },
+            { t: "tabla",
+              cabeceras: ["Skill", "Qué hace", "Para qué la usarías tú"],
+              filas: [
+                ["`docx`", "Crear, leer y editar Word", "Propuestas y contratos con formato"],
+                ["`pdf`", "Leer, combinar, partir, rellenar formularios, OCR", "Auditorías entregables y leer PDFs de cliente"],
+                ["`pptx`", "Crear y editar PowerPoint", "Presentaciones de resultados"],
+                ["`xlsx`", "Crear y arreglar hojas de cálculo", "Datos de campaña del módulo 5"]
+              ]
+            },
+            { t: "texto", md: "La combinación de `pdf` con la auditoría del módulo 3 es la más directa: la auditoría produce una tabla, y `pdf` la convierte en algo que se le manda a un cliente." },
+            { t: "texto", md: "**Las tres del sistema** (ejemplos oficiales de Anthropic):" },
+            { t: "lista", items: [
+              "**`skill-creator`** — crear, editar y **medir** skills. Es la que usarías para hacer lo de la lección 1.5 con método en vez de a ojo: además de escribir el `SKILL.md`, monta casos de prueba y compara el resultado con la skill y sin ella. Es la más infrautilizada de las diez.",
+              "**`morning`** — un resumen matinal en formato artifact, con calendario y correo. Solo se activa si lo pides por su nombre.",
+              "**`import-memory`** — importar la memoria exportada de otro asistente de IA. De un solo uso: si ya la usaste, no vuelve a hacer falta."
+            ]},
+            { t: "clave", texto: "`skill-creator` es la que más te puede cambiar el trabajo, y es la que nadie abre. Todo el módulo 6 se hace mejor con ella." },
+            { t: "texto", md: "**La tuya** — `ryuads-audit`. Es la única marcada como *custom*: la escribiste tú. Genera auditorías de marketing digital con la metodología de tres ejes (negocio, canales, competencia), evalúa las siete líneas de servicio de Ryu Ads e identifica en cuáles puede entrar la agencia. Lleva dentro `assets/brand.css` con el sistema de diseño de marca y una carpeta de `scripts/`." },
+            { t: "texto", md: "Es exactamente lo que enseña la lección 6.1: un **método**, no un campo de conocimiento. No es \"SEO\", es *cómo audita Ryu Ads*. Está bien hecha." },
+            { t: "aviso", texto: "Pero es una skill suelta, no un plugin. Eso significa que **no se puede instalar en el ordenador de nadie más**: si mañana entra alguien al equipo, no hay comando que se la dé. Convertirla en plugin es media hora y es el ejercicio de la lección 8.6." },
+            { t: "texto", md: "**Las dos que vienen de plugins:**" },
+            { t: "lista", items: [
+              "**`firecrawl`** — rastrear un sitio entero, leer páginas con JavaScript o detrás de login, vigilar cambios en una web y convertir documentos a markdown. Es la herramienta del análisis de competencia de la lección 2.2 cuando la web del competidor no se deja leer. Su propio archivo empieza preguntando *\"¿hace falta?\"* y avisa de no usarla para lo que las herramientas normales ya hacen: eso es una skill bien escrita.",
+              "**`watch-reports`** — lee los reports de análisis de vídeo de tu carpeta `watch`, enseña solo lo nuevo desde la última vez, audita los fallos del pipeline y actualiza el artifact **Anatomía del Hook**. Es un caso de libro del módulo 6: un proceso repetido, empaquetado, que además acumula aprendizaje en un sitio fijo."
+            ]},
+            { t: "texto", md: "**El resumen honesto de tu instalación:**" },
+            { t: "tabla",
+              cabeceras: ["Estado", "Cuáles", "Qué hacer"],
+              filas: [
+                ["Se ganan el sitio", "`pdf`, `xlsx`, `docx`, `pptx`, `ryuads-audit`, `watch-reports`", "Nada"],
+                ["Infrautilizada", "`skill-creator`", "Úsala en el módulo 6"],
+                ["Según el mes", "`firecrawl`, `morning`", "Revisar si las usas"],
+                ["Probablemente ya sobra", "`import-memory`", "Si ya importaste, quítala"]
+              ]
+            },
+            { t: "clave", texto: "Ninguna de las diez es tuya en el sentido de repartible, salvo el trabajo que hagas en 8.6. Tienes un método propio y no tienes forma de dárselo a nadie." }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**Cómo ver esto tú mismo**, sin fiarte de esta lección dentro de seis meses, que es cuando la instalación habrá cambiado:" },
+            { t: "archivo", nombre: "Inventario de tu instalación",
+              texto: "# Dentro de una sesión de Claude Code\n/plugin           ← pestaña Installed: qué hay, qué falla, qué no usas\n/help             ← todas las skills disponibles ahora mismo\n/context          ← qué está ocupando tu ventana de contexto\n\n# Desde la terminal, sin abrir sesión\nclaude plugin list\nclaude plugin details <nombre>" },
+            { t: "texto", md: "La pestaña **Installed** de `/plugin` los ordena poniendo primero los que dan error, y esconde abajo los desactivados. Y marca aparte los que llevas dos semanas sin usar en al menos diez sesiones — ese apartado es el que hay que mirar cada trimestre." },
+            { t: "clave", texto: "Una skill instalada y sin usar no es neutra: cuesta contexto en cada turno y compite por activarse con las que sí usas." },
+            { t: "texto", md: "**Y una precisión sobre dónde vive cada cosa.** Las skills de tu cuenta de claude.ai se sincronizan a `~/.claude/skills/`. Los plugins que instalas en la terminal viven en `~/.claude/plugins/`. Son dos sitios distintos y se gestionan por separado: una skill de tu cuenta no aparece como plugin, y desinstalar un plugin no toca tus skills." },
+            { t: "texto", md: "Por eso `ryuads-audit` aparece como *custom* y no como plugin: la creaste en la cuenta, no la instalaste desde un catálogo. Funciona igual de bien para ti, y no se puede repartir." }
+          ],
+          ejercicio: "Corre `/plugin` y mira la pestaña Installed. Compara lo que hay con la tabla de esta lección: si algo no coincide, la instalación ha cambiado y el bueno es lo que veas tú. Desactiva lo que lleves un mes sin usar — desactivar no borra nada y se revierte en un comando.",
+          recursos: []
+        },
+        {
+          id: "m8-l5",
+          titulo: "Instalar, desactivar y quitar sin romper nada",
+          duracion: 12,
+          plataforma: "Claude.ai",
+          objetivo: "Manejar el ciclo de vida de un plugin, y saber qué se instala para ti y qué para todo el equipo.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Todo el ciclo de vida pasa por un comando: `/plugin`. Abre un panel con cuatro pestañas —Discover, Installed, Marketplaces, Errors— que se recorren con Tab." },
+            { t: "texto", md: "Pero antes de instalar nada hay una decisión que la gente pulsa sin leer, y que en una agencia importa: **el alcance**." },
+            { t: "tabla",
+              cabeceras: ["Alcance", "Para quién", "Cuándo"],
+              filas: [
+                ["**Usuario**", "Para ti, en todos tus proyectos", "Tus herramientas personales"],
+                ["**Proyecto**", "Para todo el que trabaje en ese repositorio", "Lo que el equipo necesita para ese cliente"],
+                ["**Local**", "Para ti, solo en ese repositorio", "Pruebas sin molestar a nadie"]
+              ]
+            },
+            { t: "clave", texto: "Alcance de proyecto es la decisión que convierte tu método en el método del equipo. Se escribe en el `.claude/settings.json` del repositorio, así que quien clone la carpeta lo recibe." },
+            { t: "texto", md: "**Los comandos**, para cuando ya sabes lo que quieres y no te apetece navegar el panel:" },
+            { t: "archivo", nombre: "Ciclo de vida de un plugin",
+              texto: "# Añadir un catálogo (no instala nada, solo lo registra)\n/plugin marketplace add anthropics/claude-plugins-community\n\n# Instalar\n/plugin install nombre@marketplace\n\n# Ver lo que tienes\n/plugin list\n/plugin list --enabled\n\n# Apagar sin desinstalar\n/plugin disable nombre@marketplace\n/plugin enable  nombre@marketplace\n\n# Fuera del todo\n/plugin uninstall nombre@marketplace\n\n# Aplicar cambios sin reiniciar la sesión\n/reload-plugins" },
+            { t: "texto", md: "Al instalar, lee el resumen que sale: si dice **`Plugin is now active`** ya está funcionando; si dice **`Run /reload-plugins to activate`**, hay que correr ese comando. No es un error, es cómo funciona la caché." },
+            { t: "aviso", texto: "Quitar un marketplace **desinstala todos los plugins que instalaste desde él**. No es lo mismo que desactivar. Si solo quieres dejar de usar uno, `disable`; si quieres limpiar el catálogo, cuenta con perder lo instalado." },
+            { t: "texto", md: "**Antes de instalar, la ficha te dice tres cosas** que conviene mirar y que casi nadie mira:" },
+            { t: "lista", items: [
+              "**Coste de contexto** — cuántos tokens añade a cada turno. Un plugin caro que usas una vez al mes es mal negocio.",
+              "**Última actualización** — un plugin abandonado hace un año va a fallar tarde o temprano.",
+              "**Qué instala** — la lista exacta de skills, agentes, hooks y conexiones que trae. Léela: es donde ves si un plugin de \"formatear texto\" resulta que además abre una conexión a un servidor."
+            ]},
+            { t: "clave", texto: "Desactivar es gratis y reversible. Ante la duda, desactiva en vez de desinstalar: si en dos semanas no lo has echado de menos, ya sabes." },
+            { t: "texto", md: "**El mantenimiento trimestral**, que son cinco minutos: abre `/plugin`, pestaña Installed, mira el apartado de no usados recientemente y desactiva. Es la misma limpieza que las tareas programadas de la lección 6.3, y se olvida por el mismo motivo: nada se rompe si no la haces, solo se va poniendo lento." }
+          ],
+          duracionAvanzado: 5,
+          avanzado: [
+            { t: "texto", md: "**Cuando algo no aparece.** El orden de comprobación, de más probable a menos:" },
+            { t: "pasos", items: [
+              "¿Corriste `/reload-plugins`? Es la causa de la mitad de los casos.",
+              "Mira la pestaña **Errors** de `/plugin`. Ahí salen los que no han cargado y por qué.",
+              "Comprueba la versión con `claude --version` y actualiza.",
+              "Si las skills de un plugin siguen sin salir: `rm -rf ~/.claude/plugins/cache`, reinicia y reinstala."
+            ]},
+            { t: "texto", md: "**Marketplace de equipo.** Si quieres que todo el que abra el repositorio de un cliente reciba vuestras herramientas sin instalar nada a mano, se declara en el `.claude/settings.json` del proyecto:" },
+            { t: "archivo", nombre: ".claude/settings.json",
+              texto: "{\n  \"extraKnownMarketplaces\": {\n    \"ryuads\": {\n      \"source\": { \"source\": \"github\", \"repo\": \"tu-org/claude-plugins\" }\n    }\n  }\n}" },
+            { t: "texto", md: "Con eso, quien confíe en la carpeta recibe el catálogo registrado. Los plugins que vengan de fuera todavía se instalan uno a uno —por seguridad—, pero ya no tiene que buscarlos: Claude Code le dice el comando exacto." },
+            { t: "aviso", texto: "El repositorio del catálogo puede ser privado. Para una agencia eso es lo normal: vuestro método no tiene por qué estar publicado para que vuestro equipo lo instale." },
+            { t: "texto", md: "**Y las actualizaciones automáticas:** los marketplaces oficiales las traen activadas, los de terceros y los locales no. Claude Code busca actualizaciones al arrancar, con un retraso aleatorio de hasta diez minutos, y te avisa para que corras `/reload-plugins`. Si prefieres controlarlo tú, se apaga por marketplace desde la pestaña Marketplaces." }
+          ],
+          ejercicio: "Instala los tres plugins que anotaste en la lección anterior, en alcance de usuario. Mira el coste de contexto de cada uno antes de darle a instalar. A las dos semanas, vuelve a `/plugin` y desactiva el que no hayas tocado.",
+          recursos: []
+        },
+        {
+          id: "m8-l6",
+          titulo: "Construir tu plugin y dárselo a tu equipo",
+          duracion: 16,
+          plataforma: "Claude.ai",
+          objetivo: "Convertir tu método —empezando por la auditoría que ya tienes— en algo que se instala con un comando.",
+          estado: "listo",
+          bloques: [
+            { t: "texto", md: "Este es el final del camino que empezó en la lección 1.5. Allí empaquetaste una marca en una skill. Aquí empaquetas **tu método de agencia** en algo que se instala, se versiona y se reparte." },
+            { t: "clave", texto: "Una skill hace que tú trabajes igual siempre. Un plugin hace que tu equipo trabaje igual que tú." },
+            { t: "texto", md: "Un plugin es una carpeta con una estructura fija. Lo mínimo son dos archivos:" },
+            { t: "archivo", nombre: "Estructura de un plugin",
+              texto: "ryuads/\n├── .claude-plugin/\n│   └── plugin.json        ← el manifiesto: nombre, descripción, versión\n├── skills/\n│   ├── auditoria/\n│   │   └── SKILL.md       ← tu ryuads-audit, tal cual\n│   ├── informe-semanal/\n│   │   └── SKILL.md       ← el de la lección 5.2\n│   └── brief/\n│       └── SKILL.md       ← el de la lección 2.3\n├── agents/                ← opcional\n├── hooks/                 ← opcional\n└── README.md" },
+            { t: "aviso", texto: "El error que comete todo el mundo la primera vez: meter `skills/`, `agents/` o `hooks/` **dentro** de `.claude-plugin/`. Ahí dentro va solo `plugin.json`. Todo lo demás cuelga de la raíz del plugin." },
+            { t: "texto", md: "El manifiesto son cuatro campos:" },
+            { t: "archivo", nombre: ".claude-plugin/plugin.json",
+              texto: "{\n  \"name\": \"ryuads\",\n  \"description\": \"El método de trabajo de Ryu Ads: auditoría de tres ejes, informe semanal de anuncios y estructura de brief.\",\n  \"version\": \"1.0.0\",\n  \"author\": { \"name\": \"Izan Gutiérrez\" }\n}" },
+            { t: "texto", md: "El `name` es importante por una razón práctica: **es el prefijo de todas las skills del plugin**. Con `ryuads`, la auditoría pasa a llamarse `/ryuads:auditoria`. Eso evita que choque con nada de nadie." },
+            { t: "texto", md: "**El camino corto**, si empiezas de cero. Un comando te monta el esqueleto ya cargado:" },
+            { t: "archivo", nombre: "Empezar",
+              texto: "# Monta el esqueleto en ~/.claude/skills/ y se carga solo\nclaude plugin init ryuads\n\n# O, si prefieres montarlo tú y probarlo sin instalar nada:\nclaude --plugin-dir ./ryuads\n\n# Tras cada cambio, sin reiniciar:\n/reload-plugins\n\n# Antes de repartirlo, valida:\nclaude plugin validate ./ryuads" },
+            { t: "texto", md: "`--plugin-dir` es el modo de trabajo mientras desarrollas: carga el plugin desde una carpeta local sin instalarlo. Y si ya tenías instalada una versión del mismo nombre, la local manda durante esa sesión — así pruebas cambios sin desinstalar." },
+            { t: "texto", md: "**Migrar lo que ya tienes** es copiar carpetas. Si tienes skills sueltas en `.claude/`:" },
+            { t: "archivo", nombre: "De skill suelta a plugin",
+              texto: "mkdir -p ryuads/.claude-plugin\n# ...crear plugin.json...\n\ncp -r .claude/skills   ryuads/\ncp -r .claude/agents   ryuads/    # si tienes\ncp -r .claude/commands ryuads/    # si tienes\n\nclaude --plugin-dir ./ryuads      # probar\n\n# Cuando funcione, borra los originales de .claude/\n# para no acabar con dos copias que se separan." },
+            { t: "clave", texto: "Los hooks cambian de sitio al migrar: de `settings.json` pasan a `hooks/hooks.json` dentro del plugin. El formato del objeto es el mismo, solo cambia dónde vive." },
+            { t: "texto", md: "**Repartirlo.** Un plugin se instala desde un marketplace, y un marketplace es un repositorio de git con un `marketplace.json`. Para una agencia lo normal es que **sea privado**: tu método no tiene por qué estar publicado para que tu equipo lo instale. Se añade igual que cualquier otro y quien tenga acceso al repositorio lo recibe." },
+            { t: "aviso", texto: "Si algún día quieres publicarlo, hay un catálogo comunitario con revisión. Pero piénsalo dos veces antes: tu método de auditoría es parte de lo que vendes. Publicarlo es regalar el sistema, no el curso." },
+            { t: "texto", md: "**Por dónde empezar mañana**, sin montar nada nuevo: tienes `ryuads-audit` funcionando. Es una skill que no puedes dar a nadie. Convertirla en un plugin de un solo componente es media hora, y a partir de ahí añadir la segunda skill son cinco minutos." }
+          ],
+          duracionAvanzado: 6,
+          avanzado: [
+            { t: "texto", md: "**El atajo de una sola skill.** Si tu plugin va a tener un único componente, no hace falta ni la carpeta `skills/`: puedes poner el `SKILL.md` directamente en la raíz del plugin. Claude Code lo carga y usa el `name` de su cabecera. Para el caso de `ryuads-audit` es lo más rápido — pero si prevés una segunda skill, usa `skills/` desde el principio y te ahorras la mudanza." },
+            { t: "texto", md: "**Versionar de verdad.** El campo `version` del manifiesto controla cuándo reciben actualizaciones tus usuarios: solo se la llevan cuando tú subes ese número. Eso es una ventaja, no una molestia — significa que puedes trastear en el repositorio sin que a tu equipo le cambie la herramienta a media semana." },
+            { t: "clave", texto: "Sube la versión cuando el cambio esté probado, no cuando esté escrito. El número es lo que separa tu banco de pruebas del equipo." },
+            { t: "texto", md: "**Los tres componentes que multiplican un plugin**, y que ya conoces por otros nombres:" },
+            { t: "tabla",
+              cabeceras: ["Componente", "Qué resuelve", "Dónde lo viste"],
+              filas: [
+                ["Agentes", "Delegar una tarea a un perfil especializado", "Lección 6.5, el traspaso"],
+                ["Hooks", "Que algo pase solo al editar, guardar o ejecutar", "Lección 6.3, sin esperar a que Claude se acuerde"],
+                ["MCP", "Conectar el CRM, Notion, Slack", "Lección 6.4, los conectores"]
+              ]
+            },
+            { t: "texto", md: "El caso de agencia más claro es el hook: *cada vez que se escriba un archivo en `entregado/`, pásale el corrector de marca*. Eso no depende de que nadie se acuerde, y es lo que hace que la consistencia de la lección 3.2 deje de ser una disciplina y pase a ser una propiedad del sistema." },
+            { t: "aviso", texto: "Un hook ejecuta un comando en el ordenador de todo el que instale el plugin. Si repartes plugins con hooks a tu equipo, revisa lo que hacen igual que revisarías un plugin de un tercero: la confianza no cambia el riesgo, solo cambia quién responde." },
+            { t: "texto", md: "**Y el bucle que cierra el curso:** cada corrección que hagas trabajando —las de la lección 3.2, las reglas que descubres al revisar— vuelve al `SKILL.md`, y del `SKILL.md` al plugin, y del plugin a todo el equipo. Ese es el sistema del que hablaba el módulo 6, y esta es la última pieza que le faltaba." }
+          ],
+          ejercicio: "Convierte `ryuads-audit` en un plugin. Solo eso: manifiesto, la skill que ya tienes dentro, y `claude --plugin-dir ./ryuads` para probarlo. Cuando responda a `/ryuads:auditoria`, ya tienes algo que se le puede instalar a otra persona — que es lo que hoy no tienes.",
+          recursos: [
+            { titulo: "Crear plugins (Anthropic)", url: "https://code.claude.com/docs/en/plugins" },
+            { titulo: "Crear y distribuir un marketplace (Anthropic)", url: "https://code.claude.com/docs/en/plugin-marketplaces" }
+          ]
+        }
+      ]
     }
 
   ]
@@ -1187,6 +1533,11 @@ const GLOSARIO = [
   { t: "Conector", d: "Lo que permite a Claude hablar con una herramienta que ya usas: correo, documentos, CRM. El riesgo no está en lo que lee, sino en lo que puede escribir después de haber leído.", m: "Sistemas" },
   { t: "Iguala", d: "Cobrar una cantidad fija mensual en vez de por horas o por pieza. Es el modelo que aguanta bien las mejoras de productividad, porque no te penaliza por trabajar más rápido.", m: "Negocio" },
   { t: "Permanencia", d: "Cuánto tiempo se queda un cliente o un donante. En captación decide todo: un recurrente de 10 € al mes vale más que uno puntual de 300 €.", m: "Medición" },
+  { t: "Claude Code", d: "Claude dentro de tu terminal, trabajando sobre las carpetas de tu ordenador. Es donde viven los plugins y donde tu método se puede repartir al equipo. Ver módulo 8.", m: "Terminal" },
+  { t: "Hook", d: "Algo que se ejecuta solo cuando pasa un evento: antes de editar un archivo, después de una orden. Automatización que no depende de que Claude se acuerde.", m: "Terminal" },
+  { t: "Marketplace", d: "Un catálogo de plugins publicado por alguien. Añadirlo solo registra el catálogo: no instala nada. Puede ser un repositorio privado de tu agencia.", m: "Terminal" },
+  { t: "MCP", d: "El estándar con el que Claude habla con herramientas externas: CRM, Notion, Slack, GitHub. Un plugin puede traerlo ya configurado.", m: "Terminal" },
+  { t: "Plugin", d: "Un paquete que agrupa skills, agentes, hooks y conexiones, y que se instala con un comando. Una skill es una herramienta; un plugin es la caja. Ver lección 8.3.", m: "Terminal" },
   { t: "Precio ancla", d: "Poner precio por lo que el servicio sustituye, no por lo que te cuesta producirlo. Un informe semanal se ancla a la media mañana que le ahorra a alguien de su equipo.", m: "Negocio" },
   { t: "Prompt", d: "La instrucción que le das. Un buen prompt tiene seis piezas: rol, contexto, tarea, formato, restricciones y ejemplos. Ver lección 1.2.", m: "Fundamentos" },
   { t: "Proyecto", d: "Un espacio de Claude con instrucciones y archivos fijos, para un cliente o una marca concretos. Lo que caduca va aquí, no en una skill.", m: "Superficies" },

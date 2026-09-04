@@ -199,18 +199,31 @@ de fundamentos que es prerrequisito de todos ellos.
 | 5 · Medir y decidir | 3 | Campañas, anuncios, recaudación de fondos |
 | 6 · Sistemas | 5 | Propias. Biblioteca de skills, proyectos, tareas programadas, conectores, traspaso |
 | 7 · Vender esto | 5 | Propias. Transparencia, precios, empaquetado, objeciones y riesgos |
+| 8 · La terminal de Claude | 6 | Propias. Claude Code, comandos, plugins, marketplaces y crear el tuyo |
 
-**27 lecciones, 7,1 horas, todas escritas.** 393 bloques y 41 prompts o archivos
-con botón de copiar.
+**33 lecciones, 9,1 horas, todas escritas.** 51 prompts o archivos con botón de
+copiar.
 
 Los módulos 6 y 7 no salen del listado de Anthropic. El 6 es lo que hace falta
 para que esto deje de ser una forma de ir rápido y pase a ser un sistema que
 funciona sin ti. El 7 es el que decide si todo lo anterior te da dinero o solo
-te da tiempo libre, y es el que no enseña nadie.
+te da tiempo libre, y es el que no enseña nadie. El 8 baja a la terminal: qué es
+Claude Code, los comandos que se usan de verdad, qué son skills, plugins y
+marketplaces, y cómo empaquetar el método propio para repartirlo al equipo.
+
+### La lección 8.4 caduca
+
+Es un inventario de las skills instaladas en la cuenta de Izan en septiembre de
+2026, con nombre y origen reales. Sirve para enseñar a leer una instalación, no
+como referencia permanente: en cuanto instale o quite algo, deja de coincidir.
+La propia lección lo dice y su ejercicio manda comprobarlo con `/plugin`.
+
+Si el curso se vende a terceros, esa lección hay que reescribirla en genérico o
+sustituirla por el ejercicio de inventario.
 
 ## Los dos niveles de cada lección
 
-17 de las 27 lecciones llevan una sección plegable al final, **"Cuando esto ya te
+23 de las 33 lecciones llevan una sección plegable al final, **"Cuando esto ya te
 funcione"**, con los casos límite, qué hacer cuando falla y las variantes que
 solo hacen falta cuando ya trabajas así. Son 99 minutos más.
 

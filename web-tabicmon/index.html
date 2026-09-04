@@ -150,10 +150,10 @@ h1 .hl{color:var(--green)}
   animation:fbspin 18s ease-in-out infinite;
 }
 .fb__l{position:absolute;inset:0;border:1px solid rgba(16,18,24,.34);box-shadow:0 14px 34px -24px rgba(16,18,24,.75)}
-.fb__l:nth-child(1){transform:translateZ(-80px);background:rgba(255,255,255,.97)}
+.fb__l:nth-child(1){transform:translateZ(-80px);background:#F0EBE0}
 .fb__l:nth-child(2){transform:translateZ(-27px);background:repeating-linear-gradient(90deg,#8E979F 0 8px,rgba(255,255,255,.04) 8px 40px)}
-.fb__l:nth-child(3){transform:translateZ(27px);background:#CDE9A6}
-.fb__l:nth-child(4){transform:translateZ(80px);background:rgba(255,255,255,.97)}
+.fb__l:nth-child(3){transform:translateZ(27px);background:#B08F3E}
+.fb__l:nth-child(4){transform:translateZ(80px);background:#F0EBE0}
 @keyframes fbspin{
   0%,100%{transform:rotateX(12deg) rotateY(-36deg)}
   50%{transform:rotateX(6deg) rotateY(28deg)}
@@ -851,37 +851,187 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   var camera = new THREE.PerspectiveCamera(38, 1, .1, 60);
   camera.position.set(3.4, 1.9, 4.6); camera.lookAt(0, 0, 0);
 
-  scene.add(new THREE.AmbientLight(0xFFFFFF, .78));
-  var key = new THREE.DirectionalLight(0xFFFFFF, .95); key.position.set(4, 6, 5); scene.add(key);
-  var fill = new THREE.DirectionalLight(0x59C601, .45); fill.position.set(-5, 1, -4); scene.add(fill);
-  var warm = new THREE.PointLight(0x59C601, 16, 12, 2); warm.position.set(-1.6, 1.4, 2.4); scene.add(warm);
+  /* --- Luz de taller: clave cálida, relleno frío y un punto verde de marca --- */
+  scene.add(new THREE.AmbientLight(0xFFFFFF, .5));
+  var key = new THREE.DirectionalLight(0xFFF7EC, 1.0); key.position.set(4, 6, 5); scene.add(key);
+  var fill = new THREE.DirectionalLight(0xDDE7F0, .35); fill.position.set(-5, 1.5, -4); scene.add(fill);
+  var warm = new THREE.PointLight(0x8FD152, 3.2, 10, 2); warm.position.set(-2.1, 1.2, -1.8); scene.add(warm);
 
   var wall = new THREE.Group(); scene.add(wall);
   var W = 2.5, H = 1.8;
-  function slab(depth, mat){ return new THREE.Mesh(new THREE.BoxGeometry(W, H, depth), mat); }
-  function edges(mesh, color, op){
-    mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry),
-      new THREE.LineBasicMaterial({color:color, transparent:true, opacity:op})));
+
+  /* ============================================================
+     Materiales dibujados al vuelo en un lienzo: sin archivos que
+     descargar, viajan dentro de la página y pesan cero.
+     ============================================================ */
+  function lienzo(px){ var c = document.createElement("canvas"); c.width = c.height = px; return {c:c, x:c.getContext("2d")}; }
+  function tex(c, rx, ry){
+    var t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(rx || 1, ry || 1);
+    return t;
   }
 
-  var matPlaster = new THREE.MeshStandardMaterial({color:0xFFFFFF, roughness:.95, metalness:0});
-  var matWool    = new THREE.MeshStandardMaterial({color:0xB7E68C, roughness:1, metalness:0, transparent:true, opacity:.92});
-  var matSteel   = new THREE.MeshStandardMaterial({color:0x98A1A9, roughness:.5, metalness:.18});
+  /* Cara vista de la placa: cartón marfil, fibra fina y las hileras de tornillos */
+  function lienzoPapel(){
+    var L = lienzo(512), x = L.x, i, y;
+    x.fillStyle = "#F0EBE0"; x.fillRect(0, 0, 512, 512);
+    for(i = 0; i < 12000; i++){
+      x.fillStyle = "rgba(120,110,90," + (Math.random() * .05).toFixed(3) + ")";
+      x.fillRect(Math.random() * 512, Math.random() * 512, 1 + Math.random() * 3, 1);
+    }
+    for(i = 0; i < 5; i++){                        /* una línea de tornillos por montante */
+      var cx = (i + .5) / 5 * 512;
+      for(y = 26; y < 512; y += 52){
+        x.fillStyle = "rgba(92,88,78,.45)";    x.beginPath(); x.arc(cx, y, 3.1, 0, 6.283); x.fill();
+        x.fillStyle = "rgba(255,252,244,.7)";  x.beginPath(); x.arc(cx - .9, y - .9, 1.6, 0, 6.283); x.fill();
+      }
+    }
+    return L.c;
+  }
+
+  /* Canto cortado: el alma de yeso, mate y con grano */
+  function lienzoYeso(){
+    var L = lienzo(256), x = L.x, i;
+    x.fillStyle = "#F5F2EA"; x.fillRect(0, 0, 256, 256);
+    for(i = 0; i < 9000; i++){
+      var g = 188 + (Math.random() * 58 | 0);
+      x.fillStyle = "rgba(" + g + "," + (g - 6) + "," + (g - 20) + ",.5)";
+      x.fillRect(Math.random() * 256, Math.random() * 256, 1.6, 1.6);
+    }
+    return L.c;
+  }
+
+  /* Lana mineral: manta fibrosa ocre, con huecos oscuros entre fibras */
+  function lienzoLana(){
+    var L = lienzo(512), x = L.x, i;
+    x.fillStyle = "#B08F3E"; x.fillRect(0, 0, 512, 512);
+    x.lineWidth = 1;
+    for(i = 0; i < 6500; i++){
+      var x0 = Math.random() * 512, y0 = Math.random() * 512;
+      var a = (Math.random() - .5) * 1.2, l = 14 + Math.random() * 48, t = Math.random();
+      x.strokeStyle = t > .62 ? "rgba(226,206,148,.34)" : t > .3 ? "rgba(150,118,40,.4)" : "rgba(74,55,16,.34)";
+      x.beginPath(); x.moveTo(x0, y0);
+      x.quadraticCurveTo(x0 + l * .5, y0 + Math.sin(a) * 12, x0 + l, y0 + Math.sin(a) * 22);
+      x.stroke();
+    }
+    return L.c;
+  }
+
+  /* Acero galvanizado: la flor de zinc, en placas irregulares */
+  function lienzoGalva(){
+    var L = lienzo(256), x = L.x, i, j;
+    x.fillStyle = "#BFC6CC"; x.fillRect(0, 0, 256, 256);
+    for(i = 0; i < 280; i++){
+      var cx = Math.random() * 256, cy = Math.random() * 256;
+      var r = 6 + Math.random() * 18, n = 5 + (Math.random() * 3 | 0), v = 148 + (Math.random() * 98 | 0);
+      x.fillStyle = "rgba(" + v + "," + (v + 4) + "," + (v + 11) + ",.5)";
+      x.beginPath();
+      for(j = 0; j < n; j++){
+        var ang = j / n * 6.283, rr = r * (.6 + Math.random() * .5);
+        x[j ? "lineTo" : "moveTo"](cx + Math.cos(ang) * rr, cy + Math.sin(ang) * rr);
+      }
+      x.closePath(); x.fill();
+    }
+    return L.c;
+  }
+
+  /* Un entorno mínimo para que el acero tenga algo que reflejar: sin esto el
+     galvanizado se ve negro, porque un metal sin reflejo no es nada. */
+  try{
+    var Le = lienzo(256), xe = Le.x;
+    var gr = xe.createLinearGradient(0, 0, 0, 256);
+    gr.addColorStop(0, "#FFFFFF"); gr.addColorStop(.46, "#E9EEF3");
+    gr.addColorStop(.52, "#C4CDD5"); gr.addColorStop(1, "#8B939B");
+    xe.fillStyle = gr; xe.fillRect(0, 0, 256, 256);
+    xe.fillStyle = "rgba(255,255,255,.95)"; xe.fillRect(30, 34, 78, 58);   /* un ventanal */
+    var te = new THREE.CanvasTexture(Le.c);
+    te.mapping = THREE.EquirectangularReflectionMapping;
+    var pm = new THREE.PMREMGenerator(renderer);
+    pm.compileEquirectangularShader();
+    scene.environment = pm.fromEquirectangular(te).texture;
+    pm.dispose(); te.dispose();
+  }catch(e){ /* sin entorno el acero pierde brillo, nada más */ }
+
+  var mapPapel = tex(lienzoPapel(), 1, 1);
+  var mapYeso  = tex(lienzoYeso(), 3, 3);
+  var mapLana  = tex(lienzoLana(), 2, 1.4);
+  var mapGalva = tex(lienzoGalva(), 3, 1);
+
+  var matCara   = new THREE.MeshStandardMaterial({map:mapPapel, bumpMap:mapPapel, bumpScale:.005, roughness:.93, metalness:0, envMapIntensity:.3});
+  var matBorde  = new THREE.MeshStandardMaterial({color:0xEDE7DB, roughness:.9, metalness:0, envMapIntensity:.25});
+  var matAlma   = new THREE.MeshStandardMaterial({map:mapYeso, bumpMap:mapYeso, bumpScale:.004, roughness:1, metalness:0, envMapIntensity:.18});
+  var matLana   = new THREE.MeshStandardMaterial({map:mapLana, bumpMap:mapLana, bumpScale:.035, roughness:1, metalness:0, envMapIntensity:.14});
+  var matAcero  = new THREE.MeshStandardMaterial({map:mapGalva, color:0xF4F7FA, roughness:.32, metalness:.86, envMapIntensity:1});
 
   var layers = [];
-  var p1 = slab(.06, matPlaster); edges(p1, 0x101218, .3); layers.push(p1);
+
+  /* Placa: el papel envuelve los cantos largos y en los extremos cortados se ve el yeso.
+     El orden de caras de una caja es +X, -X, +Y, -Y, +Z, -Z. */
+  function placa(grosor){
+    var m = new THREE.Mesh(new THREE.BoxGeometry(W, H, grosor),
+      [matAlma, matAlma, matBorde, matBorde, matCara, matCara]);
+    m.add(new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry),
+      new THREE.LineBasicMaterial({color:0x8C8578, transparent:true, opacity:.3})));
+    return m;
+  }
+
+  layers.push(placa(.062));
+
+  /* --- Perfilería: perfiles reales, no barras. Montante en C y canal en U. --- */
+  var FONDO = .22, ESP = .015;
+
+  function perfilC(ala, fondo, esp, alto){
+    var f = new THREE.Shape();
+    f.moveTo(0, -fondo / 2);
+    f.lineTo(ala, -fondo / 2);
+    f.lineTo(ala, -fondo / 2 + esp);
+    f.lineTo(esp, -fondo / 2 + esp);
+    f.lineTo(esp,  fondo / 2 - esp);
+    f.lineTo(ala,  fondo / 2 - esp);
+    f.lineTo(ala,  fondo / 2);
+    f.lineTo(0,    fondo / 2);
+    f.closePath();
+    var g = new THREE.ExtrudeGeometry(f, {depth:alto, bevelEnabled:false, curveSegments:1});
+    g.rotateX(-Math.PI / 2);          /* la extrusión pasa a ser vertical */
+    g.translate(-ala / 2, -alto / 2, 0);
+    return g;
+  }
+
+  function canalU(fondo, ala, esp, largo){
+    var f = new THREE.Shape();
+    f.moveTo(-fondo / 2, 0);
+    f.lineTo( fondo / 2, 0);
+    f.lineTo( fondo / 2, ala);
+    f.lineTo( fondo / 2 - esp, ala);
+    f.lineTo( fondo / 2 - esp, esp);
+    f.lineTo(-fondo / 2 + esp, esp);
+    f.lineTo(-fondo / 2 + esp, ala);
+    f.lineTo(-fondo / 2, ala);
+    f.closePath();
+    var g = new THREE.ExtrudeGeometry(f, {depth:largo, bevelEnabled:false, curveSegments:1});
+    g.rotateY(Math.PI / 2);           /* la extrusión pasa a correr a lo largo del tabique */
+    g.translate(-largo / 2, 0, 0);
+    return g;
+  }
 
   var frame = new THREE.Group();
+  var geoMontante = perfilC(.105, FONDO, ESP, H - .13);
   for(var s = -2; s <= 2; s++){
-    var stud = new THREE.Mesh(new THREE.BoxGeometry(.07, H, .22), matSteel);
-    stud.position.x = s * (W / 5.2); frame.add(stud);
+    var mt = new THREE.Mesh(geoMontante, matAcero);
+    mt.position.x = s * (W / 5.2);
+    if(s % 2) mt.rotation.y = Math.PI;    /* montantes alternados, como se montan en obra */
+    frame.add(mt);
   }
-  var chTop = new THREE.Mesh(new THREE.BoxGeometry(W, .07, .22), matSteel); chTop.position.y = H/2 - .035; frame.add(chTop);
-  var chBot = chTop.clone(); chBot.position.y = -H/2 + .035; frame.add(chBot);
+  var geoCanal = canalU(FONDO, .062, ESP, W);
+  var canalInf = new THREE.Mesh(geoCanal, matAcero); canalInf.position.y = -H / 2; frame.add(canalInf);
+  var canalSup = new THREE.Mesh(geoCanal, matAcero); canalSup.position.y =  H / 2; canalSup.rotation.x = Math.PI; frame.add(canalSup);
   layers.push(frame);
 
-  var wool = slab(.14, matWool); edges(wool, 0x2E6800, .45); layers.push(wool);
-  var p2 = slab(.06, matPlaster); edges(p2, 0x101218, .3); layers.push(p2);
+  var lana = new THREE.Mesh(new THREE.BoxGeometry(W, H, .145), matLana);
+  layers.push(lana);
+
+  layers.push(placa(.062));
   layers.forEach(function(l){ wall.add(l); });
 
   var GAP_OPEN = .62, GAP_SHUT = .105, spread = GAP_OPEN;

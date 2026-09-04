@@ -408,6 +408,9 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   .labels{display:none}
   .stage__legend{display:grid}
 }
+@media(max-width:640px){
+  .stage{aspect-ratio:1/1.04}
+}
 
 /* ---------- táctil: el 3D no puede depender de un cursor que no existe ---------- */
 @media (hover:none){
@@ -709,6 +712,9 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   "use strict";
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var coarse = matchMedia("(pointer: coarse)").matches;
+  /* Modo ligero: por puntero grueso o por tamaño de pantalla, porque no todos los
+     navegadores móviles declaran bien el puntero y el bajón de fluidez es real. */
+  var lite = coarse || Math.min(innerWidth, innerHeight) < 780;
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -846,11 +852,11 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   if(typeof THREE === "undefined" || !canvas){ if(canvas) canvas.style.display = "none"; return; }
 
   var renderer;
-  try{ renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:!coarse, alpha:true}); }
+  try{ renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:!lite, alpha:true}); }
   catch(e){ canvas.style.display = "none"; return; }   /* sin WebGL manda el respaldo en CSS */
   var fb = document.getElementById("fb");
   if(fb) fb.style.display = "none";
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, coarse ? 1.5 : 2));
+  renderer.setPixelRatio(lite ? 1 : Math.min(devicePixelRatio || 1, 2));
 
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(38, 1, .1, 60);
@@ -869,6 +875,7 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
      Materiales dibujados al vuelo en un lienzo: sin archivos que
      descargar, viajan dentro de la página y pesan cero.
      ============================================================ */
+  var TEX = lite ? 256 : 512, K = TEX / 512;   /* en táctil se dibuja a la mitad de resolución */
   function lienzo(px){ var c = document.createElement("canvas"); c.width = c.height = px; return {c:c, x:c.getContext("2d")}; }
   function tex(c, rx, ry){
     var t = new THREE.CanvasTexture(c);
@@ -879,17 +886,17 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
 
   /* Cara vista de la placa: cartón marfil, fibra fina y las hileras de tornillos */
   function lienzoPapel(){
-    var L = lienzo(512), x = L.x, i, y;
-    x.fillStyle = "#F0EBE0"; x.fillRect(0, 0, 512, 512);
-    for(i = 0; i < 12000; i++){
+    var L = lienzo(TEX), x = L.x, i, y;
+    x.fillStyle = "#F0EBE0"; x.fillRect(0, 0, TEX, TEX);
+    for(i = 0; i < (lite ? 4200 : 12000); i++){
       x.fillStyle = "rgba(120,110,90," + (Math.random() * .05).toFixed(3) + ")";
-      x.fillRect(Math.random() * 512, Math.random() * 512, 1 + Math.random() * 3, 1);
+      x.fillRect(Math.random() * TEX, Math.random() * TEX, 1 + Math.random() * 3, 1);
     }
     for(i = 0; i < 5; i++){                        /* una línea de tornillos por montante */
-      var cx = (i + .5) / 5 * 512;
-      for(y = 26; y < 512; y += 52){
-        x.fillStyle = "rgba(92,88,78,.45)";    x.beginPath(); x.arc(cx, y, 3.1, 0, 6.283); x.fill();
-        x.fillStyle = "rgba(255,252,244,.7)";  x.beginPath(); x.arc(cx - .9, y - .9, 1.6, 0, 6.283); x.fill();
+      var cx = (i + .5) / 5 * TEX;
+      for(y = 26 * K; y < TEX; y += 52 * K){
+        x.fillStyle = "rgba(92,88,78,.45)";    x.beginPath(); x.arc(cx, y, 3.1 * K, 0, 6.283); x.fill();
+        x.fillStyle = "rgba(255,252,244,.7)";  x.beginPath(); x.arc(cx - .9 * K, y - .9 * K, 1.6 * K, 0, 6.283); x.fill();
       }
     }
     return L.c;
@@ -909,15 +916,15 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
 
   /* Lana mineral: manta fibrosa ocre, con huecos oscuros entre fibras */
   function lienzoLana(){
-    var L = lienzo(512), x = L.x, i;
-    x.fillStyle = "#B08F3E"; x.fillRect(0, 0, 512, 512);
+    var L = lienzo(TEX), x = L.x, i;
+    x.fillStyle = "#B08F3E"; x.fillRect(0, 0, TEX, TEX);
     x.lineWidth = 1;
-    for(i = 0; i < 6500; i++){
-      var x0 = Math.random() * 512, y0 = Math.random() * 512;
-      var a = (Math.random() - .5) * 1.2, l = 14 + Math.random() * 48, t = Math.random();
+    for(i = 0; i < (lite ? 2300 : 6500); i++){
+      var x0 = Math.random() * TEX, y0 = Math.random() * TEX;
+      var a = (Math.random() - .5) * 1.2, l = (14 + Math.random() * 48) * K, t = Math.random();
       x.strokeStyle = t > .62 ? "rgba(226,206,148,.34)" : t > .3 ? "rgba(150,118,40,.4)" : "rgba(74,55,16,.34)";
       x.beginPath(); x.moveTo(x0, y0);
-      x.quadraticCurveTo(x0 + l * .5, y0 + Math.sin(a) * 12, x0 + l, y0 + Math.sin(a) * 22);
+      x.quadraticCurveTo(x0 + l * .5, y0 + Math.sin(a) * 12 * K, x0 + l, y0 + Math.sin(a) * 22 * K);
       x.stroke();
     }
     return L.c;
@@ -963,10 +970,10 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   var mapLana  = tex(lienzoLana(), 2, 1.4);
   var mapGalva = tex(lienzoGalva(), 3, 1);
 
-  var matCara   = new THREE.MeshStandardMaterial({map:mapPapel, bumpMap:mapPapel, bumpScale:.005, roughness:.93, metalness:0, envMapIntensity:.3});
+  var matCara   = new THREE.MeshStandardMaterial({map:mapPapel, bumpMap:lite ? null : mapPapel, bumpScale:.005, roughness:.93, metalness:0, envMapIntensity:.3});
   var matBorde  = new THREE.MeshStandardMaterial({color:0xEDE7DB, roughness:.9, metalness:0, envMapIntensity:.25});
-  var matAlma   = new THREE.MeshStandardMaterial({map:mapYeso, bumpMap:mapYeso, bumpScale:.004, roughness:1, metalness:0, envMapIntensity:.18});
-  var matLana   = new THREE.MeshStandardMaterial({map:mapLana, bumpMap:mapLana, bumpScale:.035, roughness:1, metalness:0, envMapIntensity:.14});
+  var matAlma   = new THREE.MeshStandardMaterial({map:mapYeso, bumpMap:lite ? null : mapYeso, bumpScale:.004, roughness:1, metalness:0, envMapIntensity:.18});
+  var matLana   = new THREE.MeshStandardMaterial({map:mapLana, bumpMap:lite ? null : mapLana, bumpScale:.035, roughness:1, metalness:0, envMapIntensity:.14});
   var matAcero  = new THREE.MeshStandardMaterial({map:mapGalva, color:0xF4F7FA, roughness:.32, metalness:.86, envMapIntensity:1});
 
   var layers = [];
@@ -1044,18 +1051,22 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
      cámara hasta que esa esfera cabe por el lado más estrecho del lienzo. Al ser una
      esfera, el encuadre no baila mientras el tabique gira. */
   var VIEW = new THREE.Vector3(.55, .30, .78).normalize();
-  var AIM  = new THREE.Vector3(0, .17, 0);   /* mira algo alto: deja aire arriba para las etiquetas */
+  var AIM  = new THREE.Vector3(0, .17, 0);   /* el punto de mira decide dónde se apoya el conjunto */
 
   function frameCamera(){
     var narrow = w < 520;
     GAP_OPEN = narrow ? .46 : .62;   /* en pantalla pequeña las capas van más juntas */
     camera.fov = 38;
 
+    /* En táctil las etiquetas dan paso a la leyenda, arriba, y la franja de datos de
+       abajo ocupa el doble por partirse en dos líneas: el conjunto sube y se aleja. */
+    AIM.y = narrow ? -.06 : .17;
+
     var medioFondo = 1.5 * GAP_OPEN + .08;                      /* capas extremas + grosor de placa */
     var radio  = Math.sqrt(1.25 * 1.25 + .9 * .9 + medioFondo * medioFondo);
     var mitadV = camera.fov * Math.PI / 360;
     var mitadH = Math.atan(Math.tan(mitadV) * camera.aspect);
-    var dist   = radio / Math.sin(Math.min(mitadV, mitadH)) * 1.16;
+    var dist   = radio / Math.sin(Math.min(mitadV, mitadH)) * (narrow ? 1.24 : 1.16);
 
     camera.position.copy(AIM).addScaledVector(VIEW, dist);
     camera.lookAt(AIM);
@@ -1090,7 +1101,7 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
     });
   }
 
-  var PN = coarse ? 420 : 1100;
+  var PN = lite ? 260 : 1100;
   var pPos = new Float32Array(PN * 3), pTint = new Float32Array(PN * 3), pA = new Float32Array(PN);
   var vz = new Float32Array(PN), pass = new Uint8Array(PN), hits = new Uint8Array(PN);
   var cIn = new THREE.Color(0x3FA300), cThru = new THREE.Color(0x9FD97A);
@@ -1115,7 +1126,7 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   scene.add(new THREE.Points(pGeo, pointMat(.05)));
 
   /* ---- polvo de yeso ---- */
-  var DN = coarse ? 120 : 320;
+  var DN = lite ? 80 : 320;
   var dPos = new Float32Array(DN * 3), dTint = new Float32Array(DN * 3), dA = new Float32Array(DN);
   for(var d2 = 0; d2 < DN; d2++){
     dPos[d2*3] = (Math.random() - .5) * 8; dPos[d2*3+1] = (Math.random() - .5) * 5; dPos[d2*3+2] = (Math.random() - .5) * 6;
@@ -1162,6 +1173,7 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   }
 
   var running = true, raf = 0, t0 = performance.now(), lastT = 0;
+  var minDT = lite ? 1 / 31 : 0;   /* en táctil basta con 30 fps y se ahorra la mitad de GPU */
   function start(){ if(!raf && !reduce) raf = requestAnimationFrame(loop); }
   new IntersectionObserver(function(es){
     running = es[0].isIntersecting;
@@ -1216,7 +1228,11 @@ footer{border-top:1px solid var(--line);padding:2.6rem 0;background:var(--white)
   function loop(now){
     raf = 0;
     if(!running || reduce) return;
-    var t = (now - t0) / 1000, dt = lastT ? t - lastT : 0; lastT = t;
+    var t = (now - t0) / 1000, dt = t - lastT;
+    /* el tope de fotogramas no puede saltarse el primero: sin él la escena no llega a pintarse */
+    if(lastT && minDT && dt < minDT){ raf = requestAnimationFrame(loop); return; }
+    if(!lastT) dt = 0;
+    lastT = t;
     draw(t, dt);
     raf = requestAnimationFrame(loop);
   }

@@ -540,6 +540,57 @@
 }
 
 /* --------------------------------------------------------------------------
+   EL AUTOR
+   -------------------------------------------------------------------------- */
+
+.retrato{
+  position: relative;
+  width: min(100%, 360px);
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-l);
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--negro-3), var(--negro-2));
+  border: 1px solid var(--linea);
+  display: grid;
+  place-items: center;
+}
+/* Filete dorado por dentro: encuadra la foto sin competir con ella */
+.retrato::after{
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(212,165,55,.3);
+  border-radius: calc(var(--r-l) - 8px);
+  pointer-events: none;
+}
+.retrato img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Si aún no hay foto: monograma, no un hueco gris */
+.retrato .monograma{
+  font-family: var(--display);
+  font-size: clamp(46px, 7vw, 82px);
+  letter-spacing: .1em;
+  color: var(--oro);
+  opacity: .55;
+}
+
+.acciones-autor{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin-top: 28px;
+}
+.nota-seguir{
+  font-size: 13px;
+  max-width: 30ch;
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------------------
    PRÓXIMAMENTE
    -------------------------------------------------------------------------- */
 

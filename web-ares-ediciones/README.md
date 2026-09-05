@@ -1,7 +1,23 @@
 # Ares Ediciones — web
 
-Web de la editorial. Estática: HTML, CSS y JavaScript sin librerías ni build.
+Web del sello. Estática: HTML, CSS y JavaScript sin librerías ni build.
 Se abre haciendo doble clic en `index.html` y funciona igual en cualquier hosting.
+
+## Qué es Ares en esta web
+
+Ares Ediciones es el **sello de Alan Gutiérrez**, y los siete títulos son suyos.
+La web lo dice abiertamente: hay una sección "El autor" y el sello se presenta
+como decisión propia, no como una editorial con muchas firmas.
+
+Es deliberado. Un sello de un solo autor que aparenta ser una editorial general
+se cae en cuanto alguien mira los siete libros y ve la misma firma, y se cae
+justo en el momento en que el lector está decidiendo si comprar. Además el
+activo es el autor: quien termina un libro compra el siguiente por quien lo
+escribe, no por el logo de la portada.
+
+Si algún día Ares publica a terceros, hay que **volver a añadir** la sección de
+manuscritos que se quitó (formulario de envío y el "Enviar un manuscrito" de la
+sección Próximamente). Está en el historial de git.
 
 ---
 
@@ -62,9 +78,30 @@ atado a la etiqueta precisamente para que no dependa de que alguien se acuerde.
 
 ### `EDITORIAL.amazonAutor`
 
-La página del autor en Amazon. Sale como botón al final del catálogo. Si la
-dejas en `""`, el botón desaparece: mejor que falte un botón a que haya uno que
-no lleva a ningún sitio.
+La página del autor en Amazon. Alimenta tres botones: el del final del catálogo
+("Ver todos en Amazon"), el de la sección del autor y el de Próximamente
+(ambos "Seguir en Amazon"). Si la dejas en `""`, los tres desaparecen: mejor que
+falte un botón a que haya uno que no lleva a ningún sitio.
+
+**El botón de seguir es el más rentable de la web.** Amazon manda un correo a
+tus seguidores cada vez que publicas. Con siete libros fuera y el octavo en
+camino, esa lista *es* el lanzamiento del octavo: es la única forma que tienes
+de avisar a alguien que ya te leyó, sin pagar publicidad.
+
+### `EDITORIAL.autor`
+
+Los textos de la sección "El autor":
+
+| Campo     | Qué es                                                          |
+|-----------|-----------------------------------------------------------------|
+| `nombre`  | Nombre del autor. También genera el monograma si no hay foto     |
+| `titular` | Una línea. Lo primero que se lee de él                           |
+| `bio`     | Dos o tres párrafos separados por `\n\n`, **en primera persona** |
+| `foto`    | Ruta a un retrato. Vertical 4:5. Vacío = monograma dorado        |
+
+La bio en tercera persona ("Alan Gutiérrez nació en...") suena a nota de prensa
+y distancia. En primera persona vende, porque esta sección no informa: decide si
+el lector te compra a ti.
 
 ### Para añadir el libro nº 8
 

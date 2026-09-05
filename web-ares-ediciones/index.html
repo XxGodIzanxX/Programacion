@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Ares Ediciones — Editorial digital</title>
-<meta name="description" content="Ares Ediciones es una editorial digital. Siete libros elegidos uno a uno, disponibles en Amazon. Sin almacén, sin escaparate, sin prisa.">
+<meta name="description" content="Ares Ediciones es el sello digital de Alan Gutiérrez. Siete libros, disponibles en Amazon. Sin almacén, sin escaparate, sin prisa.">
 <meta name="theme-color" content="#08070B">
 
 <!-- Redes sociales. Cuando tengas una imagen de marca (1200x630 px),
      guárdala en imagenes/ y pon aquí su ruta o su URL completa. -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ares Ediciones — Editorial digital">
-<meta property="og:description" content="Siete libros elegidos uno a uno. Editorial digital.">
+<meta property="og:description" content="Siete libros de Alan Gutiérrez. Sello digital independiente.">
 <meta property="og:image" content="imagenes/og-ares.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -52,9 +52,9 @@
 
   <ul class="menu">
     <li><a href="#catalogo">Catálogo</a></li>
-    <li><a href="#editorial">La editorial</a></li>
-    <li><a href="#proximamente">Próximamente</a></li>
-    <li><a href="#contacto">Manuscritos</a></li>
+    <li><a href="#autor">El autor</a></li>
+    <li><a href="#editorial">El sello</a></li>
+    <li><a href="#contacto">Contacto</a></li>
   </ul>
 
   <button class="hamburguesa" type="button" aria-label="Abrir menú" aria-expanded="false">
@@ -81,7 +81,7 @@
       <div class="acto-1">
         <p class="antetitulo" data-editorial="lema">Editorial digital</p>
         <h1 class="t-xxl">ARES<br><span class="oro">EDICIONES</span></h1>
-        <p class="linea-hero">Siete libros. Ninguno por casualidad.</p>
+        <p class="linea-hero">Siete libros de Alan Gutiérrez. Ninguno por casualidad.</p>
       </div>
 
       <!-- ACTO 2: entra cuando el libro ya está abierto -->
@@ -112,27 +112,28 @@
   <div class="marco dos-columnas">
 
     <div class="aparece">
-      <p class="antetitulo">La editorial</p>
-      <h2 class="t-xl">Sin paredes<br>y a propósito.</h2>
+      <p class="antetitulo">El sello</p>
+      <h2 class="t-xl">Sin paredes<br>y sin permiso.</h2>
     </div>
 
     <div class="aparece" style="--retraso:120ms">
       <p class="lectura" data-editorial="descripcion">
-        Somos una editorial sin paredes. No tenemos almacén, ni escaparate, ni una
-        estantería que llenar por obligación. Tenemos siete libros y el tiempo para
-        elegir el octavo.
+        Ares Ediciones es el sello desde el que publico mi propio trabajo. No hay
+        almacén, ni escaparate, ni una estantería que llenar por obligación. Hay
+        siete libros y el tiempo para escribir el octavo.
       </p>
       <p class="lectura" style="margin-top:22px">
-        Publicar en digital no es publicar menos: es publicar sin la presión de
-        rellenar un catálogo. Cada título que sale de aquí ha pasado por una única
-        pregunta: <em class="oro">¿merece que alguien le dedique seis horas de su
-        vida?</em> Si la respuesta no es un sí rotundo, no sale.
+        Montar el sello no fue una rabieta contra el sector: fue quedarme con las
+        decisiones que me importaban. Qué se publica, cuándo y con qué portada.
+        Cada título ha pasado por una única pregunta:
+        <em class="oro">¿merece que alguien le dedique seis horas de su vida?</em>
+        Si la respuesta no es un sí rotundo, no sale.
       </p>
 
       <div class="cifras">
         <div><span class="n" id="contadorLibros">7</span><span class="l">Títulos publicados</span></div>
+        <div><span class="n">1</span><span class="l">Autor, sin intermediarios</span></div>
         <div><span class="n">0</span><span class="l">Metros de almacén</span></div>
-        <div><span class="n">∞</span><span class="l">Kilómetros de alcance</span></div>
       </div>
     </div>
 
@@ -168,17 +169,55 @@
 </section>
 
 <!-- ======================================================================
+     EL AUTOR
+     Los 7 libros son suyos, así que es la sección que más peso tiene
+     después del catálogo: quien termina un libro compra el siguiente por
+     el autor, no por el sello.
+     ====================================================================== -->
+<section class="seccion" id="autor">
+  <div class="marco dos-columnas">
+
+    <div class="aparece">
+      <p class="antetitulo">El autor</p>
+      <div class="retrato" id="retratoAutor">
+        <span class="monograma">AG</span>
+      </div>
+    </div>
+
+    <div class="aparece" style="--retraso:120ms">
+      <h2 class="t-xl" id="nombreAutor">Alan Gutiérrez</h2>
+      <p class="serif t-m oro" id="titularAutor" style="margin:14px 0 24px"></p>
+      <div class="lectura" id="bioAutor"></div>
+
+      <!-- Seguir al autor en Amazon es el CTA más rentable de toda la web:
+           Amazon avisa por correo a quien te sigue cada vez que publicas.
+           Para alguien con 7 libros y el octavo en camino, esa lista es el
+           lanzamiento del octavo. -->
+      <p class="acciones-autor">
+        <a class="boton boton-oro" id="seguirAutor" href="#" target="_blank" rel="noopener noreferrer" hidden>
+          Seguir en Amazon
+        </a>
+        <span class="nota-seguir apagado">Amazon te avisa cuando publique el siguiente.</span>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======================================================================
      PRÓXIMAMENTE
      ====================================================================== -->
 <section class="seccion" id="proximamente">
   <div class="marco">
     <div class="proximo aparece">
       <p class="antetitulo">El octavo</p>
-      <h2 class="t-l">Todavía no está escrito.<br>O sí, y no lo sabemos.</h2>
+      <h2 class="t-l">Todavía no está terminado.<br>Y no va a salir antes de estarlo.</h2>
       <p class="lectura" style="text-align:center" data-editorial="proximos">
-        Estamos leyendo manuscritos. Publicamos poco y despacio.
+        El octavo está en marcha.
       </p>
-      <a class="boton boton-oro" href="#contacto">Enviar un manuscrito</a>
+      <a class="boton boton-oro" id="proximoSeguir" href="#" target="_blank" rel="noopener noreferrer" hidden>
+        Que me avisen cuando salga
+      </a>
     </div>
   </div>
 </section>
@@ -190,15 +229,15 @@
   <div class="marco dos-columnas">
 
     <div class="aparece">
-      <p class="antetitulo">Manuscritos</p>
-      <h2 class="t-xl">Cuéntanos<br>qué has escrito.</h2>
+      <p class="antetitulo">Contacto</p>
+      <h2 class="t-xl">Escríbeme.</h2>
       <p class="lectura" style="margin-top:20px">
-        No queremos la novela entera de entrada. Queremos saber de qué va, por qué
-        la escribiste y las primeras veinte páginas. Con eso nos basta para decir
-        que sí o que no, y lo decimos rápido.
+        Si has leído alguno y quieres decirme algo, si llevas un club de lectura,
+        si escribes en un medio o si te interesan los derechos de traducción:
+        este es el sitio. Contesto yo.
       </p>
       <p class="lectura" style="margin-top:16px">
-        También puedes escribirnos directamente a
+        O directamente a
         <a class="oro" data-email href="mailto:hola@aresediciones.com">hola@aresediciones.com</a>.
       </p>
     </div>
@@ -213,8 +252,8 @@
         <input id="correo" name="correo" type="email" required autocomplete="email">
       </div>
       <div class="campo">
-        <label for="mensaje">De qué va tu libro</label>
-        <textarea id="mensaje" name="mensaje" required placeholder="Género, extensión aproximada y por qué crees que encaja aquí."></textarea>
+        <label for="mensaje">Tu mensaje</label>
+        <textarea id="mensaje" name="mensaje" required placeholder="Cuéntame."></textarea>
       </div>
       <button class="boton boton-oro" type="submit">Enviar</button>
     </form>
@@ -243,9 +282,9 @@
       <h4>Navegar</h4>
       <ul>
         <li><a href="#catalogo">Catálogo</a></li>
-        <li><a href="#editorial">La editorial</a></li>
-        <li><a href="#proximamente">Próximamente</a></li>
-        <li><a href="#contacto">Manuscritos</a></li>
+        <li><a href="#autor">El autor</a></li>
+        <li><a href="#editorial">El sello</a></li>
+        <li><a href="#contacto">Contacto</a></li>
       </ul>
     </div>
 
@@ -295,8 +334,13 @@
   "@type": "Organization",
   "@id": "#ares",
   "name": "Ares Ediciones",
-  "description": "Editorial digital independiente.",
-  "email": "hola@aresediciones.com"
+  "description": "Sello editorial digital independiente de Alan Gutiérrez.",
+  "email": "hola@aresediciones.com",
+  "founder": {
+    "@type": "Person",
+    "name": "Alan Gutiérrez",
+    "sameAs": "https://www.amazon.es/stores/Alan-Gutierrez/author/B0GJN9V1D5"
+  }
 }
 </script>
 

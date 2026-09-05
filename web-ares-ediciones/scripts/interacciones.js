@@ -102,6 +102,59 @@
       pieCatalogo.hidden = false;
     }
 
+    /* ----------------------------------------------------------------------
+       EL AUTOR
+       Nombre, titular, biografía, retrato y los dos botones de "seguir".
+       Todo sale de EDITORIAL.autor, así que se cambia en un solo sitio.
+       ---------------------------------------------------------------------- */
+    const A = EDITORIAL.autor || {};
+
+    const nombreAutor = document.getElementById("nombreAutor");
+    if (nombreAutor && A.nombre) nombreAutor.textContent = A.nombre;
+
+    const titularAutor = document.getElementById("titularAutor");
+    if (titularAutor && A.titular) titularAutor.textContent = A.titular;
+
+    const bioAutor = document.getElementById("bioAutor");
+    if (bioAutor && A.bio) {
+      bioAutor.innerHTML = String(A.bio).split("\n\n")
+        .filter(function (t) { return t.trim(); })
+        .map(function (t) { return "<p>" + L.limpio(t.trim()) + "</p>"; })
+        .join("");
+    }
+
+    // Retrato: foto si la hay, monograma si no. Y si la ruta está mal,
+    // volvemos al monograma en vez de dejar un icono roto.
+    const retrato = document.getElementById("retratoAutor");
+    if (retrato && A.foto) {
+      const img = new Image();
+      img.src = A.foto;
+      img.alt = "Retrato de " + (A.nombre || "");
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.addEventListener("load", function () { retrato.innerHTML = ""; retrato.appendChild(img); });
+    } else if (retrato && A.nombre) {
+      // Monograma a partir de las iniciales reales del nombre
+      const mono = retrato.querySelector(".monograma");
+      if (mono) {
+        mono.textContent = A.nombre.trim().split(/\s+/).slice(0, 2)
+          .map(function (w) { return w[0]; }).join("").toUpperCase();
+      }
+    }
+
+    /* Los dos botones de "seguir al autor" apuntan a su página de Amazon.
+       Es el CTA más rentable que tiene esta web: Amazon avisa por correo a
+       quien te sigue cada vez que publicas, así que esa lista es, en la
+       práctica, el lanzamiento del octavo libro. Si no hay URL, no salen. */
+    [["seguirAutor"], ["proximoSeguir"]].forEach(function (par) {
+      const el = document.getElementById(par[0]);
+      if (el && EDITORIAL.amazonAutor) {
+        el.href = EDITORIAL.amazonAutor;
+        el.rel = "noopener noreferrer";
+        el.hidden = false;
+      }
+    });
+
     /* Aviso de afiliación: obligatorio en cuanto usas etiqueta de afiliado,
        así que lo atamos a la propia etiqueta y no a que alguien se acuerde. */
     const avisoAfiliado = document.getElementById("avisoAfiliado");

@@ -195,8 +195,26 @@ const EDITORIAL = {
   amazonTag: "",
   amazonDominio: "www.amazon.es",
 
+  /* --- El autor -----------------------------------------------------------
+     Ares Ediciones es el sello de Alan Gutiérrez y los siete títulos son
+     suyos. La web lo dice abiertamente en vez de aparentar una editorial
+     con muchos autores: en cuanto alguien ve que los siete comparten firma,
+     disimularlo cuesta más credibilidad de la que ahorra.
+     ---------------------------------------------------------------------- */
+  autor: {
+    nombre: "Alan Gutiérrez",
+    // Una línea. Es lo primero que se lee de él.
+    titular: "Escribo los libros y decido cuáles se publican.",
+    // Dos o tres párrafos, separados por \n\n. Escríbelos en primera
+    // persona: es la sección donde el lector decide si le caes bien.
+    bio: "Aquí va tu biografía. Cuenta de dónde vienes, qué te llevó a escribir y por qué acabaste montando tu propio sello en vez de esperar a que alguien te publicara.\n\nSegundo párrafo: qué tipo de historias te interesan y qué va a encontrar quien te lea. Sin currículum: lo que engancha es el motivo, no la lista de méritos.",
+    // Ruta a una foto tuya. Cuadrada o vertical. Déjalo en "" y sale un
+    // monograma dorado en su lugar.
+    foto: ""
+  },
+
   claim: "Libros que se abren solos.",
-  descripcion: "Somos una editorial sin paredes. No tenemos almacén, ni escaparate, ni una estantería que llenar por obligación. Tenemos siete libros y el tiempo para elegir el octavo.",
+  descripcion: "Ares Ediciones es el sello desde el que publico mi propio trabajo. No hay almacén, ni escaparate, ni una estantería que llenar por obligación. Hay siete libros y el tiempo para escribir el octavo.",
   email: "hola@aresediciones.com",
   redes: [
     { nombre: "Instagram", url: "" },
@@ -204,5 +222,5 @@ const EDITORIAL = {
     { nombre: "TikTok",    url: "" }
   ],
   // Se muestra en la sección "Próximamente"
-  proximos: "Estamos leyendo manuscritos. Publicamos poco y despacio."
+  proximos: "El octavo está en marcha. Publico poco y despacio, y prefiero tardar a sacar algo que no aguante una segunda lectura."
 };

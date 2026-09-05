@@ -287,8 +287,12 @@
     if (url) {
       comprar.href = url;
       comprar.target = "_blank";
-      // noopener evita que la pestaña de Amazon pueda tocar la nuestra
-      comprar.rel = "noopener noreferrer sponsored";
+      /* noopener evita que la pestaña de Amazon pueda tocar la nuestra.
+         "sponsored" SOLO si hay etiqueta de afiliado: marca un enlace como
+         pagado, y ponerlo sin serlo le dice a Google que tus enlaces son
+         publicidad cuando no lo son. */
+      comprar.rel = "noopener noreferrer" +
+        ((typeof EDITORIAL !== "undefined" && EDITORIAL.amazonTag) ? " sponsored" : "");
       comprar.textContent = "Comprar en Amazon";
     } else {
       comprar.href = "#";

@@ -98,7 +98,8 @@
     const enlaceAutor = document.getElementById("enlaceAutor");
     if (pieCatalogo && enlaceAutor && EDITORIAL.amazonAutor) {
       enlaceAutor.href = EDITORIAL.amazonAutor;
-      enlaceAutor.rel = "noopener noreferrer sponsored";
+      // "sponsored" solo si hay etiqueta de afiliado (ver catalogo.js)
+      enlaceAutor.rel = "noopener noreferrer" + (EDITORIAL.amazonTag ? " sponsored" : "");
       pieCatalogo.hidden = false;
     }
 

@@ -9,6 +9,16 @@
    correo, se sube a cualquier hosting arrastrándolo o se pega en un
    constructor de webs. Sin carpetas, sin rutas que se rompan.
 
+   Con la opción --con-imagenes incrusta ADEMÁS las portadas y el retrato
+   como data URI, y entonces el archivo va de verdad solo:
+
+       node despliegue/construir-autocontenido.js --con-imagenes
+
+   Pesa unas 20 veces más (de ~100 KB a ~1,8 MB) porque base64 engorda los
+   binarios un tercio y el navegador no puede cachear las imágenes por
+   separado. Úsalo para mandar la web por correo o enseñarla sin conexión,
+   nunca para publicarla en un hosting: ahí las imágenes van en su carpeta.
+
    Para qué NO sirve: para trabajar. Edita SIEMPRE los archivos originales
    (datos/libros.js, estilos/, scripts/) y vuelve a ejecutar esto:
 
@@ -21,7 +31,7 @@ const fs = require("fs");
 const path = require("path");
 
 const RAIZ = path.join(__dirname, "..");
-const SALIDA = path.join(__dirname, "ares-ediciones-autocontenida.html");
+const SALIDA_BASE = path.join(__dirname, "ares-ediciones-autocontenida.html");
 
 function leer(rel) {
   const f = path.join(RAIZ, rel);
@@ -61,6 +71,32 @@ html = html.replace(
   "  Generado el " + new Date().toISOString().slice(0, 10) + "\n-->"
 );
 
+/* --- Imágenes como data URI (solo con --con-imagenes) -------------------- */
+
+const CON_IMAGENES = process.argv.includes("--con-imagenes");
+
+if (CON_IMAGENES) {
+  const TIPOS = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png",
+                  ".webp": "image/webp", ".gif": "image/gif", ".avif": "image/avif" };
+  let incrustadas = 0, bytes = 0;
+
+  // Las rutas viven dentro de datos/libros.js, que ya está en línea aquí,
+  // así que basta con sustituir cada "imagenes/..." por su data URI.
+  html = html.replace(/"(imagenes\/[^"]+\.(?:jpg|jpeg|png|webp|gif|avif))"/gi, function (todo, ruta) {
+    const f = path.join(RAIZ, ruta);
+    if (!fs.existsSync(f)) {
+      console.warn("  aviso: " + ruta + " no existe, se deja la ruta tal cual");
+      return todo;
+    }
+    const buf = fs.readFileSync(f);
+    incrustadas++; bytes += buf.length;
+    const tipo = TIPOS[path.extname(f).toLowerCase()] || "application/octet-stream";
+    return '"data:' + tipo + ";base64," + buf.toString("base64") + '"';
+  });
+
+  console.log("Incrustadas " + incrustadas + " imágenes (" + (bytes / 1024 / 1024).toFixed(2) + " MB de origen)");
+}
+
 /* --- Comprobación: que no quede ninguna ruta local sin incrustar ---------- */
 const sueltos = html.match(/(?:href|src)="(?:estilos|scripts|datos)\/[^"]+"/g);
 if (sueltos) {
@@ -68,8 +104,13 @@ if (sueltos) {
   process.exit(1);
 }
 
+const SALIDA = CON_IMAGENES
+  ? SALIDA_BASE.replace(".html", "-con-imagenes.html")
+  : SALIDA_BASE;
 fs.writeFileSync(SALIDA, html);
 const kb = (Buffer.byteLength(html) / 1024).toFixed(0);
 console.log("Escrito " + path.relative(RAIZ, SALIDA) + " (" + kb + " KB)");
-console.log("Recuerda: las portadas de imagenes/portadas/ NO se incrustan.");
-console.log("Si usas este archivo suelto, sube también esa carpeta al lado.");
+if (!CON_IMAGENES) {
+  console.log("Las imágenes NO van dentro: sube imagenes/ al lado del HTML.");
+  console.log("Para meterlas también: node despliegue/construir-autocontenido.js --con-imagenes");
+}

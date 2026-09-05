@@ -1,0 +1,610 @@
+/* ===========================================================================
+   ARES EDICIONES — MOTOR 3D
+   ---------------------------------------------------------------------------
+   Todo el 3D es CSS puro (transform-style: preserve-3d + perspective).
+   No hay WebGL ni ninguna librería: el navegador compone estas capas en la
+   GPU, así que va a 60fps en móvil y el texto sigue siendo texto real
+   (seleccionable e indexable por Google).
+
+   El scroll no anima nada directamente. JS solo escribe UNA variable,
+   --p (de 0 a 1), en la escena; el CSS de aquí decide qué significa eso.
+   Así separamos "cuánto has scrolleado" de "qué hace el libro".
+   =========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. ESCENA: LA CÁMARA
+   -------------------------------------------------------------------------- */
+
+/* Ojo: --p, --mx y --my NO se declaran aquí. Viven en :root (base.css) y JS
+   los escribe sobre .panel-fijo, para que los hereden a la vez el libro, el
+   texto de la cabecera y el indicador de scroll. Si los declarásemos aquí,
+   cortaríamos esa herencia. */
+.escena{
+  perspective: 2200px;
+  perspective-origin: 50% 46%;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   2. EL LIBRO
+   Medidas en una sola variable: --alto-libro. Todo lo demás se deriva,
+   así el libro escala entero sin descuadrarse.
+   -------------------------------------------------------------------------- */
+
+.libro{
+  --alto-libro: clamp(200px, 38vh, 420px);
+  --ancho-libro: calc(var(--alto-libro) * .68);   /* proporción 2:3 de tapa   */
+  --grosor: calc(var(--alto-libro) * .075);       /* lomo                     */
+  --color-libro: var(--rojo);
+
+  position: relative;
+  width: var(--ancho-libro);
+  height: var(--alto-libro);
+  transform-style: preserve-3d;
+
+  /* La cámara gira mientras el libro se abre: empieza mirándolo de frente y
+     de canto, y acaba de plano, como si te lo pusieran delante en la mesa.
+     El paralaje del ratón se suma encima, muy suave. */
+  transform:
+    /* Cámara: empieza mirando el libro de canto y acaba casi de frente,
+       con poca inclinación (más de 12° y la doble página se ve aplastada). */
+    rotateX(calc( (9deg  + var(--p) *  3deg) + var(--my) * -4deg ))
+    rotateY(calc( (-27deg + var(--p) * 23deg) + var(--mx) *  6deg ))
+    rotateZ(calc( -1deg + var(--p) * 1deg ))
+    translateZ(calc(var(--p) * 30px))
+    /* Al abrirse: sube (deja libre la franja del texto), se desplaza a la
+       derecha (la tapa se va a la izquierda, así la doble página queda
+       centrada) y se encoge (ahora ocupa el doble de ancho). */
+    translateY(calc(16vh - var(--p) * 29vh))
+    translateX(calc(var(--p) * 47%))
+    scale(calc(1 - var(--p) * .26));
+}
+
+/* Todas las caras comparten esto */
+.libro .cara{
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 2px 5px 5px 2px;   /* esquina del lomo casi recta */
+  overflow: hidden;
+}
+
+/* --- 2.1 Tapa: la que se abre --------------------------------------------
+   IMPORTANTE, y es el error clásico de esta técnica: la tapa NO puede ser
+   un solo elemento con una cara pintada por delante y otra por detrás.
+   En cuanto le pones overflow:hidden (que hace falta para recortar la
+   portada), el navegador APLANA su contenido y la cara interior deja de
+   existir en 3D: el libro se abre y no ves la página izquierda.
+
+   Solución: la tapa es un envoltorio SIN overflow y con preserve-3d, y
+   dentro van dos caras hermanas, cada una con su propio recorte. Es el
+   mismo patrón de una carta que se voltea.
+   ------------------------------------------------------------------------ */
+
+.tapa{
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transform:
+    translateZ(calc(var(--grosor) / 2))
+    rotateY(calc(var(--p) * -168deg));
+  z-index: 10;
+}
+
+/* Cara exterior: la portada */
+.tapa .exterior{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  border-radius: 2px 5px 5px 2px;
+  background:
+    linear-gradient(115deg, rgba(255,255,255,.16) 0%, transparent 34%, transparent 66%, rgba(0,0,0,.4) 100%),
+    linear-gradient(160deg, var(--color-libro), color-mix(in srgb, var(--color-libro) 55%, #000));
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.09),
+    inset -14px 0 26px -18px rgba(0,0,0,.9);
+}
+
+/* Cara interior: es, literalmente, la PÁGINA IZQUIERDA del libro abierto.
+   Por eso es papel y no cartón oscuro: sin esto, al abrirse solo se ve el
+   bloque blanco de la derecha y no parece un libro abierto, sino una hoja. */
+.tapa .interior{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  border-radius: 5px 2px 2px 5px;
+  display: grid;
+  place-items: center;
+  padding: 14% 12%;
+  text-align: center;
+  background:
+    /* Sombra del canal central: cae en el borde DERECHO de esta página,
+       que es el que toca el lomo. */
+    linear-gradient(270deg, rgba(60,45,20,.45), transparent 24%),
+    linear-gradient(200deg, #FFFDF6, #EFE7D5);
+}
+
+.tapa .interior .guarda{
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  /* Aparece solo cuando la tapa ya está girada: si no, se lee del revés
+     durante medio giro. */
+  opacity: clamp(0, calc((var(--p) - .60) / .22), 1);
+}
+.tapa .interior .marca-agua{
+  font-family: var(--display);
+  font-size: clamp(13px, 1.3vw, 20px);
+  letter-spacing: .3em;
+  color: #9A7A2E;
+}
+.tapa .interior .filete{ width: 46px; height: 1px; background: #C0A45E; }
+.tapa .interior .autor-guarda{
+  font-family: var(--serif);
+  font-size: clamp(11px, 1.1vw, 16px);
+  font-style: italic;
+  color: #6B5B3A;
+}
+
+/* Barniz que barre la portada */
+.tapa .exterior .brillo{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    calc(105deg + var(--mx) * 18deg),
+    transparent 38%,
+    rgba(255,255,255,.17) 47%,
+    rgba(255,255,255,.03) 54%,
+    transparent 62%
+  );
+  mix-blend-mode: screen;
+}
+
+/* --- 2.2 Hojas: se abren detrás de la tapa, escalonadas ------------------- */
+
+/* Las hojas son más pequeñas que la tapa: es la "ceja" que tiene cualquier
+   libro de verdad (la tapa sobresale unos milímetros por los tres cantos).
+   Además de ser lo correcto, resuelve un problema real: si tapa y hojas
+   miden EXACTAMENTE lo mismo y están casi en el mismo plano, Chromium
+   rompe el orden de pintado y saca media hoja por delante de la portada.
+   Con la ceja no hay coincidencia posible. */
+.hoja{
+  --i: 0;                                  /* índice de la hoja (lo pone JS) */
+  --n: 6;                                  /* total de hojas                 */
+  inset: 4px 6px 4px 0;                    /* pegadas al lomo, recogidas del resto */
+
+  /* Y no se pintan hasta que la tapa empieza a levantarse. En un libro
+     cerrado las hojas NO se ven: solo ves tapa, lomo y corte. Además
+     de ser lo cierto, evita de raíz que Chromium las cuele por delante
+     de la portada cuando los dos planos están casi pegados. El fundido
+     ocurre bajo la tapa, así que nadie lo ve. */
+  opacity: clamp(0, calc((var(--p) - .012) / .05), 1);
+  /* Cada hoja arranca un poco más tarde y gira un poco menos que la anterior:
+     eso es lo que produce el abanico. */
+  --retardo: calc(var(--i) / var(--n) * .34);
+  --ph: clamp(0, calc((var(--p) - var(--retardo)) / .5), 1);
+
+  transform-origin: left center;
+  transform:
+    translateZ(calc(var(--grosor) / 2 - 6px - var(--i) * 1.6px))
+    /* OJO: el ángulo va multiplicado por --ph, nunca sumado suelto. Con el
+       libro cerrado (--ph = 0) todas las hojas quedan EXACTAMENTE paralelas
+       a la tapa. Si se les deja un ángulo fijo, sus planos cortan el de la
+       tapa y se ve media hoja por delante de la portada. */
+    rotateY(calc(var(--ph) * -164deg));
+  background: linear-gradient(100deg, #FFFDF6 0%, #F3EEE0 55%, #E4DCC9 100%);
+  box-shadow: inset -10px 0 18px -14px rgba(0,0,0,.55);
+  z-index: calc(9 - var(--i));
+}
+
+/* Sombra de la hoja que gira sobre las de abajo. Se apaga al final. */
+.hoja::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.4), transparent 45%);
+  opacity: calc(1 - var(--ph));
+}
+
+/* --- 2.3 Páginas interiores visibles al abrirse --------------------------- */
+
+.pagina-interior{
+  position: absolute;
+  inset: 4px 6px 4px 0;
+  transform: translateZ(calc(var(--grosor) / 2 - 14px));
+  background: linear-gradient(95deg, #FFFDF6, #F1EBDC);
+  border-radius: 2px 5px 5px 2px;
+  z-index: 1;
+  box-shadow: inset 22px 0 30px -20px rgba(60,45,20,.55);
+  display: grid;
+  place-items: center;
+  padding: 12% 14%;
+  /* Solo se ve cuando el libro ya está bastante abierto */
+  opacity: clamp(0, calc((var(--p) - .45) / .3), 1);
+}
+
+.pagina-interior p{
+  font-family: var(--serif);
+  font-size: clamp(11px, 1.05vw, 15px);
+  line-height: 1.5;
+  color: #3A3428;
+  text-align: center;
+  font-style: italic;
+  margin: 0;
+}
+
+/* --- 2.4 Tapa trasera ---------------------------------------------------- */
+
+.tapa-trasera{
+  transform: translateZ(calc(var(--grosor) / -2));
+  background: linear-gradient(200deg, color-mix(in srgb, var(--color-libro) 70%, #000), #0A0910);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+  z-index: 0;
+}
+
+/* --- 2.5 Lomo, canto y cabeza: el grosor real ---------------------------- */
+
+.lomo{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--grosor);
+  height: 100%;
+  transform-origin: left center;
+  transform: translateZ(calc(var(--grosor) / -2)) rotateY(-90deg);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-libro) 45%, #000), var(--color-libro), color-mix(in srgb, var(--color-libro) 50%, #000));
+  display: grid;
+  place-items: center;
+  border-radius: 3px 0 0 3px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.07);
+}
+
+.lomo span{
+  font-family: var(--display);
+  font-size: calc(var(--grosor) * .34);
+  letter-spacing: .18em;
+  color: var(--oro-claro);
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+/* Canto derecho: el corte de las páginas. Las rayas son las hojas. */
+.canto{
+  position: absolute;
+  top: 0;
+  left: calc(100% - var(--grosor));
+  width: var(--grosor);
+  height: 100%;
+  transform-origin: right center;
+  transform: translateZ(calc(var(--grosor) / -2)) rotateY(90deg);
+  background:
+    repeating-linear-gradient(90deg, #EFE8D8 0 1.5px, #CFC5AC 1.5px 3px),
+    #E8E0CE;
+  border-radius: 0 4px 4px 0;
+  z-index: 0;
+}
+
+/* Cabeza (canto superior) */
+.cabeza{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--grosor);
+  transform-origin: center top;
+  transform: translateZ(calc(var(--grosor) / -2)) rotateX(90deg);
+  background: repeating-linear-gradient(0deg, #EFE8D8 0 1.5px, #C9BFA6 1.5px 3px);
+  z-index: 0;
+}
+
+/* --- 2.6 Portada: imagen o portada tipográfica generada ------------------- */
+
+.portada-img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Portada de emergencia (cuando aún no hay imagen). No es un placeholder
+   feo: es una portada tipográfica de verdad con los colores de marca. */
+.portada-tipo{
+  container-type: inline-size;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 6%;
+  padding: 11% 10%;
+  text-align: center;
+}
+.portada-tipo .sello{
+  font-family: var(--sans);
+  font-size: clamp(6px, 3.4cqw, 11px);
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--oro-claro);
+  opacity: .85;
+}
+.portada-tipo .tit{
+  align-self: center;
+  font-family: var(--display);
+  font-size: clamp(13px, 11cqw, 34px);
+  line-height: 1.12;
+  letter-spacing: .04em;
+  color: #FFF8E6;
+  text-shadow: 0 2px 10px rgba(0,0,0,.5);
+}
+.portada-tipo .aut{
+  font-family: var(--serif);
+  font-size: clamp(9px, 5.6cqw, 17px);
+  font-style: italic;
+  color: rgba(255,248,230,.86);
+}
+.portada-tipo::before{
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border: 1px solid rgba(212,165,55,.4);
+  pointer-events: none;
+}
+
+/* Sombra proyectada del libro sobre el "suelo" */
+.sombra-suelo{
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  width: calc(var(--ancho-libro) * (1 + var(--p) * 1.05));
+  height: calc(var(--alto-libro) * .12);
+  transform: translateX(-50%) translateZ(-60px) rotateX(78deg);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.85), transparent 70%);
+  filter: blur(18px);
+  opacity: calc(.75 - var(--p) * .2);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. SECCIÓN ANCLADA (la cabecera que dura varias pantallas)
+   El truco: un contenedor alto y dentro un panel sticky de 100vh.
+   Mientras recorres el contenedor, el panel se queda quieto y el libro se
+   abre. Nada de position:fixed ni de secuestrar el scroll.
+   -------------------------------------------------------------------------- */
+
+.pista{
+  position: relative;
+  /* La altura ES la duración de la animación. 320vh = se abre en poco más
+     de tres pantallas de scroll. Bájalo si te parece largo. */
+  height: 320vh;
+}
+
+.panel-fijo{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  display: grid;
+}
+/* Escena y texto ocupan LA MISMA celda: se superponen en vez de apilarse. */
+.panel-fijo > .escena,
+.panel-fijo > .capa-texto{ grid-area: 1 / 1; }
+
+/* --------------------------------------------------------------------------
+   4. TEXTO DE LA CABECERA, SINCRONIZADO CON LA APERTURA
+   Aparece y desaparece en función de --p, sin JS extra.
+   -------------------------------------------------------------------------- */
+
+.capa-texto{
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 96px var(--marco) 96px;
+  pointer-events: none;
+}
+/* Los dos actos comparten celda: uno se va justo cuando entra el otro. */
+.capa-texto > *{ grid-area: 1 / 1; pointer-events: auto; }
+
+/* Bloque 1: el nombre. Se ancla ARRIBA para no pisar al libro, que ocupa
+   la mitad inferior de la pantalla. */
+.acto-1{
+  align-self: start;
+  opacity: clamp(0, calc(1 - var(--p) / .28), 1);
+  transform: translateY(calc(var(--p) * -60px)) scale(calc(1 - var(--p) * .06));
+}
+
+/* Bloque 2: el libro destacado. Entra cuando el libro ya está abierto y se
+   queda en la franja inferior, bajo el libro. */
+.acto-2{
+  --e: clamp(0, calc((var(--p) - .52) / .26), 1);   /* su propio progreso */
+  align-self: end;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  opacity: var(--e);
+  transform: translateY(calc((1 - var(--e)) * 44px));
+  /* Velo oscuro por detrás: garantiza contraste caiga donde caiga el libro */
+  padding: 26px var(--marco) 8px;
+  background: radial-gradient(80% 130% at 50% 100%, rgba(8,7,11,.92) 30%, transparent 72%);
+  border-radius: var(--r-l);
+}
+.acto-2 .boton{ margin-top: 4px; }
+
+/* --------------------------------------------------------------------------
+   5. MINI-LIBROS DEL CATÁLOGO
+   Misma técnica, mucho más barata: solo tapa + lomo + bloque.
+   Se abren al pasar el ratón (o al enfocar con teclado).
+   -------------------------------------------------------------------------- */
+
+.escena-mini{
+  perspective: 1200px;
+  perspective-origin: 46% 50%;
+  display: grid;
+  place-items: center;
+  padding: 14px 0 22px;
+}
+
+.mini-libro{
+  --grosor-mini: 16px;
+  --color-libro: var(--rojo);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  transform-style: preserve-3d;
+  transform: rotateX(4deg) rotateY(-22deg);
+  transition: transform .7s var(--curva);
+  will-change: transform;
+}
+
+.tarjeta-libro:hover .mini-libro,
+.tarjeta-libro:focus-within .mini-libro{
+  transform: rotateX(2deg) rotateY(-34deg) translateZ(18px);
+}
+
+.mini-libro .mini-tapa{
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: translateZ(calc(var(--grosor-mini) / 2));
+  transition: transform .7s var(--curva-libro);
+  border-radius: 2px 4px 4px 2px;
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--color-libro), color-mix(in srgb, var(--color-libro) 50%, #000));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.1), -10px 14px 34px rgba(0,0,0,.55);
+}
+
+/* Al pasar el ratón la tapa se entreabre: enseña que hay algo dentro
+   sin llegar a abrirse del todo. Es la promesa, no el spoiler. */
+.tarjeta-libro:hover .mini-tapa,
+.tarjeta-libro:focus-within .mini-tapa{
+  transform: translateZ(calc(var(--grosor-mini) / 2)) rotateY(-38deg);
+}
+
+/* Mismo criterio que en el libro grande: las hojas solo existen cuando la
+   tapa se levanta. Con el libro cerrado no hay plano que pueda colarse
+   por delante de la portada. */
+.mini-libro .mini-hojas{
+  position: absolute;
+  inset: 3px 5px 3px 7px;
+  transform: translateZ(calc(var(--grosor-mini) / 2 - 10px));
+  background: linear-gradient(95deg, #FFFDF6, #EDE6D6);
+  border-radius: 2px 4px 4px 2px;
+  opacity: 0;
+  transition: opacity .35s var(--curva) .12s;
+}
+.tarjeta-libro:hover .mini-hojas,
+.tarjeta-libro:focus-within .mini-hojas{ opacity: 1; }
+
+.mini-libro .mini-lomo{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--grosor-mini);
+  height: 100%;
+  transform-origin: left center;
+  transform: translateZ(calc(var(--grosor-mini) / -2)) rotateY(-90deg);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-libro) 40%, #000), var(--color-libro));
+  border-radius: 3px 0 0 3px;
+}
+
+.mini-libro .mini-canto{
+  position: absolute;
+  top: 0;
+  left: calc(100% - var(--grosor-mini));
+  width: var(--grosor-mini);
+  height: 100%;
+  transform-origin: right center;
+  transform: translateZ(calc(var(--grosor-mini) / -2)) rotateY(90deg);
+  background: repeating-linear-gradient(90deg, #EFE8D8 0 1.5px, #CDC3AA 1.5px 3px);
+  border-radius: 0 4px 4px 0;
+}
+
+/* --------------------------------------------------------------------------
+   6. LIBRO GRANDE DE LA FICHA (se abre del todo al abrirla)
+   -------------------------------------------------------------------------- */
+
+/* La ficha no depende del scroll: el libro entra ya abierto y quieto, así
+   que le damos --p fijo y su propia cámara (la del scroll lo desplazaría
+   fuera de la columna). */
+.ficha .escena{ perspective: 1700px; --p: .95; }
+.ficha .libro{
+  --alto-libro: clamp(180px, 27vh, 310px);
+  transform: rotateX(7deg) rotateY(-7deg) translateX(24%);
+}
+.ficha .sombra-suelo{ opacity: .5; }
+
+/* --------------------------------------------------------------------------
+   7. APARICIONES AL ENTRAR EN PANTALLA
+   JS solo añade la clase .visible; la animación la decide el CSS.
+   -------------------------------------------------------------------------- */
+
+.aparece{
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .9s var(--curva), transform .9s var(--curva);
+  transition-delay: var(--retraso, 0ms);
+}
+.aparece.visible{
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. MOVIMIENTO REDUCIDO: el libro se muestra abierto y quieto
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce){
+  .panel-fijo, .escena{ --p: .82 !important; }
+  .pista{ height: auto !important; }
+  .panel-fijo{ position: static; height: auto; padding-block: 12vh; }
+  .acto-1, .acto-2{ opacity: 1 !important; transform: none !important; }
+  .aparece{ opacity: 1 !important; transform: none !important; }
+  .mini-libro, .mini-tapa, .mini-hojas{ transition: none !important; }
+  .hoja{ opacity: 1 !important; }
+}
+
+/* --------------------------------------------------------------------------
+   9. MÓVIL: menos profundidad, menos hojas, menos coste
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px){
+  .escena{ perspective: 1400px; }
+  .pista{ height: 260vh; }
+  .sombra-suelo{ filter: blur(12px); }
+
+  /* En una pantalla de 844px de alto el libro abierto y el bloque de texto
+     no caben si el libro conserva su tamaño de escritorio: se pisan. Aquí
+     el libro es más pequeño y sube más al abrirse. */
+  .libro{ --alto-libro: clamp(150px, 26vh, 230px); }
+  .panel-fijo .libro{
+    transform:
+      rotateX(calc( 9deg + var(--p) * 3deg ))
+      rotateY(calc( -27deg + var(--p) * 23deg ))
+      rotateZ(-1deg)
+      translateY(calc(10vh - var(--p) * 26vh))
+      translateX(calc(var(--p) * 47%))
+      scale(calc(1 - var(--p) * .22));
+  }
+  .acto-2{ padding-bottom: 4px; }
+  .acto-2 .t-xl{ font-size: clamp(24px, 7.4vw, 34px); }
+
+  /* La ficha, en vertical, con el libro más pequeño arriba */
+  .ficha .libro{ --alto-libro: clamp(140px, 20vh, 190px); }
+}
+
+/* Línea corta bajo el nombre de la editorial */
+.linea-hero{
+  margin: 20px auto 0;
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.3vw, 20px);
+  letter-spacing: .04em;
+  color: var(--tinta-2);
+}

@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Ares Ediciones — Editorial digital</title>
+<meta name="description" content="Ares Ediciones es una editorial digital. Siete libros elegidos uno a uno, disponibles en Amazon. Sin almacén, sin escaparate, sin prisa.">
+<meta name="theme-color" content="#08070B">
+
+<!-- Redes sociales. Cuando tengas una imagen de marca (1200x630 px),
+     guárdala en imagenes/ y pon aquí su ruta o su URL completa. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ares Ediciones — Editorial digital">
+<meta property="og:description" content="Siete libros elegidos uno a uno. Editorial digital.">
+<meta property="og:image" content="imagenes/og-ares.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308070B'/%3E%3Cpath d='M16 6l8 20h-4l-1.6-4h-4.8L12 26H8z' fill='%23D4A537'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;600;700;800&display=swap">
+
+<link rel="stylesheet" href="estilos/base.css">
+<link rel="stylesheet" href="estilos/animaciones-3d.css">
+<link rel="stylesheet" href="estilos/componentes.css">
+</head>
+
+<body>
+
+<!-- Centinela: cuando deja de verse, la barra se vuelve sólida -->
+<div id="centinelaBarra" style="position:absolute;top:0;height:1px;width:1px"></div>
+
+<!-- ======================================================================
+     BARRA
+     ====================================================================== -->
+<nav class="barra" aria-label="Navegación principal">
+  <a class="marca" href="#" aria-label="Ares Ediciones, inicio">
+    <svg class="escudo" viewBox="0 0 40 40" aria-hidden="true">
+      <defs>
+        <linearGradient id="gOro" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#F2DCA0"/><stop offset="1" stop-color="#8A6A1C"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="url(#gOro)" stroke-width="1.2"/>
+      <path d="M20 9l8.5 22h-4.7l-1.7-4.6h-4.2L16.2 31h-4.7z" fill="url(#gOro)"/>
+      <path d="M13.5 33.5h13" stroke="#C1121F" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <span class="nombre">ARES<span class="sub" data-editorial="lema">Editorial digital</span></span>
+  </a>
+
+  <ul class="menu">
+    <li><a href="#catalogo">Catálogo</a></li>
+    <li><a href="#editorial">La editorial</a></li>
+    <li><a href="#proximamente">Próximamente</a></li>
+    <li><a href="#contacto">Manuscritos</a></li>
+  </ul>
+
+  <button class="hamburguesa" type="button" aria-label="Abrir menú" aria-expanded="false">
+    <span></span>
+  </button>
+</nav>
+
+<main>
+
+<!-- ======================================================================
+     CABECERA: EL LIBRO QUE SE ABRE CON EL SCROLL
+     .pista mide 320vh; dentro, .panel-fijo se queda pegado y el libro se
+     abre según cuánto has recorrido. Ver scripts/libro-3d.js.
+     ====================================================================== -->
+<header class="pista">
+  <div class="panel-fijo">
+
+    <!-- La escena 3D ocupa toda la pantalla, detrás del texto -->
+    <div class="escena" id="escenaCabecera" aria-hidden="true"></div>
+
+    <div class="capa-texto">
+
+      <!-- ACTO 1: el nombre. Se va cuando el libro empieza a abrirse. -->
+      <div class="acto-1">
+        <p class="antetitulo" data-editorial="lema">Editorial digital</p>
+        <h1 class="t-xxl">ARES<br><span class="oro">EDICIONES</span></h1>
+        <p class="linea-hero">Siete libros. Ninguno por casualidad.</p>
+      </div>
+
+      <!-- ACTO 2: entra cuando el libro ya está abierto -->
+      <div class="acto-2">
+        <p class="antetitulo">Nuestro título destacado</p>
+        <h2 class="t-xl" id="tituloDestacado">—</h2>
+        <p class="serif t-m apagado" id="autorDestacado">—</p>
+        <p style="margin-top:26px">
+          <a class="boton boton-oro" href="#" id="botonDestacado">Ver la ficha</a>
+          <a class="boton boton-fantasma" href="#catalogo">Los siete libros</a>
+        </p>
+      </div>
+
+    </div>
+
+    <div class="pista-scroll">
+      <span>Desliza para abrirlo</span>
+      <span class="barrita"></span>
+    </div>
+
+  </div>
+</header>
+
+<!-- ======================================================================
+     LA EDITORIAL
+     ====================================================================== -->
+<section class="seccion" id="editorial">
+  <div class="marco dos-columnas">
+
+    <div class="aparece">
+      <p class="antetitulo">La editorial</p>
+      <h2 class="t-xl">Sin paredes<br>y a propósito.</h2>
+    </div>
+
+    <div class="aparece" style="--retraso:120ms">
+      <p class="lectura" data-editorial="descripcion">
+        Somos una editorial sin paredes. No tenemos almacén, ni escaparate, ni una
+        estantería que llenar por obligación. Tenemos siete libros y el tiempo para
+        elegir el octavo.
+      </p>
+      <p class="lectura" style="margin-top:22px">
+        Publicar en digital no es publicar menos: es publicar sin la presión de
+        rellenar un catálogo. Cada título que sale de aquí ha pasado por una única
+        pregunta: <em class="oro">¿merece que alguien le dedique seis horas de su
+        vida?</em> Si la respuesta no es un sí rotundo, no sale.
+      </p>
+
+      <div class="cifras">
+        <div><span class="n" id="contadorLibros">7</span><span class="l">Títulos publicados</span></div>
+        <div><span class="n">0</span><span class="l">Metros de almacén</span></div>
+        <div><span class="n">∞</span><span class="l">Kilómetros de alcance</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======================================================================
+     CATÁLOGO
+     Las tarjetas las genera scripts/catalogo.js a partir de datos/libros.js
+     ====================================================================== -->
+<section class="seccion" id="catalogo">
+  <div class="marco">
+
+    <div class="cabecera-seccion aparece">
+      <p class="antetitulo">El catálogo</p>
+      <h2 class="t-xl">Elige el tuyo.</h2>
+      <p class="lectura">
+        Pasa el cursor por encima y el libro se entreabre. Ábrelo del todo para
+        leer la sinopsis y llevártelo desde Amazon.
+      </p>
+    </div>
+
+    <div class="rejilla-libros" id="rejillaLibros"></div>
+
+  </div>
+</section>
+
+<!-- ======================================================================
+     PRÓXIMAMENTE
+     ====================================================================== -->
+<section class="seccion" id="proximamente">
+  <div class="marco">
+    <div class="proximo aparece">
+      <p class="antetitulo">El octavo</p>
+      <h2 class="t-l">Todavía no está escrito.<br>O sí, y no lo sabemos.</h2>
+      <p class="lectura" style="text-align:center" data-editorial="proximos">
+        Estamos leyendo manuscritos. Publicamos poco y despacio.
+      </p>
+      <a class="boton boton-oro" href="#contacto">Enviar un manuscrito</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     CONTACTO
+     ====================================================================== -->
+<section class="seccion" id="contacto">
+  <div class="marco dos-columnas">
+
+    <div class="aparece">
+      <p class="antetitulo">Manuscritos</p>
+      <h2 class="t-xl">Cuéntanos<br>qué has escrito.</h2>
+      <p class="lectura" style="margin-top:20px">
+        No queremos la novela entera de entrada. Queremos saber de qué va, por qué
+        la escribiste y las primeras veinte páginas. Con eso nos basta para decir
+        que sí o que no, y lo decimos rápido.
+      </p>
+      <p class="lectura" style="margin-top:16px">
+        También puedes escribirnos directamente a
+        <a class="oro" data-email href="mailto:hola@aresediciones.com">hola@aresediciones.com</a>.
+      </p>
+    </div>
+
+    <form class="formulario aparece" id="formularioContacto" style="--retraso:120ms">
+      <div class="campo">
+        <label for="nombre">Tu nombre</label>
+        <input id="nombre" name="nombre" type="text" required autocomplete="name">
+      </div>
+      <div class="campo">
+        <label for="correo">Tu correo</label>
+        <input id="correo" name="correo" type="email" required autocomplete="email">
+      </div>
+      <div class="campo">
+        <label for="mensaje">De qué va tu libro</label>
+        <textarea id="mensaje" name="mensaje" required placeholder="Género, extensión aproximada y por qué crees que encaja aquí."></textarea>
+      </div>
+      <button class="boton boton-oro" type="submit">Enviar</button>
+    </form>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ======================================================================
+     PIE
+     ====================================================================== -->
+<footer class="pie">
+  <div class="pie-cuerpo">
+
+    <div>
+      <div class="marca" style="margin-bottom:16px">
+        <span class="nombre">ARES<span class="sub">Editorial digital</span></span>
+      </div>
+      <p class="apagado" style="font-size:14px;max-width:34ch" data-editorial="claim">
+        Libros que se abren solos.
+      </p>
+    </div>
+
+    <div>
+      <h4>Navegar</h4>
+      <ul>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#editorial">La editorial</a></li>
+        <li><a href="#proximamente">Próximamente</a></li>
+        <li><a href="#contacto">Manuscritos</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Encontrarnos</h4>
+      <ul id="listaRedes"></ul>
+      <ul style="margin-top:10px">
+        <li><a data-email href="mailto:hola@aresediciones.com">hola@aresediciones.com</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="pie-legal">
+    <span>© <span id="anioActual">2026</span> <span data-editorial="nombre">Ares Ediciones</span>. Todos los derechos reservados.</span>
+    <span>Editorial 100% digital · Sin sede física</span>
+  </div>
+</footer>
+
+<!-- ======================================================================
+     FICHA DEL LIBRO
+     Se rellena al elegir un libro. <dialog> nativo: el navegador gestiona
+     el foco, la tecla Esc y el bloqueo del fondo.
+     ====================================================================== -->
+<dialog class="ficha" id="fichaLibro" aria-label="Ficha del libro">
+  <button class="cerrar-ficha" id="cerrarFicha" type="button" aria-label="Cerrar ficha">✕</button>
+  <div class="ficha-cuerpo" id="fichaCuerpo"></div>
+</dialog>
+
+<!-- ======================================================================
+     SCRIPTS
+     Orden obligatorio: primero los datos, luego el motor 3D, luego quien
+     los usa. Son scripts clásicos (no módulos) a propósito: así la web
+     funciona abriendo index.html con doble clic, sin servidor local.
+     ====================================================================== -->
+<script src="datos/libros.js"></script>
+<script src="scripts/libro-3d.js"></script>
+<script src="scripts/catalogo.js"></script>
+<script src="scripts/interacciones.js"></script>
+
+<!-- Datos estructurados: ayuda a Google a entender qué es esto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "#ares",
+  "name": "Ares Ediciones",
+  "description": "Editorial digital independiente.",
+  "email": "hola@aresediciones.com"
+}
+</script>
+
+</body>
+</html>

@@ -208,9 +208,15 @@ const EDITORIAL = {
     // Dos o tres párrafos, separados por \n\n. Escríbelos en primera
     // persona: es la sección donde el lector decide si le caes bien.
     bio: "Aquí va tu biografía. Cuenta de dónde vienes, qué te llevó a escribir y por qué acabaste montando tu propio sello en vez de esperar a que alguien te publicara.\n\nSegundo párrafo: qué tipo de historias te interesan y qué va a encontrar quien te lea. Sin currículum: lo que engancha es el motivo, no la lista de méritos.",
-    // Ruta a una foto tuya. Cuadrada o vertical. Déjalo en "" y sale un
-    // monograma dorado en su lugar.
-    foto: ""
+    /* Retrato del autor. YA ESTÁ PUESTA LA RUTA: solo tienes que guardar
+       la foto con ESE nombre exacto en la carpeta imagenes/ y aparece sola.
+
+           imagenes/alan-gutierrez.jpg
+
+       Vertical, proporción 4:5 (ej. 1000 x 1250 px). Si el archivo no
+       existe todavía, no se rompe nada: sale el monograma dorado.
+       Déjalo en "" si prefieres el monograma a propósito. */
+    foto: "imagenes/alan-gutierrez.jpg"
   },
 
   claim: "Libros que se abren solos.",

@@ -1455,7 +1455,25 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Un retrato de oficina, con su luz neutra, se ve pegado sobre una página
+     casi negra. Bajarle un punto la saturación y subirle el contraste lo
+     asienta en la paleta sin llegar a un filtro que se note. */
+  filter: saturate(.88) contrast(1.06);
 }
+
+/* Degradado al pie del retrato: hace que la foto se hunda en la página en
+   vez de flotar como un rectángulo pegado encima. Solo cuando hay foto. */
+.retrato.con-foto::before{
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 45%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(8,7,11,.72));
+}
+/* Con foto, el filete dorado va por encima de ella */
+.retrato.con-foto::after{ z-index: 3; }
 /* Si aún no hay foto: monograma, no un hueco gris */
 .retrato .monograma{
   font-family: var(--display);
@@ -2097,9 +2115,15 @@ const EDITORIAL = {
     // Dos o tres párrafos, separados por \n\n. Escríbelos en primera
     // persona: es la sección donde el lector decide si le caes bien.
     bio: "Aquí va tu biografía. Cuenta de dónde vienes, qué te llevó a escribir y por qué acabaste montando tu propio sello en vez de esperar a que alguien te publicara.\n\nSegundo párrafo: qué tipo de historias te interesan y qué va a encontrar quien te lea. Sin currículum: lo que engancha es el motivo, no la lista de méritos.",
-    // Ruta a una foto tuya. Cuadrada o vertical. Déjalo en "" y sale un
-    // monograma dorado en su lugar.
-    foto: ""
+    /* Retrato del autor. YA ESTÁ PUESTA LA RUTA: solo tienes que guardar
+       la foto con ESE nombre exacto en la carpeta imagenes/ y aparece sola.
+
+           imagenes/alan-gutierrez.jpg
+
+       Vertical, proporción 4:5 (ej. 1000 x 1250 px). Si el archivo no
+       existe todavía, no se rompe nada: sale el monograma dorado.
+       Déjalo en "" si prefieres el monograma a propósito. */
+    foto: "imagenes/alan-gutierrez.jpg"
   },
 
   claim: "Libros que se abren solos.",
@@ -2872,22 +2896,28 @@ const EDITORIAL = {
         .join("");
     }
 
-    // Retrato: foto si la hay, monograma si no. Y si la ruta está mal,
-    // volvemos al monograma en vez de dejar un icono roto.
+    /* Retrato. El monograma se calcula SIEMPRE con las iniciales reales del
+       nombre, y la foto lo sustituye solo cuando ha cargado de verdad.
+       Ese orden importa: si la ruta está mal o la foto aún no existe, queda
+       el monograma en vez de un icono roto, y no hace falta tocar el código
+       para poner la foto — basta con dejar el archivo en su sitio. */
     const retrato = document.getElementById("retratoAutor");
-    if (retrato && A.foto) {
-      const img = new Image();
-      img.src = A.foto;
-      img.alt = "Retrato de " + (A.nombre || "");
-      img.loading = "lazy";
-      img.decoding = "async";
-      img.addEventListener("load", function () { retrato.innerHTML = ""; retrato.appendChild(img); });
-    } else if (retrato && A.nombre) {
-      // Monograma a partir de las iniciales reales del nombre
+    if (retrato) {
       const mono = retrato.querySelector(".monograma");
-      if (mono) {
+      if (mono && A.nombre) {
         mono.textContent = A.nombre.trim().split(/\s+/).slice(0, 2)
           .map(function (w) { return w[0]; }).join("").toUpperCase();
+      }
+
+      if (A.foto) {
+        const img = new Image();
+        img.alt = "Retrato de " + (A.nombre || "");
+        img.decoding = "async";
+        img.addEventListener("load", function () {
+          retrato.replaceChildren(img);
+          retrato.classList.add("con-foto");
+        });
+        img.src = A.foto;   // el src al final: así el listener ya está puesto
       }
     }
 

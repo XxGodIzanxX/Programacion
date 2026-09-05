@@ -97,11 +97,28 @@ Los textos de la sección "El autor":
 | `nombre`  | Nombre del autor. También genera el monograma si no hay foto     |
 | `titular` | Una línea. Lo primero que se lee de él                           |
 | `bio`     | Dos o tres párrafos separados por `\n\n`, **en primera persona** |
-| `foto`    | Ruta a un retrato. Vertical 4:5. Vacío = monograma dorado        |
+| `foto`    | Ya apunta a `imagenes/alan-gutierrez.jpg` — ver abajo            |
 
 La bio en tercera persona ("Alan Gutiérrez nació en...") suena a nota de prensa
 y distancia. En primera persona vende, porque esta sección no informa: decide si
 el lector te compra a ti.
+
+#### La foto del autor
+
+Guarda el retrato con **este nombre exacto**:
+
+```
+imagenes/alan-gutierrez.jpg
+```
+
+Y ya está: no hay que tocar código, la ruta está puesta. Vertical, 4:5
+(1000 × 1250 px va bien). Mientras el archivo no exista sale un monograma
+dorado con las iniciales — no se rompe nada ni aparece un icono roto.
+
+La web le baja un punto la saturación y le sube el contraste, y le funde el
+pie con el fondo. Un retrato de oficina, con su luz neutra, se ve pegado
+encima de una página casi negra; así se asienta en la paleta sin que se note
+un filtro.
 
 ### Para añadir el libro nº 8
 

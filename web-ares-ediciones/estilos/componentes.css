@@ -567,7 +567,25 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Un retrato de oficina, con su luz neutra, se ve pegado sobre una página
+     casi negra. Bajarle un punto la saturación y subirle el contraste lo
+     asienta en la paleta sin llegar a un filtro que se note. */
+  filter: saturate(.88) contrast(1.06);
 }
+
+/* Degradado al pie del retrato: hace que la foto se hunda en la página en
+   vez de flotar como un rectángulo pegado encima. Solo cuando hay foto. */
+.retrato.con-foto::before{
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 45%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(8,7,11,.72));
+}
+/* Con foto, el filete dorado va por encima de ella */
+.retrato.con-foto::after{ z-index: 3; }
 /* Si aún no hay foto: monograma, no un hueco gris */
 .retrato .monograma{
   font-family: var(--display);

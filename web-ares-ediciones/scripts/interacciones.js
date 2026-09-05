@@ -124,22 +124,28 @@
         .join("");
     }
 
-    // Retrato: foto si la hay, monograma si no. Y si la ruta está mal,
-    // volvemos al monograma en vez de dejar un icono roto.
+    /* Retrato. El monograma se calcula SIEMPRE con las iniciales reales del
+       nombre, y la foto lo sustituye solo cuando ha cargado de verdad.
+       Ese orden importa: si la ruta está mal o la foto aún no existe, queda
+       el monograma en vez de un icono roto, y no hace falta tocar el código
+       para poner la foto — basta con dejar el archivo en su sitio. */
     const retrato = document.getElementById("retratoAutor");
-    if (retrato && A.foto) {
-      const img = new Image();
-      img.src = A.foto;
-      img.alt = "Retrato de " + (A.nombre || "");
-      img.loading = "lazy";
-      img.decoding = "async";
-      img.addEventListener("load", function () { retrato.innerHTML = ""; retrato.appendChild(img); });
-    } else if (retrato && A.nombre) {
-      // Monograma a partir de las iniciales reales del nombre
+    if (retrato) {
       const mono = retrato.querySelector(".monograma");
-      if (mono) {
+      if (mono && A.nombre) {
         mono.textContent = A.nombre.trim().split(/\s+/).slice(0, 2)
           .map(function (w) { return w[0]; }).join("").toUpperCase();
+      }
+
+      if (A.foto) {
+        const img = new Image();
+        img.alt = "Retrato de " + (A.nombre || "");
+        img.decoding = "async";
+        img.addEventListener("load", function () {
+          retrato.replaceChildren(img);
+          retrato.classList.add("con-foto");
+        });
+        img.src = A.foto;   // el src al final: así el listener ya está puesto
       }
     }
 

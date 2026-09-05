@@ -366,6 +366,11 @@
   font-size: 0;
 }
 
+.pie-catalogo{
+  margin: clamp(34px, 5vw, 60px) 0 0;
+  text-align: center;
+}
+
 /* --------------------------------------------------------------------------
    FICHA DEL LIBRO (panel lateral)
    Se usa <dialog> nativo: teclado, Esc y foco los gestiona el navegador.

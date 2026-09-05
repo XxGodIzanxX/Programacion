@@ -157,6 +157,13 @@
 
     <div class="rejilla-libros" id="rejillaLibros"></div>
 
+    <!-- Solo aparece si EDITORIAL.amazonAutor tiene URL -->
+    <p class="pie-catalogo" id="pieCatalogo" hidden>
+      <a class="boton boton-oro" id="enlaceAutor" href="#" target="_blank" rel="noopener noreferrer">
+        Ver todos en Amazon
+      </a>
+    </p>
+
   </div>
 </section>
 
@@ -254,6 +261,8 @@
 
   <div class="pie-legal">
     <span>© <span id="anioActual">2026</span> <span data-editorial="nombre">Ares Ediciones</span>. Todos los derechos reservados.</span>
+    <!-- Obligatorio si se usa etiqueta de afiliado. Se muestra solo entonces. -->
+    <span id="avisoAfiliado" hidden>Como afiliados de Amazon, obtenemos ingresos por las compras que cumplen los requisitos.</span>
     <span>Editorial 100% digital · Sin sede física</span>
   </div>
 </footer>

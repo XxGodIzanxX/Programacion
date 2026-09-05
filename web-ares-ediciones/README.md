@@ -24,12 +24,47 @@ Para cada libro rellena:
 | `portada`  | `imagenes/portadas/loquesea.jpg` — ver `imagenes/portadas/LEEME.md`  |
 | `frase`    | Una línea gancho. Sale en grande sobre la ficha                      |
 | `sinopsis` | Contraportada. Párrafos separados por `\n\n`                         |
-| `amazon`   | **URL completa** del libro en Amazon                                 |
+| `amazon`   | El libro en Amazon: ASIN o URL, ver abajo                            |
 | `formatos` | `["Tapa blanda", "Kindle"]`                                          |
 | `destacado`| `true` en **uno solo**: es el que se abre en la portada              |
 
 Mientras `amazon` esté vacío, ese libro muestra **Próximamente** con el botón
 desactivado en vez de un enlace roto.
+
+### El campo `amazon` admite las tres formas
+
+Pega la que tengas más a mano, da igual cuál:
+
+```js
+amazon: "B0CH3XKQ7M",                            // solo el ASIN
+amazon: "https://www.amazon.es/dp/B0CH3XKQ7M",   // la URL limpia
+amazon: "https://www.amazon.es/Titulo-largo/dp/B0CH3XKQ7M/ref=sr_1_1?crid=2ABC&qid=177...",
+```
+
+De las tres se extrae el ASIN y se reconstruye `https://www.amazon.es/dp/ASIN`.
+Las URLs que copia Amazon del navegador llevan colgando el término de búsqueda,
+la posición del resultado y media docena de parámetros de rastreo: mandar eso a
+tus lectores es feo y se rompe con el tiempo.
+
+**En la web nunca se ve la URL**: el enlace es el botón que dice *Comprar en
+Amazon*, y en el catálogo *Ver todos en Amazon*. La URL solo existe aquí, en
+`datos/libros.js`.
+
+### Si eres afiliado de Amazon
+
+Pon tu etiqueta **una sola vez** en `EDITORIAL.amazonTag` y se añade sola a los
+siete enlaces. No la pegues en cada libro: el día que cambie tendrías que tocar
+siete sitios y te dejarías uno.
+
+En cuanto pones la etiqueta aparece automáticamente el aviso de afiliación en el
+pie. No es decorativo: declararlo es obligatorio en el programa de Amazon, y va
+atado a la etiqueta precisamente para que no dependa de que alguien se acuerde.
+
+### `EDITORIAL.amazonAutor`
+
+La página del autor en Amazon. Sale como botón al final del catálogo. Si la
+dejas en `""`, el botón desaparece: mejor que falte un botón a que haya uno que
+no lleva a ningún sitio.
 
 ### Para añadir el libro nº 8
 

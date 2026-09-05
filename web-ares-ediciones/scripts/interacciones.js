@@ -92,6 +92,21 @@
       if (el.tagName === "A") el.href = "mailto:" + EDITORIAL.email;
     });
 
+    /* Botón "Ver todos en Amazon". Si no hay URL de autor, ni aparece: más
+       vale que falte un botón a que haya uno que no lleva a ningún sitio. */
+    const pieCatalogo = document.getElementById("pieCatalogo");
+    const enlaceAutor = document.getElementById("enlaceAutor");
+    if (pieCatalogo && enlaceAutor && EDITORIAL.amazonAutor) {
+      enlaceAutor.href = EDITORIAL.amazonAutor;
+      enlaceAutor.rel = "noopener noreferrer sponsored";
+      pieCatalogo.hidden = false;
+    }
+
+    /* Aviso de afiliación: obligatorio en cuanto usas etiqueta de afiliado,
+       así que lo atamos a la propia etiqueta y no a que alguien se acuerde. */
+    const avisoAfiliado = document.getElementById("avisoAfiliado");
+    if (avisoAfiliado && EDITORIAL.amazonTag) avisoAfiliado.hidden = false;
+
     // Redes: solo salen las que tengan URL puesta
     const listaRedes = document.getElementById("listaRedes");
     if (listaRedes && Array.isArray(EDITORIAL.redes)) {

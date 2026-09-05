@@ -34,7 +34,14 @@
                resumen de Wikipedia.
    frase       Una sola línea, un gancho. Sale en grande sobre la ficha.
                Puede ser una cita del libro o una reseña.
-   amazon      URL COMPLETA de la página del libro en Amazon.
+   amazon      El libro en Amazon. Vale CUALQUIERA de estas tres formas,
+               pega la que tengas más a mano:
+                 "B0CXXXXXXX"                              ← solo el ASIN
+                 "https://www.amazon.es/dp/B0CXXXXXXX"     ← la URL limpia
+                 "https://www.amazon.es/Titulo-largo/dp/B0CXXXXXXX/ref=sr_1_1?crid=..."
+                                                           ← lo que copia el navegador
+               De las tres se extrae el ASIN y se reconstruye una URL corta,
+               sin los parámetros de rastreo que Amazon cuelga al copiar.
                Mientras esté en "" el botón sale desactivado y avisa de que
                ese título aún no está a la venta.
    formatos    Lista de formatos disponibles. Ej: ["Tapa blanda", "Kindle"]
@@ -48,7 +55,7 @@ const LIBROS = [
     id: "libro-1",
     titulo: "TÍTULO DEL LIBRO 1",
     subtitulo: "",
-    autor: "Nombre del autor",
+    autor: "Alan Gutiérrez",
     anio: "2026",
     paginas: 320,
     genero: "Género",
@@ -65,7 +72,7 @@ const LIBROS = [
     id: "libro-2",
     titulo: "TÍTULO DEL LIBRO 2",
     subtitulo: "",
-    autor: "Nombre del autor",
+    autor: "Alan Gutiérrez",
     anio: "2026",
     paginas: 248,
     genero: "Género",
@@ -82,7 +89,7 @@ const LIBROS = [
     id: "libro-3",
     titulo: "TÍTULO DEL LIBRO 3",
     subtitulo: "",
-    autor: "Nombre del autor",
+    autor: "Alan Gutiérrez",
     anio: "2026",
     paginas: 412,
     genero: "Género",
@@ -99,7 +106,7 @@ const LIBROS = [
     id: "libro-4",
     titulo: "TÍTULO DEL LIBRO 4",
     subtitulo: "",
-    autor: "Nombre del autor",
+    autor: "Alan Gutiérrez",
     anio: "2026",
     paginas: 190,
     genero: "Género",
@@ -116,7 +123,7 @@ const LIBROS = [
     id: "libro-5",
     titulo: "TÍTULO DEL LIBRO 5",
     subtitulo: "",
-    autor: "Nombre del autor",
+    autor: "Alan Gutiérrez",
     anio: "2026",
     paginas: 356,
     genero: "Género",
@@ -133,7 +140,7 @@ const LIBROS = [
     id: "libro-6",
     titulo: "TÍTULO DEL LIBRO 6",
     subtitulo: "",
-    autor: "Nombre del autor",
+    autor: "Alan Gutiérrez",
     anio: "2026",
     paginas: 275,
     genero: "Género",
@@ -150,7 +157,7 @@ const LIBROS = [
     id: "libro-7",
     titulo: "TÍTULO DEL LIBRO 7",
     subtitulo: "",
-    autor: "Nombre del autor",
+    autor: "Alan Gutiérrez",
     anio: "2026",
     paginas: 300,
     genero: "Género",
@@ -173,6 +180,21 @@ const LIBROS = [
 const EDITORIAL = {
   nombre: "Ares Ediciones",
   lema: "Editorial digital",
+
+  /* --- Amazon -------------------------------------------------------------
+     amazonAutor    Página del autor en Amazon. Sale como botón al final del
+                    catálogo ("Ver todos en Amazon"). Déjalo en "" y el botón
+                    desaparece solo.
+     amazonTag      Etiqueta de afiliado, SI eres afiliado. Se añade sola a
+                    los enlaces de los 7 libros: se pone una vez, aquí, no
+                    siete veces. Si la usas, el aviso de afiliación del pie
+                    aparece automáticamente (es obligatorio declararlo).
+     amazonDominio  Cambia solo si vendes en otro país (www.amazon.com...).
+     ---------------------------------------------------------------------- */
+  amazonAutor: "https://www.amazon.es/stores/Alan-Gutierrez/author/B0GJN9V1D5",
+  amazonTag: "",
+  amazonDominio: "www.amazon.es",
+
   claim: "Libros que se abren solos.",
   descripcion: "Somos una editorial sin paredes. No tenemos almacén, ni escaparate, ni una estantería que llenar por obligación. Tenemos siete libros y el tiempo para elegir el octavo.",
   email: "hola@aresediciones.com",

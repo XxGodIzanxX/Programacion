@@ -38,6 +38,49 @@
   }
 
   /* ------------------------------------------------------------------------
+     ENLACE DE AMAZON
+     ------------------------------------------------------------------------
+     Admite tres formas en el campo `amazon` de libros.js, para que puedas
+     pegar lo que tengas a mano sin pensar:
+
+       "B0CXXXXXXX"                          → solo el ASIN
+       "https://www.amazon.es/dp/B0CXXXXXXX" → la URL limpia
+       "https://www.amazon.es/Titulo-largo/dp/B0CXXXXXXX/ref=sr_1_1?crid=..."
+                                             → lo que te copia el navegador
+
+     De cualquiera de las tres sacamos el ASIN y reconstruimos una URL corta.
+     Por qué molestarse: las URLs que copia Amazon llevan la sesión de quien
+     copió, el término de búsqueda y media docena de parámetros de rastreo.
+     Enviar eso a tus lectores es feo, se rompe con el tiempo y encima delata
+     de dónde salió el enlace.
+
+     Si eres afiliado, pon la etiqueta UNA vez en EDITORIAL.amazonTag y se
+     añade sola a los siete enlaces. Ten en cuenta que ser afiliado obliga a
+     declararlo de forma visible: eso ya está en el pie.
+     ------------------------------------------------------------------------ */
+
+  const ASIN = /(?:\/dp\/|\/gp\/product\/|\/product\/)([A-Z0-9]{10})|^([A-Z0-9]{10})$/;
+
+  function enlaceAmazon(valor) {
+    const bruto = String(valor || "").trim();
+    if (!bruto) return "";
+
+    const dominio = (typeof EDITORIAL !== "undefined" && EDITORIAL.amazonDominio) || "www.amazon.es";
+    const tag = (typeof EDITORIAL !== "undefined" && EDITORIAL.amazonTag) || "";
+
+    const m = bruto.match(ASIN);
+    if (m) {
+      const asin = m[1] || m[2];
+      return "https://" + dominio + "/dp/" + asin + (tag ? "?tag=" + encodeURIComponent(tag) : "");
+    }
+
+    // No hemos sabido sacar el ASIN (un enlace de tienda, un acortador...).
+    // Lo dejamos tal cual, pero solo si es http(s): así un "javascript:" o un
+    // "data:" pegado por error nunca llega a convertirse en un enlace.
+    return /^https?:\/\//i.test(bruto) ? bruto : "";
+  }
+
+  /* ------------------------------------------------------------------------
      COMPROBACIÓN DE DATOS
      Si libros.js falta o tiene un error de sintaxis, no dejamos una página
      rota y muda: avisamos en pantalla de qué pasa y cómo arreglarlo.
@@ -240,8 +283,9 @@
 
     const comprar = document.createElement("a");
     comprar.className = "boton boton-comprar";
-    if (libro.amazon) {
-      comprar.href = libro.amazon;
+    const url = enlaceAmazon(libro.amazon);
+    if (url) {
+      comprar.href = url;
       comprar.target = "_blank";
       // noopener evita que la pestaña de Amazon pueda tocar la nuestra
       comprar.rel = "noopener noreferrer sponsored";
@@ -253,10 +297,10 @@
     }
     acciones.appendChild(comprar);
 
-    if (!libro.amazon) {
+    if (!url) {
       const aviso = document.createElement("p");
       aviso.className = "aviso-sin-enlace";
-      aviso.textContent = "Aún no está a la venta. Pega su enlace de Amazon en datos/libros.js.";
+      aviso.textContent = "Aún no está a la venta. Pega su enlace o su ASIN de Amazon en datos/libros.js.";
       acciones.appendChild(aviso);
     }
 

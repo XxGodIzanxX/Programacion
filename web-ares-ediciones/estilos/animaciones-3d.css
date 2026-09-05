@@ -36,7 +36,10 @@
 
 .libro{
   --alto-libro: clamp(200px, 38vh, 420px);
-  --ancho-libro: calc(var(--alto-libro) * .68);   /* proporción 2:3 de tapa   */
+  /* 0.625 = 5:8, que es la proporción REAL de las portadas (1280x2048).
+     Con 2:3 el recorte se comía 6% por los lados, justo donde va el
+     nombre de la figura en estas portadas. */
+  --ancho-libro: calc(var(--alto-libro) * .625);
   --grosor: calc(var(--alto-libro) * .075);       /* lomo                     */
   --color-libro: var(--rojo);
 
@@ -58,7 +61,7 @@
     /* Al abrirse: sube (deja libre la franja del texto), se desplaza a la
        derecha (la tapa se va a la izquierda, así la doble página queda
        centrada) y se encoge (ahora ocupa el doble de ancho). */
-    translateY(calc(16vh - var(--p) * 29vh))
+    translateY(calc(19vh - var(--p) * 32vh))
     translateX(calc(var(--p) * 47%))
     scale(calc(1 - var(--p) * .26));
 }
@@ -457,7 +460,7 @@
   --color-libro: var(--rojo);
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 5 / 8;   /* proporción real de las portadas */
   transform-style: preserve-3d;
   transform: rotateX(4deg) rotateY(-22deg);
   transition: transform .7s var(--curva);

@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Ares Ediciones — Editorial digital</title>
-<meta name="description" content="Ares Ediciones es el sello digital de Alan Gutiérrez. Siete libros, disponibles en Amazon. Sin almacén, sin escaparate, sin prisa.">
+<meta name="description" content="Conversaciones existenciales con la I.A: la colección de Alan Gutiérrez en la que César, Cleopatra o Napoleón responden hoy. Sello digital Ares Ediciones. En Amazon.">
 <meta name="theme-color" content="#08070B">
 
 <!-- Redes sociales. Cuando tengas una imagen de marca (1200x630 px),
      guárdala en imagenes/ y pon aquí su ruta o su URL completa. -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ares Ediciones — Editorial digital">
-<meta property="og:description" content="Siete libros de Alan Gutiérrez. Sello digital independiente.">
+<meta property="og:description" content="Conversaciones con la I.A de César, Cleopatra, Napoleón, Alejandro Magno y Vlad III. Una colección de Alan Gutiérrez.">
 <meta property="og:image" content="imagenes/og-ares.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -81,17 +81,17 @@
       <div class="acto-1">
         <p class="antetitulo" data-editorial="lema">Editorial digital</p>
         <h1 class="t-xxl">ARES<br><span class="oro">EDICIONES</span></h1>
-        <p class="linea-hero">Siete libros de Alan Gutiérrez. Ninguno por casualidad.</p>
+        <p class="linea-hero">Una colección de Alan Gutiérrez.<br>Conversaciones con quien ya no puede contestar.</p>
       </div>
 
       <!-- ACTO 2: entra cuando el libro ya está abierto -->
       <div class="acto-2">
-        <p class="antetitulo">Nuestro título destacado</p>
+        <p class="antetitulo" id="serieDestacado">La colección</p>
         <h2 class="t-xl" id="tituloDestacado">—</h2>
         <p class="serif t-m apagado" id="autorDestacado">—</p>
         <p style="margin-top:26px">
           <a class="boton boton-oro" href="#" id="botonDestacado">Ver la ficha</a>
-          <a class="boton boton-fantasma" href="#catalogo">Los siete libros</a>
+          <a class="boton boton-fantasma" href="#catalogo">Ver la colección</a>
         </p>
       </div>
 
@@ -114,13 +114,15 @@
     <div class="aparece">
       <p class="antetitulo">El sello</p>
       <h2 class="t-xl">Sin paredes<br>y sin permiso.</h2>
+      <!-- Escudo familiar. Solo aparece si EDITORIAL.escudo tiene ruta. -->
+      <img id="escudoSello" class="escudo-sello" alt="" hidden>
     </div>
 
     <div class="aparece" style="--retraso:120ms">
       <p class="lectura" data-editorial="descripcion">
         Ares Ediciones es el sello desde el que publico mi propio trabajo. No hay
         almacén, ni escaparate, ni una estantería que llenar por obligación. Hay
-        siete libros y el tiempo para escribir el octavo.
+        una colección y el tiempo para escribir el siguiente título.
       </p>
       <p class="lectura" style="margin-top:22px">
         Montar el sello no fue una rabieta contra el sector: fue quedarme con las
@@ -131,7 +133,7 @@
       </p>
 
       <div class="cifras">
-        <div><span class="n" id="contadorLibros">7</span><span class="l">Títulos publicados</span></div>
+        <div><span class="n" id="contadorLibros">7</span><span class="l">Títulos en la colección</span></div>
         <div><span class="n">1</span><span class="l">Autor, sin intermediarios</span></div>
         <div><span class="n">0</span><span class="l">Metros de almacén</span></div>
       </div>
@@ -148,11 +150,11 @@
   <div class="marco">
 
     <div class="cabecera-seccion aparece">
-      <p class="antetitulo">El catálogo</p>
-      <h2 class="t-xl">Elige el tuyo.</h2>
-      <p class="lectura">
-        Pasa el cursor por encima y el libro se entreabre. Ábrelo del todo para
-        leer la sinopsis y llevártelo desde Amazon.
+      <p class="antetitulo" data-serie="nombre">La colección</p>
+      <h2 class="t-xl">Elige con quién hablas.</h2>
+      <p class="lectura" data-serie="descripcion"></p>
+      <p class="lectura apagado" style="font-size:16px">
+        Abre cualquiera para leer su sinopsis y llevártelo desde Amazon.
       </p>
     </div>
 
@@ -211,7 +213,7 @@
   <div class="marco">
     <div class="proximo aparece">
       <p class="antetitulo">El octavo</p>
-      <h2 class="t-l">Todavía no está terminado.<br>Y no va a salir antes de estarlo.</h2>
+      <h2 class="t-l">¿Con quién toca hablar<br>la próxima vez?</h2>
       <p class="lectura" style="text-align:center" data-editorial="proximos">
         El octavo está en marcha.
       </p>

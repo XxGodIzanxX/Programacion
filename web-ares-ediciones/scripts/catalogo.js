@@ -113,10 +113,13 @@
     );
 
     // Rellenamos los textos de la cabecera con los datos del destacado
+    const serieDest = document.getElementById("serieDestacado");
+    if (serieDest && destacado.serie) serieDest.textContent = destacado.serie;
+
     const t = document.getElementById("tituloDestacado");
     const a = document.getElementById("autorDestacado");
     const b = document.getElementById("botonDestacado");
-    if (t) t.textContent = destacado.titulo;
+    if (t) t.textContent = destacado.figura || destacado.titulo;
     if (a) a.textContent = destacado.autor;
     if (b) {
       b.addEventListener("click", function (e) {
@@ -178,14 +181,28 @@
     /* --- datos --- */
     const datos = document.createElement("div");
     datos.className = "datos";
-    datos.innerHTML =
-      '<h3 class="titulo">' + L.limpio(libro.titulo) + "</h3>" +
-      '<p class="autor">' + L.limpio(libro.autor) + "</p>" +
-      '<p class="meta">' + L.limpio(libro.anio) + " · " + L.limpio(libro.paginas) + " págs.</p>" +
-      '<span class="abrir">Ver ficha</span>';
+    /* La FIGURA en grande y la serie en pequeño encima. Los siete títulos
+       empiezan igual: poner el título completo obligaría a leer cinco
+       palabras idénticas antes de llegar a la que decide la compra. */
+    let html = "";
+    if (libro.serie) html += '<p class="serie-tarjeta">' + L.limpio(libro.serie) + "</p>";
+    html += '<h3 class="titulo">' + L.limpio(libro.figura || libro.titulo) + "</h3>";
+    html += '<p class="autor">' + L.limpio(libro.autor) + "</p>";
 
-    /* --- chip de género --- */
-    if (libro.genero) {
+    // Año y páginas solo si los hay: un "· págs." suelto delata un hueco
+    const meta = [];
+    if (libro.anio) meta.push(L.limpio(libro.anio));
+    if (libro.paginas) meta.push(L.limpio(libro.paginas) + " págs.");
+    if (meta.length) html += '<p class="meta">' + meta.join(" · ") + "</p>";
+
+    html += '<span class="abrir">Ver ficha</span>';
+    datos.innerHTML = html;
+
+    /* --- chip de género ---
+       Solo si aporta algo. En una colección donde los siete libros son
+       "Diálogos", repetir la etiqueta siete veces no informa: decora. Si
+       algún día publicas una novela suelta, los chips vuelven solos. */
+    if (libro.genero && generosDistintos) {
       const chip = document.createElement("span");
       chip.className = "chip";
       chip.textContent = libro.genero;
@@ -196,7 +213,7 @@
     const boton = document.createElement("button");
     boton.className = "disparador";
     boton.type = "button";
-    boton.textContent = "Ver la ficha de " + libro.titulo;
+    boton.textContent = "Ver la ficha de " + (libro.titulo || libro.figura);
     boton.addEventListener("click", function () { abrirFicha(libro.id); });
 
     tarjeta.append(escena, datos, boton);
@@ -208,10 +225,15 @@
     cont.className = "portada-tipo";
     cont.innerHTML =
       '<div class="sello">Ares Ediciones</div>' +
-      '<div class="tit">' + L.limpio(libro.titulo) + "</div>" +
+      '<div class="tit">' + L.limpio(libro.figura || libro.titulo) + "</div>" +
       '<div class="aut">' + L.limpio(libro.autor) + "</div>";
     return cont;
   }
+
+  // ¿Tienen todos los libros el mismo género? Entonces el chip no distingue.
+  const generosDistintos = new Set(
+    LIBROS.map(function (l) { return l.genero || ""; })
+  ).size > 1;
 
   if (rejilla) {
     const fragmento = document.createDocumentFragment();
@@ -257,8 +279,9 @@
     info.className = "ficha-info";
 
     let html = "";
-    if (libro.genero) html += '<p class="genero">' + L.limpio(libro.genero) + "</p>";
-    html += '<h2 class="t-l">' + L.limpio(libro.titulo) + "</h2>";
+    const encabezado = [libro.genero, libro.serie].filter(Boolean).join(" · ");
+    if (encabezado) html += '<p class="genero">' + L.limpio(encabezado) + "</p>";
+    html += '<h2 class="t-l">' + L.limpio(libro.titulo || libro.figura) + "</h2>";
     if (libro.subtitulo) html += '<p class="serif t-m apagado">' + L.limpio(libro.subtitulo) + "</p>";
     if (libro.frase) html += '<p class="frase">' + L.limpio(libro.frase) + "</p>";
 
@@ -268,12 +291,14 @@
     });
     html += "</div>";
 
-    html += '<dl class="fichas-datos">' +
-      "<div><dt>Autoría</dt><dd>" + L.limpio(libro.autor) + "</dd></div>" +
-      "<div><dt>Año</dt><dd>" + L.limpio(libro.anio) + "</dd></div>" +
-      "<div><dt>Páginas</dt><dd>" + L.limpio(libro.paginas) + "</dd></div>" +
-      "<div><dt>Formatos</dt><dd>" + L.limpio((libro.formatos || []).join(" · ")) + "</dd></div>" +
-      "</dl>";
+    /* Solo se listan los datos que existen. Una fila "Páginas: —" no informa
+       de nada y hace que la ficha parezca a medio hacer. */
+    const filas = [["Autoría", libro.autor], ["Año", libro.anio],
+                   ["Páginas", libro.paginas],
+                   ["Formatos", (libro.formatos || []).join(" · ")]]
+      .filter(function (f) { return f[1]; })
+      .map(function (f) { return "<div><dt>" + f[0] + "</dt><dd>" + L.limpio(f[1]) + "</dd></div>"; });
+    if (filas.length) html += '<dl class="fichas-datos">' + filas.join("") + "</dl>";
 
     info.innerHTML = html;
 

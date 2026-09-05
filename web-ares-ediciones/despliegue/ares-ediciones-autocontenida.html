@@ -11,14 +11,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Ares Ediciones — Editorial digital</title>
-<meta name="description" content="Ares Ediciones es el sello digital de Alan Gutiérrez. Siete libros, disponibles en Amazon. Sin almacén, sin escaparate, sin prisa.">
+<meta name="description" content="Conversaciones existenciales con la I.A: la colección de Alan Gutiérrez en la que César, Cleopatra o Napoleón responden hoy. Sello digital Ares Ediciones. En Amazon.">
 <meta name="theme-color" content="#08070B">
 
 <!-- Redes sociales. Cuando tengas una imagen de marca (1200x630 px),
      guárdala en imagenes/ y pon aquí su ruta o su URL completa. -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ares Ediciones — Editorial digital">
-<meta property="og:description" content="Siete libros de Alan Gutiérrez. Sello digital independiente.">
+<meta property="og:description" content="Conversaciones con la I.A de César, Cleopatra, Napoleón, Alejandro Magno y Vlad III. Una colección de Alan Gutiérrez.">
 <meta property="og:image" content="imagenes/og-ares.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -310,7 +310,10 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
 
 .libro{
   --alto-libro: clamp(200px, 38vh, 420px);
-  --ancho-libro: calc(var(--alto-libro) * .68);   /* proporción 2:3 de tapa   */
+  /* 0.625 = 5:8, que es la proporción REAL de las portadas (1280x2048).
+     Con 2:3 el recorte se comía 6% por los lados, justo donde va el
+     nombre de la figura en estas portadas. */
+  --ancho-libro: calc(var(--alto-libro) * .625);
   --grosor: calc(var(--alto-libro) * .075);       /* lomo                     */
   --color-libro: var(--rojo);
 
@@ -332,7 +335,7 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
     /* Al abrirse: sube (deja libre la franja del texto), se desplaza a la
        derecha (la tapa se va a la izquierda, así la doble página queda
        centrada) y se encoge (ahora ocupa el doble de ancho). */
-    translateY(calc(16vh - var(--p) * 29vh))
+    translateY(calc(19vh - var(--p) * 32vh))
     translateX(calc(var(--p) * 47%))
     scale(calc(1 - var(--p) * .26));
 }
@@ -731,7 +734,7 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
   --color-libro: var(--rojo);
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 5 / 8;   /* proporción real de las portadas */
   transform-style: preserve-3d;
   transform: rotateX(4deg) rotateY(-22deg);
   transition: transform .7s var(--curva);
@@ -1204,9 +1207,21 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
   align-content: start;
   padding-top: 6px;
 }
+/* Nombre de la colección sobre el de la figura: pequeño, en mayúsculas y
+   apagado. Sitúa el libro sin robarle el sitio a lo que se compra. */
+.tarjeta-libro .serie-tarjeta{
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--tinta-3);
+  line-height: 1.35;
+  margin-bottom: 2px;
+}
+
 .tarjeta-libro .titulo{
   font-family: var(--display);
-  font-size: 17px;
+  font-size: 21px;
   line-height: 1.2;
   letter-spacing: .03em;
   color: var(--tinta);
@@ -1430,6 +1445,14 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
 /* --------------------------------------------------------------------------
    EL AUTOR
    -------------------------------------------------------------------------- */
+
+/* Escudo familiar: ornamento, no logotipo. Va discreto y en su sitio. */
+.escudo-sello{
+  width: min(100%, 220px);
+  margin-top: 34px;
+  opacity: .82;
+  mix-blend-mode: screen;   /* el fondo negro del escudo se funde con la página */
+}
 
 .retrato{
   position: relative;
@@ -1662,17 +1685,17 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
       <div class="acto-1">
         <p class="antetitulo" data-editorial="lema">Editorial digital</p>
         <h1 class="t-xxl">ARES<br><span class="oro">EDICIONES</span></h1>
-        <p class="linea-hero">Siete libros de Alan Gutiérrez. Ninguno por casualidad.</p>
+        <p class="linea-hero">Una colección de Alan Gutiérrez.<br>Conversaciones con quien ya no puede contestar.</p>
       </div>
 
       <!-- ACTO 2: entra cuando el libro ya está abierto -->
       <div class="acto-2">
-        <p class="antetitulo">Nuestro título destacado</p>
+        <p class="antetitulo" id="serieDestacado">La colección</p>
         <h2 class="t-xl" id="tituloDestacado">—</h2>
         <p class="serif t-m apagado" id="autorDestacado">—</p>
         <p style="margin-top:26px">
           <a class="boton boton-oro" href="#" id="botonDestacado">Ver la ficha</a>
-          <a class="boton boton-fantasma" href="#catalogo">Los siete libros</a>
+          <a class="boton boton-fantasma" href="#catalogo">Ver la colección</a>
         </p>
       </div>
 
@@ -1695,13 +1718,15 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
     <div class="aparece">
       <p class="antetitulo">El sello</p>
       <h2 class="t-xl">Sin paredes<br>y sin permiso.</h2>
+      <!-- Escudo familiar. Solo aparece si EDITORIAL.escudo tiene ruta. -->
+      <img id="escudoSello" class="escudo-sello" alt="" hidden>
     </div>
 
     <div class="aparece" style="--retraso:120ms">
       <p class="lectura" data-editorial="descripcion">
         Ares Ediciones es el sello desde el que publico mi propio trabajo. No hay
         almacén, ni escaparate, ni una estantería que llenar por obligación. Hay
-        siete libros y el tiempo para escribir el octavo.
+        una colección y el tiempo para escribir el siguiente título.
       </p>
       <p class="lectura" style="margin-top:22px">
         Montar el sello no fue una rabieta contra el sector: fue quedarme con las
@@ -1712,7 +1737,7 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
       </p>
 
       <div class="cifras">
-        <div><span class="n" id="contadorLibros">7</span><span class="l">Títulos publicados</span></div>
+        <div><span class="n" id="contadorLibros">7</span><span class="l">Títulos en la colección</span></div>
         <div><span class="n">1</span><span class="l">Autor, sin intermediarios</span></div>
         <div><span class="n">0</span><span class="l">Metros de almacén</span></div>
       </div>
@@ -1729,11 +1754,11 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
   <div class="marco">
 
     <div class="cabecera-seccion aparece">
-      <p class="antetitulo">El catálogo</p>
-      <h2 class="t-xl">Elige el tuyo.</h2>
-      <p class="lectura">
-        Pasa el cursor por encima y el libro se entreabre. Ábrelo del todo para
-        leer la sinopsis y llevártelo desde Amazon.
+      <p class="antetitulo" data-serie="nombre">La colección</p>
+      <h2 class="t-xl">Elige con quién hablas.</h2>
+      <p class="lectura" data-serie="descripcion"></p>
+      <p class="lectura apagado" style="font-size:16px">
+        Abre cualquiera para leer su sinopsis y llevártelo desde Amazon.
       </p>
     </div>
 
@@ -1792,7 +1817,7 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
   <div class="marco">
     <div class="proximo aparece">
       <p class="antetitulo">El octavo</p>
-      <h2 class="t-l">Todavía no está terminado.<br>Y no va a salir antes de estarlo.</h2>
+      <h2 class="t-l">¿Con quién toca hablar<br>la próxima vez?</h2>
       <p class="lectura" style="text-align:center" data-editorial="proximos">
         El octavo está en marcha.
       </p>
@@ -1908,170 +1933,176 @@ header, main, footer, .barra{ position: relative; z-index: 2; }
 /* ===========================================================================
    ARES EDICIONES — CATÁLOGO
    ---------------------------------------------------------------------------
-   ESTE ES EL ÚNICO ARCHIVO QUE TIENES QUE TOCAR PARA AÑADIR O CAMBIAR LIBROS.
+   ESTE ES EL ÚNICO ARCHIVO QUE TIENES QUE TOCAR.
    Todo lo demás (portada 3D, tarjetas, ficha, botón de Amazon) se genera solo
    a partir de esta lista.
 
-   Para añadir el libro nº 8 cuando lo tengas: copia un bloque entero
-   { ... }, pégalo antes del corchete final y cambia los datos. Nada más.
+   LOS LIBROS SON UNA COLECCIÓN, no títulos sueltos. Por eso hay dos campos
+   separados:
+
+       serie   "Conversaciones existenciales con la I.A"   ← lo que comparten
+       figura  "Julio César"                               ← lo que los distingue
+
+   La tarjeta enseña la FIGURA en grande y la serie en pequeño encima. Si
+   pusiéramos el título completo siete veces, el lector tendría que leer cinco
+   palabras idénticas antes de llegar a la única que decide su compra.
 
    CAMPOS
    -------
-   id          Identificador corto sin espacios ni acentos. Se usa en la URL
-               (#libro-nombre) y para enlazar. Obligatorio y único.
-   titulo      Título del libro tal cual aparece en la portada.
-   subtitulo   Opcional. Deja "" si no tiene.
-   autor       Nombre del autor o autora.
-   anio        Año de publicación (número o texto).
-   paginas     Nº de páginas. Se usa también para calcular el grosor del
-               lomo en 3D: más páginas = libro más gordo. Pon un número real.
-   genero      Etiqueta corta. Aparece como chip sobre la tarjeta.
-               Ej: "Novela negra", "Ensayo", "Poesía", "Fantasía".
-   color       Color dominante del libro. Se usa para el lomo, el brillo y el
-               acento de su ficha. Usa uno de los cuatro de marca:
+   id        Identificador corto sin espacios ni acentos. Va en la URL
+             (#julio-cesar) y sirve para enlazar una ficha concreta. Único.
+   serie     Nombre de la colección. Deja "" si publicas algo fuera de ella.
+   figura    El personaje. Es lo que se lee en grande en la tarjeta.
+   titulo    Título completo, tal cual va en la portada y en Amazon.
+   autor     Quien firma.
+   anio      Año de publicación. Si lo dejas en "" no se muestra.
+   paginas   Nº de páginas. Además de informar, DECIDE EL GROSOR DEL LOMO en
+             la animación 3D: un libro de 190 y otro de 412 no se ven igual.
+             Si lo dejas en null no se muestra y el lomo usa un grosor medio.
+   genero    Etiqueta corta. Sale como chip sobre la tarjeta.
+   color     Color de la tapa: tiñe el lomo y el acento de su ficha.
+             Uno de los cuatro de marca:
                "#C1121F" rojo · "#0B2A5B" azul · "#D4A537" oro · "#12111A" negro
-   portada     Ruta de la imagen de portada.
-               Guárdalas en imagenes/portadas/ y pon aquí "imagenes/portadas/loquesea.jpg"
-               Proporción recomendada 2:3 (ej. 1200x1800 px).
-               Si la dejas en "" sale una portada tipográfica generada
-               automáticamente con los colores de marca (queda digna, pero
-               pon la real en cuanto la tengas).
-   sinopsis    Texto de la ficha. 2 o 3 párrafos separados por \n\n.
-               Es lo que más vende: escríbelo como contraportada, no como
-               resumen de Wikipedia.
-   frase       Una sola línea, un gancho. Sale en grande sobre la ficha.
-               Puede ser una cita del libro o una reseña.
-   amazon      El libro en Amazon. Vale CUALQUIERA de estas tres formas,
-               pega la que tengas más a mano:
-                 "B0CXXXXXXX"                              ← solo el ASIN
-                 "https://www.amazon.es/dp/B0CXXXXXXX"     ← la URL limpia
-                 "https://www.amazon.es/Titulo-largo/dp/B0CXXXXXXX/ref=sr_1_1?crid=..."
-                                                           ← lo que copia el navegador
-               De las tres se extrae el ASIN y se reconstruye una URL corta,
-               sin los parámetros de rastreo que Amazon cuelga al copiar.
-               Mientras esté en "" el botón sale desactivado y avisa de que
-               ese título aún no está a la venta.
-   formatos    Lista de formatos disponibles. Ej: ["Tapa blanda", "Kindle"]
-   destacado   true en UNO solo de los libros: es el que aparece en la
-               portada 3D gigante de la cabecera. En el resto, false.
+   portada   Ruta de la imagen. Las cinco que subiste ya están puestas.
+   frase     Una línea gancho. Sale en grande sobre la ficha.
+   sinopsis  Texto de la ficha. Párrafos separados por \n\n.
+   amazon    ASIN ("B0CH3XKQ7M") o la URL del libro, en cualquier formato.
+             Mientras esté en "" el botón sale desactivado.
+   formatos  Ej. ["Tapa blanda", "Kindle"]
+   destacado true en UNO solo: es el que se abre en la portada de la web.
    =========================================================================== */
 
 const LIBROS = [
 
   {
-    id: "libro-1",
-    titulo: "TÍTULO DEL LIBRO 1",
-    subtitulo: "",
+    id: "julio-cesar",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Julio César",
+    titulo: "Conversaciones existenciales con la I.A de Julio César",
     autor: "Alan Gutiérrez",
-    anio: "2026",
-    paginas: 320,
-    genero: "Género",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
     color: "#C1121F",
-    portada: "",
-    frase: "Aquí va la frase gancho del libro destacado.",
-    sinopsis: "Primer párrafo de la sinopsis. Sustituye este texto por la contraportada real del libro.\n\nSegundo párrafo. Cuenta el conflicto, no el argumento entero: lo que tiene que hacer es que el lector quiera saber cómo acaba.",
+    portada: "imagenes/portadas/julio-cesar.jpg",
+    frase: "",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.\n\nNo la copies de Amazon: si tu web dice lo mismo que tu ficha de Amazon, no le das al lector ninguna razón para estar aquí.",
     amazon: "",
     formatos: ["Tapa blanda", "Kindle"],
     destacado: true
   },
 
   {
-    id: "libro-2",
-    titulo: "TÍTULO DEL LIBRO 2",
-    subtitulo: "",
+    id: "napoleon",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Napoleón",
+    titulo: "Conversaciones existenciales con la I.A de Napoleón",
     autor: "Alan Gutiérrez",
-    anio: "2026",
-    paginas: 248,
-    genero: "Género",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
     color: "#0B2A5B",
-    portada: "",
+    portada: "imagenes/portadas/napoleon.jpg",
     frase: "",
-    sinopsis: "Sinopsis del libro 2.\n\nSegundo párrafo.",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.",
     amazon: "",
     formatos: ["Tapa blanda", "Kindle"],
     destacado: false
   },
 
   {
-    id: "libro-3",
-    titulo: "TÍTULO DEL LIBRO 3",
-    subtitulo: "",
+    id: "alejandro-magno",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Alejandro Magno",
+    titulo: "Conversaciones existenciales con la I.A de Alejandro Magno",
     autor: "Alan Gutiérrez",
-    anio: "2026",
-    paginas: 412,
-    genero: "Género",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
     color: "#D4A537",
-    portada: "",
+    portada: "imagenes/portadas/alejandro-magno.jpg",
     frase: "",
-    sinopsis: "Sinopsis del libro 3.\n\nSegundo párrafo.",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.",
     amazon: "",
     formatos: ["Tapa blanda", "Kindle"],
     destacado: false
   },
 
   {
-    id: "libro-4",
-    titulo: "TÍTULO DEL LIBRO 4",
-    subtitulo: "",
+    id: "cleopatra",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Cleopatra",
+    titulo: "Conversaciones existenciales con la I.A de Cleopatra",
     autor: "Alan Gutiérrez",
-    anio: "2026",
-    paginas: 190,
-    genero: "Género",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
+    color: "#0B2A5B",
+    portada: "imagenes/portadas/cleopatra.jpg",
+    frase: "",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.",
+    amazon: "",
+    formatos: ["Tapa blanda", "Kindle"],
+    destacado: false
+  },
+
+  {
+    id: "vlad-iii",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Vlad III",
+    titulo: "Conversaciones existenciales con la I.A de Vlad III",
+    autor: "Alan Gutiérrez",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
     color: "#12111A",
-    portada: "",
+    portada: "imagenes/portadas/vlad-iii.jpg",
     frase: "",
-    sinopsis: "Sinopsis del libro 4.\n\nSegundo párrafo.",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.",
     amazon: "",
     formatos: ["Tapa blanda", "Kindle"],
     destacado: false
   },
 
+  /* ---------------------------------------------------------------------
+     LOS DOS QUE FALTAN
+     Dijiste siete títulos y subiste cinco portadas. Estos dos quedan como
+     plantilla: cambia figura, titulo, color y portada, o BORRA el bloque
+     entero si al final son cinco. La web cuenta los libros sola, así que el
+     número de la sección "El sello" se ajusta sin tocar nada más.
+     --------------------------------------------------------------------- */
+
   {
-    id: "libro-5",
-    titulo: "TÍTULO DEL LIBRO 5",
-    subtitulo: "",
+    id: "figura-6",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "FIGURA PENDIENTE",
+    titulo: "Conversaciones existenciales con la I.A de ...",
     autor: "Alan Gutiérrez",
-    anio: "2026",
-    paginas: 356,
-    genero: "Género",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
     color: "#C1121F",
     portada: "",
     frase: "",
-    sinopsis: "Sinopsis del libro 5.\n\nSegundo párrafo.",
+    sinopsis: "PENDIENTE.",
     amazon: "",
     formatos: ["Tapa blanda", "Kindle"],
     destacado: false
   },
 
   {
-    id: "libro-6",
-    titulo: "TÍTULO DEL LIBRO 6",
-    subtitulo: "",
+    id: "figura-7",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "FIGURA PENDIENTE",
+    titulo: "Conversaciones existenciales con la I.A de ...",
     autor: "Alan Gutiérrez",
-    anio: "2026",
-    paginas: 275,
-    genero: "Género",
-    color: "#0B2A5B",
-    portada: "",
-    frase: "",
-    sinopsis: "Sinopsis del libro 6.\n\nSegundo párrafo.",
-    amazon: "",
-    formatos: ["Tapa blanda", "Kindle"],
-    destacado: false
-  },
-
-  {
-    id: "libro-7",
-    titulo: "TÍTULO DEL LIBRO 7",
-    subtitulo: "",
-    autor: "Alan Gutiérrez",
-    anio: "2026",
-    paginas: 300,
-    genero: "Género",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
     color: "#D4A537",
     portada: "",
     frase: "",
-    sinopsis: "Sinopsis del libro 7.\n\nSegundo párrafo.",
+    sinopsis: "PENDIENTE.",
     amazon: "",
     formatos: ["Tapa blanda", "Kindle"],
     destacado: false
@@ -2081,61 +2112,45 @@ const LIBROS = [
 
 /* ---------------------------------------------------------------------------
    DATOS DE LA EDITORIAL
-   Cambia aquí los textos de marca, el correo y las redes.
    --------------------------------------------------------------------------- */
 
 const EDITORIAL = {
   nombre: "Ares Ediciones",
   lema: "Editorial digital",
+  claim: "Los muertos también tienen algo que decir.",
+  descripcion: "Ares Ediciones es el sello desde el que publico mi propio trabajo. No hay almacén, ni escaparate, ni una estantería que llenar por obligación. Hay una colección y el tiempo para escribir el siguiente título.",
+  email: "hola@aresediciones.com",
 
-  /* --- Amazon -------------------------------------------------------------
-     amazonAutor    Página del autor en Amazon. Sale como botón al final del
-                    catálogo ("Ver todos en Amazon"). Déjalo en "" y el botón
-                    desaparece solo.
-     amazonTag      Etiqueta de afiliado, SI eres afiliado. Se añade sola a
-                    los enlaces de los 7 libros: se pone una vez, aquí, no
-                    siete veces. Si la usas, el aviso de afiliación del pie
-                    aparece automáticamente (es obligatorio declararlo).
-     amazonDominio  Cambia solo si vendes en otro país (www.amazon.com...).
-     ---------------------------------------------------------------------- */
-  amazonAutor: "https://www.amazon.es/stores/Alan-Gutierrez/author/B0GJN9V1D5",
-  amazonTag: "",
-  amazonDominio: "www.amazon.es",
-
-  /* --- El autor -----------------------------------------------------------
-     Ares Ediciones es el sello de Alan Gutiérrez y los siete títulos son
-     suyos. La web lo dice abiertamente en vez de aparentar una editorial
-     con muchos autores: en cuanto alguien ve que los siete comparten firma,
-     disimularlo cuesta más credibilidad de la que ahorra.
-     ---------------------------------------------------------------------- */
-  autor: {
-    nombre: "Alan Gutiérrez",
-    // Una línea. Es lo primero que se lee de él.
-    titular: "Escribo los libros y decido cuáles se publican.",
-    // Dos o tres párrafos, separados por \n\n. Escríbelos en primera
-    // persona: es la sección donde el lector decide si le caes bien.
-    bio: "Aquí va tu biografía. Cuenta de dónde vienes, qué te llevó a escribir y por qué acabaste montando tu propio sello en vez de esperar a que alguien te publicara.\n\nSegundo párrafo: qué tipo de historias te interesan y qué va a encontrar quien te lea. Sin currículum: lo que engancha es el motivo, no la lista de méritos.",
-    /* Retrato del autor. YA ESTÁ PUESTA LA RUTA: solo tienes que guardar
-       la foto con ESE nombre exacto en la carpeta imagenes/ y aparece sola.
-
-           imagenes/alan-gutierrez.jpg
-
-       Vertical, proporción 4:5 (ej. 1000 x 1250 px). Si el archivo no
-       existe todavía, no se rompe nada: sale el monograma dorado.
-       Déjalo en "" si prefieres el monograma a propósito. */
-    foto: "imagenes/alan-gutierrez.jpg"
+  /* La colección da sentido al catálogo entero, así que se explica una vez
+     aquí arriba y no se repite en las siete fichas. */
+  serie: {
+    nombre: "Conversaciones existenciales con la I.A",
+    descripcion: "Cada libro es una conversación con la inteligencia artificial de una figura histórica. No es una biografía ni una novela: es un diálogo. Qué contestaría César si pudiera responder hoy, y qué dice de nosotros su respuesta."
   },
 
-  claim: "Libros que se abren solos.",
-  descripcion: "Ares Ediciones es el sello desde el que publico mi propio trabajo. No hay almacén, ni escaparate, ni una estantería que llenar por obligación. Hay siete libros y el tiempo para escribir el octavo.",
-  email: "hola@aresediciones.com",
   redes: [
     { nombre: "Instagram", url: "" },
     { nombre: "X",         url: "" },
     { nombre: "TikTok",    url: "" }
   ],
-  // Se muestra en la sección "Próximamente"
-  proximos: "El octavo está en marcha. Publico poco y despacio, y prefiero tardar a sacar algo que no aguante una segunda lectura."
+
+  /* --- Amazon --------------------------------------------------------- */
+  amazonAutor: "https://www.amazon.es/stores/Alan-Gutierrez/author/B0GJN9V1D5",
+  amazonTag: "",              // Alan no es afiliado: se queda vacío
+  amazonDominio: "www.amazon.es",
+
+  /* --- El autor ------------------------------------------------------- */
+  autor: {
+    nombre: "Alan Gutiérrez",
+    titular: "Escribo los libros y decido cuáles se publican.",
+    bio: "PENDIENTE: tu biografía, en primera persona. De dónde vienes, qué te llevó a escribir y por qué acabaste montando tu propio sello.\n\nSegundo párrafo: de dónde sale la idea de sentar a hablar a un César o a una Cleopatra con una inteligencia artificial. Esa es justo la pregunta que se está haciendo quien llega hasta aquí.",
+    foto: "imagenes/alan-gutierrez.jpg"
+  },
+
+  /* Escudo familiar. Ornamento de la sección del sello. Vacío = no aparece. */
+  escudo: "imagenes/escudo-gutierrez-martinez.jpg",
+
+  proximos: "El siguiente está en marcha. Publico poco y despacio, y prefiero tardar a sacar algo que no aguante una segunda lectura."
 };
 
 </script>
@@ -2185,6 +2200,8 @@ const EDITORIAL = {
      Un libro de 190 págs. y otro de 412 no se ven igual: ese detalle es el
      que hace que el 3D parezca un libro y no una caja. */
   function grosorSegunPaginas(paginas) {
+    // Sin dato de páginas usamos un grosor medio: es mejor un lomo creíble
+    // que inventarse un número que luego se muestra como si fuera cierto.
     const p = Number(paginas) || 260;
     // 0.05 a 0.11 de la altura, saturando en los extremos
     const t = Math.min(1, Math.max(0, (p - 140) / 380));
@@ -2529,10 +2546,13 @@ const EDITORIAL = {
     );
 
     // Rellenamos los textos de la cabecera con los datos del destacado
+    const serieDest = document.getElementById("serieDestacado");
+    if (serieDest && destacado.serie) serieDest.textContent = destacado.serie;
+
     const t = document.getElementById("tituloDestacado");
     const a = document.getElementById("autorDestacado");
     const b = document.getElementById("botonDestacado");
-    if (t) t.textContent = destacado.titulo;
+    if (t) t.textContent = destacado.figura || destacado.titulo;
     if (a) a.textContent = destacado.autor;
     if (b) {
       b.addEventListener("click", function (e) {
@@ -2594,14 +2614,28 @@ const EDITORIAL = {
     /* --- datos --- */
     const datos = document.createElement("div");
     datos.className = "datos";
-    datos.innerHTML =
-      '<h3 class="titulo">' + L.limpio(libro.titulo) + "</h3>" +
-      '<p class="autor">' + L.limpio(libro.autor) + "</p>" +
-      '<p class="meta">' + L.limpio(libro.anio) + " · " + L.limpio(libro.paginas) + " págs.</p>" +
-      '<span class="abrir">Ver ficha</span>';
+    /* La FIGURA en grande y la serie en pequeño encima. Los siete títulos
+       empiezan igual: poner el título completo obligaría a leer cinco
+       palabras idénticas antes de llegar a la que decide la compra. */
+    let html = "";
+    if (libro.serie) html += '<p class="serie-tarjeta">' + L.limpio(libro.serie) + "</p>";
+    html += '<h3 class="titulo">' + L.limpio(libro.figura || libro.titulo) + "</h3>";
+    html += '<p class="autor">' + L.limpio(libro.autor) + "</p>";
 
-    /* --- chip de género --- */
-    if (libro.genero) {
+    // Año y páginas solo si los hay: un "· págs." suelto delata un hueco
+    const meta = [];
+    if (libro.anio) meta.push(L.limpio(libro.anio));
+    if (libro.paginas) meta.push(L.limpio(libro.paginas) + " págs.");
+    if (meta.length) html += '<p class="meta">' + meta.join(" · ") + "</p>";
+
+    html += '<span class="abrir">Ver ficha</span>';
+    datos.innerHTML = html;
+
+    /* --- chip de género ---
+       Solo si aporta algo. En una colección donde los siete libros son
+       "Diálogos", repetir la etiqueta siete veces no informa: decora. Si
+       algún día publicas una novela suelta, los chips vuelven solos. */
+    if (libro.genero && generosDistintos) {
       const chip = document.createElement("span");
       chip.className = "chip";
       chip.textContent = libro.genero;
@@ -2612,7 +2646,7 @@ const EDITORIAL = {
     const boton = document.createElement("button");
     boton.className = "disparador";
     boton.type = "button";
-    boton.textContent = "Ver la ficha de " + libro.titulo;
+    boton.textContent = "Ver la ficha de " + (libro.titulo || libro.figura);
     boton.addEventListener("click", function () { abrirFicha(libro.id); });
 
     tarjeta.append(escena, datos, boton);
@@ -2624,10 +2658,15 @@ const EDITORIAL = {
     cont.className = "portada-tipo";
     cont.innerHTML =
       '<div class="sello">Ares Ediciones</div>' +
-      '<div class="tit">' + L.limpio(libro.titulo) + "</div>" +
+      '<div class="tit">' + L.limpio(libro.figura || libro.titulo) + "</div>" +
       '<div class="aut">' + L.limpio(libro.autor) + "</div>";
     return cont;
   }
+
+  // ¿Tienen todos los libros el mismo género? Entonces el chip no distingue.
+  const generosDistintos = new Set(
+    LIBROS.map(function (l) { return l.genero || ""; })
+  ).size > 1;
 
   if (rejilla) {
     const fragmento = document.createDocumentFragment();
@@ -2673,8 +2712,9 @@ const EDITORIAL = {
     info.className = "ficha-info";
 
     let html = "";
-    if (libro.genero) html += '<p class="genero">' + L.limpio(libro.genero) + "</p>";
-    html += '<h2 class="t-l">' + L.limpio(libro.titulo) + "</h2>";
+    const encabezado = [libro.genero, libro.serie].filter(Boolean).join(" · ");
+    if (encabezado) html += '<p class="genero">' + L.limpio(encabezado) + "</p>";
+    html += '<h2 class="t-l">' + L.limpio(libro.titulo || libro.figura) + "</h2>";
     if (libro.subtitulo) html += '<p class="serif t-m apagado">' + L.limpio(libro.subtitulo) + "</p>";
     if (libro.frase) html += '<p class="frase">' + L.limpio(libro.frase) + "</p>";
 
@@ -2684,12 +2724,14 @@ const EDITORIAL = {
     });
     html += "</div>";
 
-    html += '<dl class="fichas-datos">' +
-      "<div><dt>Autoría</dt><dd>" + L.limpio(libro.autor) + "</dd></div>" +
-      "<div><dt>Año</dt><dd>" + L.limpio(libro.anio) + "</dd></div>" +
-      "<div><dt>Páginas</dt><dd>" + L.limpio(libro.paginas) + "</dd></div>" +
-      "<div><dt>Formatos</dt><dd>" + L.limpio((libro.formatos || []).join(" · ")) + "</dd></div>" +
-      "</dl>";
+    /* Solo se listan los datos que existen. Una fila "Páginas: —" no informa
+       de nada y hace que la ficha parezca a medio hacer. */
+    const filas = [["Autoría", libro.autor], ["Año", libro.anio],
+                   ["Páginas", libro.paginas],
+                   ["Formatos", (libro.formatos || []).join(" · ")]]
+      .filter(function (f) { return f[1]; })
+      .map(function (f) { return "<div><dt>" + f[0] + "</dt><dd>" + L.limpio(f[1]) + "</dd></div>"; });
+    if (filas.length) html += '<dl class="fichas-datos">' + filas.join("") + "</dl>";
 
     info.innerHTML = html;
 
@@ -2857,6 +2899,22 @@ const EDITORIAL = {
       const valor = EDITORIAL[clave];
       if (typeof valor === "string" && valor) el.textContent = valor;
     });
+
+    // Datos de la colección (nombre y descripción), en un solo sitio
+    if (EDITORIAL.serie) {
+      document.querySelectorAll("[data-serie]").forEach(function (el) {
+        const valor = EDITORIAL.serie[el.getAttribute("data-serie")];
+        if (typeof valor === "string" && valor) el.textContent = valor;
+      });
+    }
+
+    /* Escudo familiar en la sección del sello. Como el retrato: si el archivo
+       no está, no aparece nada roto, simplemente no sale. */
+    const escudo = document.getElementById("escudoSello");
+    if (escudo && EDITORIAL.escudo) {
+      escudo.addEventListener("load", function () { escudo.hidden = false; });
+      escudo.src = EDITORIAL.escudo;
+    }
 
     // Correo: mismo dato en el texto y en el enlace
     document.querySelectorAll("[data-email]").forEach(function (el) {

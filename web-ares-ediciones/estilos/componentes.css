@@ -316,9 +316,21 @@
   align-content: start;
   padding-top: 6px;
 }
+/* Nombre de la colección sobre el de la figura: pequeño, en mayúsculas y
+   apagado. Sitúa el libro sin robarle el sitio a lo que se compra. */
+.tarjeta-libro .serie-tarjeta{
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--tinta-3);
+  line-height: 1.35;
+  margin-bottom: 2px;
+}
+
 .tarjeta-libro .titulo{
   font-family: var(--display);
-  font-size: 17px;
+  font-size: 21px;
   line-height: 1.2;
   letter-spacing: .03em;
   color: var(--tinta);
@@ -542,6 +554,14 @@
 /* --------------------------------------------------------------------------
    EL AUTOR
    -------------------------------------------------------------------------- */
+
+/* Escudo familiar: ornamento, no logotipo. Va discreto y en su sitio. */
+.escudo-sello{
+  width: min(100%, 220px);
+  margin-top: 34px;
+  opacity: .82;
+  mix-blend-mode: screen;   /* el fondo negro del escudo se funde con la página */
+}
 
 .retrato{
   position: relative;

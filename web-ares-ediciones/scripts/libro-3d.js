@@ -42,6 +42,8 @@
      Un libro de 190 págs. y otro de 412 no se ven igual: ese detalle es el
      que hace que el 3D parezca un libro y no una caja. */
   function grosorSegunPaginas(paginas) {
+    // Sin dato de páginas usamos un grosor medio: es mejor un lomo creíble
+    // que inventarse un número que luego se muestra como si fuera cierto.
     const p = Number(paginas) || 260;
     // 0.05 a 0.11 de la altura, saturando en los extremos
     const t = Math.min(1, Math.max(0, (p - 140) / 380));

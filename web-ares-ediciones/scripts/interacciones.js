@@ -86,6 +86,22 @@
       if (typeof valor === "string" && valor) el.textContent = valor;
     });
 
+    // Datos de la colección (nombre y descripción), en un solo sitio
+    if (EDITORIAL.serie) {
+      document.querySelectorAll("[data-serie]").forEach(function (el) {
+        const valor = EDITORIAL.serie[el.getAttribute("data-serie")];
+        if (typeof valor === "string" && valor) el.textContent = valor;
+      });
+    }
+
+    /* Escudo familiar en la sección del sello. Como el retrato: si el archivo
+       no está, no aparece nada roto, simplemente no sale. */
+    const escudo = document.getElementById("escudoSello");
+    if (escudo && EDITORIAL.escudo) {
+      escudo.addEventListener("load", function () { escudo.hidden = false; });
+      escudo.src = EDITORIAL.escudo;
+    }
+
     // Correo: mismo dato en el texto y en el enlace
     document.querySelectorAll("[data-email]").forEach(function (el) {
       el.textContent = EDITORIAL.email;

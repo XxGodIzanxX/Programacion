@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Ares Ediciones — Editorial digital</title>
+<meta name="description" content="Conversaciones existenciales con la I.A: la colección de Alan Gutiérrez en la que César, Cleopatra o Napoleón responden hoy. Sello digital Ares Ediciones. En Amazon.">
+<meta name="theme-color" content="#08070B">
+
+<!-- Redes sociales. Cuando tengas una imagen de marca (1200x630 px),
+     guárdala en imagenes/ y pon aquí su ruta o su URL completa. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ares Ediciones — Editorial digital">
+<meta property="og:description" content="Conversaciones con la I.A de César, Cleopatra, Napoleón, Alejandro Magno y Vlad III. Una colección de Alan Gutiérrez.">
+<meta property="og:image" content="imagenes/og-ares.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308070B'/%3E%3Cpath d='M16 6l8 20h-4l-1.6-4h-4.8L12 26H8z' fill='%23D4A537'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;600;700;800&display=swap">
+
+<link rel="stylesheet" href="estilos/base.css">
+<link rel="stylesheet" href="estilos/animaciones-3d.css">
+<link rel="stylesheet" href="estilos/componentes.css">
+</head>
+
+<body>
+
+<!-- Centinela: cuando deja de verse, la barra se vuelve sólida -->
+<div id="centinelaBarra" style="position:absolute;top:0;height:1px;width:1px"></div>
+
+<!-- ======================================================================
+     BARRA
+     ====================================================================== -->
+<nav class="barra" aria-label="Navegación principal">
+  <a class="marca" href="#" aria-label="Ares Ediciones, inicio">
+    <svg class="escudo" viewBox="0 0 40 40" aria-hidden="true">
+      <defs>
+        <linearGradient id="gOro" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#F2DCA0"/><stop offset="1" stop-color="#8A6A1C"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="url(#gOro)" stroke-width="1.2"/>
+      <path d="M20 9l8.5 22h-4.7l-1.7-4.6h-4.2L16.2 31h-4.7z" fill="url(#gOro)"/>
+      <path d="M13.5 33.5h13" stroke="#C1121F" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <span class="nombre">ARES<span class="sub" data-editorial="lema">Editorial digital</span></span>
+  </a>
+
+  <ul class="menu">
+    <li><a href="#catalogo">Catálogo</a></li>
+    <li><a href="#autor">El autor</a></li>
+    <li><a href="#editorial">El sello</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+
+  <button class="hamburguesa" type="button" aria-label="Abrir menú" aria-expanded="false">
+    <span></span>
+  </button>
+</nav>
+
+<main>
+
+<!-- ======================================================================
+     CABECERA: EL LIBRO QUE SE ABRE CON EL SCROLL
+     .pista mide 320vh; dentro, .panel-fijo se queda pegado y el libro se
+     abre según cuánto has recorrido. Ver scripts/libro-3d.js.
+     ====================================================================== -->
+<header class="pista">
+  <div class="panel-fijo">
+
+    <!-- La escena 3D ocupa toda la pantalla, detrás del texto -->
+    <div class="escena" id="escenaCabecera" aria-hidden="true"></div>
+
+    <div class="capa-texto">
+
+      <!-- ACTO 1: el nombre. Se va cuando el libro empieza a abrirse. -->
+      <div class="acto-1">
+        <p class="antetitulo" data-editorial="lema">Editorial digital</p>
+        <h1 class="t-xxl">ARES<br><span class="oro">EDICIONES</span></h1>
+        <p class="linea-hero">Una colección de Alan Gutiérrez.<br>Conversaciones con quien ya no puede contestar.</p>
+      </div>
+
+      <!-- ACTO 2: entra cuando el libro ya está abierto -->
+      <div class="acto-2">
+        <p class="antetitulo" id="serieDestacado">La colección</p>
+        <h2 class="t-xl" id="tituloDestacado">—</h2>
+        <p class="serif t-m apagado" id="autorDestacado">—</p>
+        <p style="margin-top:26px">
+          <a class="boton boton-oro" href="#" id="botonDestacado">Ver la ficha</a>
+          <a class="boton boton-fantasma" href="#catalogo">Ver la colección</a>
+        </p>
+      </div>
+
+    </div>
+
+    <div class="pista-scroll">
+      <span>Desliza para abrirlo</span>
+      <span class="barrita"></span>
+    </div>
+
+  </div>
+</header>
+
+<!-- ======================================================================
+     LA EDITORIAL
+     ====================================================================== -->
+<section class="seccion" id="editorial">
+  <div class="marco dos-columnas">
+
+    <div class="aparece">
+      <p class="antetitulo">El sello</p>
+      <h2 class="t-xl">Sin paredes<br>y sin permiso.</h2>
+      <!-- Escudo familiar. Solo aparece si EDITORIAL.escudo tiene ruta. -->
+      <img id="escudoSello" class="escudo-sello" alt="" hidden>
+    </div>
+
+    <div class="aparece" style="--retraso:120ms">
+      <p class="lectura" data-editorial="descripcion">
+        Ares Ediciones es el sello desde el que publico mi propio trabajo. No hay
+        almacén, ni escaparate, ni una estantería que llenar por obligación. Hay
+        una colección y el tiempo para escribir el siguiente título.
+      </p>
+      <p class="lectura" style="margin-top:22px">
+        Montar el sello no fue una rabieta contra el sector: fue quedarme con las
+        decisiones que me importaban. Qué se publica, cuándo y con qué portada.
+        Cada título ha pasado por una única pregunta:
+        <em class="oro">¿merece que alguien le dedique seis horas de su vida?</em>
+        Si la respuesta no es un sí rotundo, no sale.
+      </p>
+
+      <div class="cifras">
+        <div><span class="n" id="contadorLibros">7</span><span class="l">Títulos en la colección</span></div>
+        <div><span class="n">1</span><span class="l">Autor, sin intermediarios</span></div>
+        <div><span class="n">0</span><span class="l">Metros de almacén</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======================================================================
+     CATÁLOGO
+     Las tarjetas las genera scripts/catalogo.js a partir de datos/libros.js
+     ====================================================================== -->
+<section class="seccion" id="catalogo">
+  <div class="marco">
+
+    <div class="cabecera-seccion aparece">
+      <p class="antetitulo" data-serie="nombre">La colección</p>
+      <h2 class="t-xl">Elige con quién hablas.</h2>
+      <p class="lectura" data-serie="descripcion"></p>
+      <p class="lectura apagado" style="font-size:16px">
+        Abre cualquiera para leer su sinopsis y llevártelo desde Amazon.
+      </p>
+    </div>
+
+    <div class="rejilla-libros" id="rejillaLibros"></div>
+
+    <!-- Solo aparece si EDITORIAL.amazonAutor tiene URL -->
+    <p class="pie-catalogo" id="pieCatalogo" hidden>
+      <a class="boton boton-oro" id="enlaceAutor" href="#" target="_blank" rel="noopener noreferrer">
+        Ver todos en Amazon
+      </a>
+    </p>
+
+  </div>
+</section>
+
+<!-- ======================================================================
+     EL AUTOR
+     Los 7 libros son suyos, así que es la sección que más peso tiene
+     después del catálogo: quien termina un libro compra el siguiente por
+     el autor, no por el sello.
+     ====================================================================== -->
+<section class="seccion" id="autor">
+  <div class="marco dos-columnas">
+
+    <div class="aparece">
+      <p class="antetitulo">El autor</p>
+      <div class="retrato" id="retratoAutor">
+        <span class="monograma">AG</span>
+      </div>
+    </div>
+
+    <div class="aparece" style="--retraso:120ms">
+      <h2 class="t-xl" id="nombreAutor">Alan Gutiérrez</h2>
+      <p class="serif t-m oro" id="titularAutor" style="margin:14px 0 24px"></p>
+      <div class="lectura" id="bioAutor"></div>
+
+      <!-- Seguir al autor en Amazon es el CTA más rentable de toda la web:
+           Amazon avisa por correo a quien te sigue cada vez que publicas.
+           Para alguien con 7 libros y el octavo en camino, esa lista es el
+           lanzamiento del octavo. -->
+      <p class="acciones-autor">
+        <a class="boton boton-oro" id="seguirAutor" href="#" target="_blank" rel="noopener noreferrer" hidden>
+          Seguir en Amazon
+        </a>
+        <span class="nota-seguir apagado">Amazon te avisa cuando publique el siguiente.</span>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======================================================================
+     PRÓXIMAMENTE
+     ====================================================================== -->
+<section class="seccion" id="proximamente">
+  <div class="marco">
+    <div class="proximo aparece">
+      <p class="antetitulo">El octavo</p>
+      <h2 class="t-l">¿Con quién toca hablar<br>la próxima vez?</h2>
+      <p class="lectura" style="text-align:center" data-editorial="proximos">
+        El octavo está en marcha.
+      </p>
+      <a class="boton boton-oro" id="proximoSeguir" href="#" target="_blank" rel="noopener noreferrer" hidden>
+        Que me avisen cuando salga
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     CONTACTO
+     ====================================================================== -->
+<section class="seccion" id="contacto">
+  <div class="marco dos-columnas">
+
+    <div class="aparece">
+      <p class="antetitulo">Contacto</p>
+      <h2 class="t-xl">Escríbeme.</h2>
+      <p class="lectura" style="margin-top:20px">
+        Si has leído alguno y quieres decirme algo, si llevas un club de lectura,
+        si escribes en un medio o si te interesan los derechos de traducción:
+        este es el sitio. Contesto yo.
+      </p>
+      <p class="lectura" style="margin-top:16px">
+        O directamente a
+        <a class="oro" data-email href="mailto:hola@aresediciones.com">hola@aresediciones.com</a>.
+      </p>
+    </div>
+
+    <form class="formulario aparece" id="formularioContacto" style="--retraso:120ms">
+      <div class="campo">
+        <label for="nombre">Tu nombre</label>
+        <input id="nombre" name="nombre" type="text" required autocomplete="name">
+      </div>
+      <div class="campo">
+        <label for="correo">Tu correo</label>
+        <input id="correo" name="correo" type="email" required autocomplete="email">
+      </div>
+      <div class="campo">
+        <label for="mensaje">Tu mensaje</label>
+        <textarea id="mensaje" name="mensaje" required placeholder="Cuéntame."></textarea>
+      </div>
+      <button class="boton boton-oro" type="submit">Enviar</button>
+    </form>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ======================================================================
+     PIE
+     ====================================================================== -->
+<footer class="pie">
+  <div class="pie-cuerpo">
+
+    <div>
+      <div class="marca" style="margin-bottom:16px">
+        <span class="nombre">ARES<span class="sub">Editorial digital</span></span>
+      </div>
+      <p class="apagado" style="font-size:14px;max-width:34ch" data-editorial="claim">
+        Libros que se abren solos.
+      </p>
+    </div>
+
+    <div>
+      <h4>Navegar</h4>
+      <ul>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#autor">El autor</a></li>
+        <li><a href="#editorial">El sello</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Encontrarnos</h4>
+      <ul id="listaRedes"></ul>
+      <ul style="margin-top:10px">
+        <li><a data-email href="mailto:hola@aresediciones.com">hola@aresediciones.com</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="pie-legal">
+    <span>© <span id="anioActual">2026</span> <span data-editorial="nombre">Ares Ediciones</span>. Todos los derechos reservados.</span>
+    <!-- Obligatorio si se usa etiqueta de afiliado. Se muestra solo entonces. -->
+    <span id="avisoAfiliado" hidden>Como afiliados de Amazon, obtenemos ingresos por las compras que cumplen los requisitos.</span>
+    <span>Editorial 100% digital · Sin sede física</span>
+  </div>
+</footer>
+
+<!-- ======================================================================
+     FICHA DEL LIBRO
+     Se rellena al elegir un libro. <dialog> nativo: el navegador gestiona
+     el foco, la tecla Esc y el bloqueo del fondo.
+     ====================================================================== -->
+<dialog class="ficha" id="fichaLibro" aria-label="Ficha del libro">
+  <button class="cerrar-ficha" id="cerrarFicha" type="button" aria-label="Cerrar ficha">✕</button>
+  <div class="ficha-cuerpo" id="fichaCuerpo"></div>
+</dialog>
+
+<!-- ======================================================================
+     SCRIPTS
+     Orden obligatorio: primero los datos, luego el motor 3D, luego quien
+     los usa. Son scripts clásicos (no módulos) a propósito: así la web
+     funciona abriendo index.html con doble clic, sin servidor local.
+     ====================================================================== -->
+<script src="datos/libros.js"></script>
+<script src="scripts/libro-3d.js"></script>
+<script src="scripts/catalogo.js"></script>
+<script src="scripts/interacciones.js"></script>
+
+<!-- Datos estructurados: ayuda a Google a entender qué es esto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "#ares",
+  "name": "Ares Ediciones",
+  "description": "Sello editorial digital independiente de Alan Gutiérrez.",
+  "email": "hola@aresediciones.com",
+  "founder": {
+    "@type": "Person",
+    "name": "Alan Gutiérrez",
+    "sameAs": "https://www.amazon.es/stores/Alan-Gutierrez/author/B0GJN9V1D5"
+  }
+}
+</script>
+
+</body>
+</html>

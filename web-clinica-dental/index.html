@@ -1,0 +1,1440 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--ARTIFACT-START-->
+<title>Dental Áurea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F6F4EF; --surface:#FFFFFF; --surface-2:#ECE8DF; --surface-3:#E2DDD1;
+  --ink:#10201F; --ink-soft:#3A4F4C; --muted:#5F716E;
+  --line:rgba(16,32,31,.13); --line-strong:rgba(16,32,31,.28);
+  --accent:#0F6B60; --accent-ink:#0A4B43; --accent-soft:rgba(15,107,96,.09);
+  --gold:#A9762B; --gold-soft:rgba(169,118,43,.12); --on-accent:#FFFFFF;
+  --shadow:0 1px 2px rgba(16,32,31,.05), 0 12px 34px -18px rgba(16,32,31,.35);
+  --shadow-lift:0 2px 6px rgba(16,32,31,.06), 0 28px 60px -28px rgba(16,32,31,.45);
+  --canvas-glow:rgba(15,107,96,.10);
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-s:6px; --r-m:12px; --r-l:22px;
+  --pad:clamp(20px,5vw,64px);
+  --maxw:1200px;
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0B1413; --surface:#111E1D; --surface-2:#172A28; --surface-3:#1E3532;
+    --ink:#EFEDE6; --ink-soft:#C6CFCC; --muted:#93A5A1;
+    --line:rgba(239,237,230,.14); --line-strong:rgba(239,237,230,.3);
+    --accent:#57C4B2; --accent-ink:#9BE0D3; --accent-soft:rgba(87,196,178,.12); --on-accent:#06201C; --on-accent:#06201C;
+    --gold:#E0B463; --gold-soft:rgba(224,180,99,.14);
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 40px -20px rgba(0,0,0,.8);
+    --shadow-lift:0 2px 8px rgba(0,0,0,.45), 0 30px 70px -30px rgba(0,0,0,.9);
+    --canvas-glow:rgba(87,196,178,.14);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0B1413; --surface:#111E1D; --surface-2:#172A28; --surface-3:#1E3532;
+  --ink:#EFEDE6; --ink-soft:#C6CFCC; --muted:#93A5A1;
+  --line:rgba(239,237,230,.14); --line-strong:rgba(239,237,230,.3);
+  --accent:#57C4B2; --accent-ink:#9BE0D3; --accent-soft:rgba(87,196,178,.12); --on-accent:#06201C;
+  --gold:#E0B463; --gold-soft:rgba(224,180,99,.14);
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 40px -20px rgba(0,0,0,.8);
+  --shadow-lift:0 2px 8px rgba(0,0,0,.45), 0 30px 70px -30px rgba(0,0,0,.9);
+  --canvas-glow:rgba(87,196,178,.14);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.62;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img{max-width:100%}
+h1,h2,h3,h4{margin:0; text-wrap:balance; font-family:var(--serif); font-weight:400; line-height:1.06; letter-spacing:-.015em}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:4px}
+.wrap{max-width:var(--maxw); margin:0 auto; padding-inline:var(--pad)}
+.eyebrow{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:18px;
+}
+.eyebrow::before{content:""; width:26px; height:1px; background:currentColor; opacity:.7}
+.lede{color:var(--muted); font-size:clamp(15px,1.15vw,17.5px); max-width:60ch}
+.rule{height:1px; background:var(--line); border:0; margin:0}
+
+/* ---------- nav ---------- */
+.progress{position:fixed; top:0; left:0; height:2px; width:0; background:linear-gradient(90deg,var(--accent),var(--gold)); z-index:60}
+header.nav{
+  position:sticky; top:0; z-index:50; background:var(--ground); background:color-mix(in srgb, var(--ground) 82%, transparent);
+  backdrop-filter:saturate(180%) blur(14px); -webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid transparent; transition:border-color .3s ease, background .3s ease;
+}
+header.nav.stuck{border-bottom-color:var(--line)}
+.nav-in{display:flex; align-items:center; gap:24px; height:70px}
+.brand{display:flex; align-items:center; gap:11px; text-decoration:none; margin-right:auto}
+.brand svg{width:30px; height:30px; flex:none}
+.brand b{font-family:var(--serif); font-size:19px; font-weight:600; letter-spacing:-.02em}
+.brand span{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:-2px}
+.nav-links{display:flex; gap:4px}
+.nav-links a{
+  text-decoration:none; font-size:14px; font-weight:500; color:var(--ink-soft);
+  padding:8px 12px; border-radius:999px; transition:color .2s, background .2s;
+}
+.nav-links a:hover{color:var(--ink); background:var(--surface-2)}
+.nav-links a.active{color:var(--accent); background:var(--accent-soft)}
+.icon-btn{
+  width:38px; height:38px; display:grid; place-items:center; border:1px solid var(--line);
+  background:transparent; border-radius:999px; cursor:pointer; transition:border-color .2s, transform .2s;
+}
+.icon-btn:hover{border-color:var(--line-strong); transform:translateY(-1px)}
+.icon-btn svg{width:17px; height:17px}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px; cursor:pointer;
+  font-weight:600; font-size:14.5px; letter-spacing:-.01em; text-decoration:none;
+  padding:12px 22px; border-radius:999px; border:1px solid transparent; transition:transform .2s, box-shadow .2s, background .2s, border-color .2s;
+}
+.btn-primary{background:var(--accent); color:var(--on-accent); box-shadow:0 10px 26px -14px var(--accent)}
+.btn-primary:hover{transform:translateY(-2px); box-shadow:0 16px 34px -14px var(--accent)}
+.btn-ghost{border-color:var(--line-strong); background:transparent}
+.btn-ghost:hover{background:var(--surface-2); transform:translateY(-2px)}
+.burger{display:none}
+@media (max-width:940px){
+  .nav-links{
+    position:fixed; inset:70px 0 auto 0; flex-direction:column; gap:2px; padding:16px var(--pad) 26px;
+    background:var(--ground); border-bottom:1px solid var(--line); transform:translateY(-12px);
+    opacity:0; pointer-events:none; transition:.25s ease;
+  }
+  .nav-links.open{transform:none; opacity:1; pointer-events:auto}
+  .nav-links a{padding:12px 14px; font-size:16px}
+  .burger{display:grid}
+  .nav .btn-primary{display:none}
+}
+
+/* ---------- hero ---------- */
+.hero{position:relative; padding:clamp(34px,6vw,76px) 0 clamp(40px,6vw,80px)}
+.hero-grid{display:grid; grid-template-columns:1.02fr .98fr; gap:clamp(24px,4vw,56px); align-items:center}
+.hero h1{font-size:clamp(42px,6.4vw,80px)}
+.hero h1 em{font-style:italic; color:var(--gold)}
+.hero .lede{margin-top:22px}
+.hero-cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:30px}
+.hero-meta{display:flex; flex-wrap:wrap; gap:26px; margin-top:38px; padding-top:26px; border-top:1px solid var(--line)}
+.hero-meta div{display:flex; flex-direction:column}
+.hero-meta b{font-family:var(--serif); font-size:26px; font-weight:600; letter-spacing:-.02em}
+.hero-meta small{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-top:4px}
+.stage{
+  position:relative; aspect-ratio:1/1; min-height:340px; border-radius:var(--r-l);
+  background:
+    radial-gradient(110% 80% at 50% 26%, rgba(35,140,124,.30), transparent 60%),
+    linear-gradient(165deg, #0F2523 0%, #071211 100%);
+  border:1px solid rgba(120,160,152,.22); overflow:hidden; box-shadow:var(--shadow);
+}
+.stage canvas{display:block; width:100%; height:100%; cursor:grab; touch-action:pan-y}
+.stage canvas:active{cursor:grabbing}
+.stage-tag{
+  position:absolute; display:flex; align-items:center; gap:8px; padding:8px 13px; border-radius:999px;
+  background:rgba(10,26,24,.55); color:#E7EFEC; border:1px solid rgba(150,200,190,.24);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  box-shadow:var(--shadow); white-space:nowrap;
+}
+.stage-tag i{width:6px; height:6px; border-radius:50%; background:#5FD6C1; box-shadow:0 0 0 4px rgba(95,214,193,.18); font-style:normal}
+.tag-a{top:20px; left:20px; animation:float 6s ease-in-out infinite}
+.tag-b{bottom:66px; right:20px; animation:float 7.5s ease-in-out .8s infinite}
+.tag-c{top:44%; left:16px; animation:float 8.5s ease-in-out .4s infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.stage-hint{
+  position:absolute; bottom:18px; left:50%; transform:translateX(-50%); font-family:var(--mono);
+  font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:rgba(190,214,208,.7); display:flex; gap:8px; align-items:center;
+}
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .stage{order:-1; aspect-ratio:4/3; min-height:280px}
+}
+
+/* ---------- marquee ---------- */
+.strip{border-block:1px solid var(--line); background:var(--surface-2); overflow:hidden; padding:14px 0}
+.marquee{display:flex; gap:52px; width:max-content; animation:slide 34s linear infinite}
+.marquee span{font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:52px}
+.marquee span::after{content:"◆"; color:var(--gold); font-size:8px}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- sections ---------- */
+section{padding:clamp(56px,8vw,110px) 0}
+.sec-head{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.85fr); gap:clamp(20px,4vw,60px); align-items:end; margin-bottom:clamp(32px,4vw,54px)}
+.sec-head h2{font-size:clamp(30px,4.2vw,52px)}
+@media (max-width:800px){.sec-head{grid-template-columns:1fr}}
+
+/* counters */
+.counters{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--r-m); overflow:hidden}
+.counters div{background:var(--ground); padding:26px 22px}
+.counters b{display:block; font-family:var(--serif); font-size:clamp(32px,4vw,46px); font-weight:600; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.counters small{font-family:var(--mono); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted)}
+@media (max-width:760px){.counters{grid-template-columns:repeat(2,1fr)}}
+
+/* carousel */
+.carousel{position:relative}
+.track{display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; padding:6px 2px 24px; scrollbar-width:none; cursor:grab}
+.track::-webkit-scrollbar{display:none}
+.track.dragging{cursor:grabbing; scroll-snap-type:none}
+.card{
+  scroll-snap-align:start; flex:0 0 clamp(258px,30%,340px); background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r-l); padding:26px; display:flex; flex-direction:column; gap:14px;
+  transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s, border-color .35s; transform-style:preserve-3d;
+}
+.card:hover{box-shadow:var(--shadow-lift); border-color:var(--line-strong)}
+.card .ico{width:44px; height:44px; border-radius:12px; background:var(--accent-soft); display:grid; place-items:center; color:var(--accent)}
+.card .ico svg{width:22px; height:22px}
+.card h3{font-size:23px}
+.card p{color:var(--muted); font-size:14.5px; line-height:1.6}
+.card .specs{margin-top:auto; padding-top:16px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:12px}
+.card .price{font-family:var(--mono); font-size:13px; color:var(--ink)}
+.card .price s{color:var(--muted); margin-right:6px}
+.chip{font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; padding:5px 9px; border-radius:999px; background:var(--gold-soft); color:var(--gold); white-space:nowrap}
+.car-nav{display:flex; align-items:center; gap:10px; margin-top:6px}
+.dots{display:flex; gap:7px; margin-left:auto}
+.dots button{width:7px; height:7px; padding:0; border-radius:50%; border:0; background:var(--line-strong); cursor:pointer; transition:.25s}
+.dots button.on{width:26px; border-radius:99px; background:var(--accent)}
+
+/* before / after */
+.ba-grid{display:grid; grid-template-columns:1fr .8fr; gap:clamp(24px,4vw,54px); align-items:center}
+@media (max-width:880px){.ba-grid{grid-template-columns:1fr}}
+.ba{
+  position:relative; border-radius:var(--r-l); overflow:hidden; border:1px solid var(--line);
+  aspect-ratio:16/10; user-select:none; box-shadow:var(--shadow); touch-action:pan-y; background:var(--surface-2);
+}
+.ba svg{position:absolute; inset:0; width:100%; height:100%; display:block}
+.ba .after{-webkit-clip-path:inset(0 0 0 50%); clip-path:inset(0 0 0 50%)}
+.ba-handle{position:absolute; top:0; bottom:0; left:50%; width:2px; background:var(--gold); cursor:ew-resize; z-index:3}
+.ba-handle::after{
+  content:"⇆"; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:42px; height:42px; border-radius:50%; background:var(--gold); color:#1a1204; display:grid; place-items:center;
+  font-size:17px; box-shadow:0 8px 24px -8px rgba(0,0,0,.5);
+}
+.ba-lbl{position:absolute; bottom:14px; font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; padding:6px 11px; border-radius:999px; background:rgba(8,18,17,.62); color:#F6F4EF; z-index:2}
+.ba-lbl.l{left:14px} .ba-lbl.r{right:14px}
+.ba-list{display:flex; flex-direction:column; gap:2px; margin-top:26px}
+.ba-list li{display:flex; gap:14px; padding:13px 0; border-top:1px solid var(--line); font-size:14.5px; color:var(--ink-soft); align-items:baseline}
+.ba-list li b{font-family:var(--mono); font-size:11px; color:var(--gold); letter-spacing:.08em; flex:none}
+ul{list-style:none; padding:0; margin:0}
+
+/* tech grid */
+.tech{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--r-l); overflow:hidden}
+.tech article{background:var(--ground); padding:30px 26px; display:flex; flex-direction:column; gap:11px; transition:background .3s}
+.tech article:hover{background:var(--surface)}
+.tech svg{width:26px; height:26px; color:var(--accent)}
+.tech h3{font-size:20px}
+.tech p{color:var(--muted); font-size:14px}
+.tech .num{font-family:var(--mono); font-size:10.5px; color:var(--muted); letter-spacing:.14em}
+@media (max-width:860px){.tech{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.tech{grid-template-columns:1fr}}
+
+/* team */
+.team{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
+@media (max-width:860px){.team{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.team{grid-template-columns:1fr}}
+.doc{border:1px solid var(--line); border-radius:var(--r-l); overflow:hidden; background:var(--surface); transition:transform .35s, box-shadow .35s}
+.doc:hover{transform:translateY(-5px); box-shadow:var(--shadow-lift)}
+.doc figure{margin:0; aspect-ratio:4/3; background:var(--surface-2)}
+.doc figure svg{width:100%; height:100%; display:block}
+.doc .info{padding:20px 22px 24px}
+.doc h3{font-size:21px}
+.doc .role{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-top:6px}
+.doc p{color:var(--muted); font-size:13.5px; margin-top:10px}
+.doc .col{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:14px; padding-top:12px; border-top:1px solid var(--line)}
+
+/* testimonials */
+.quotes{position:relative; min-height:250px}
+.quote{
+  position:absolute; inset:0; opacity:0; transform:translateY(14px); transition:opacity .6s, transform .6s;
+  display:flex; flex-direction:column; gap:22px; pointer-events:none;
+}
+.quote.on{opacity:1; transform:none; position:relative; pointer-events:auto}
+.quote blockquote{margin:0; font-family:var(--serif); font-size:clamp(21px,2.7vw,33px); line-height:1.34; letter-spacing:-.015em; max-width:24ch}
+.quote blockquote::before{content:"“"; color:var(--gold)}
+.quote blockquote::after{content:"”"; color:var(--gold)}
+.quote .who{display:flex; align-items:center; gap:14px}
+.quote .who svg{width:46px; height:46px; border-radius:50%; flex:none}
+.quote .who b{font-size:15px; display:block}
+.quote .who small{color:var(--muted); font-size:12.5px; font-family:var(--mono)}
+.stars{color:var(--gold); letter-spacing:2px; font-size:13px}
+
+/* pricing */
+.plans{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:start}
+@media (max-width:880px){.plans{grid-template-columns:1fr}}
+.plan{border:1px solid var(--line); border-radius:var(--r-l); padding:28px; background:var(--surface); display:flex; flex-direction:column; gap:16px}
+.plan.feat{border-color:var(--accent); box-shadow:var(--shadow-lift); position:relative}
+.plan.feat::before{
+  content:"Más solicitado"; position:absolute; top:-11px; left:28px; font-family:var(--mono); font-size:10px;
+  letter-spacing:.14em; text-transform:uppercase; background:var(--accent); color:var(--on-accent); padding:4px 11px; border-radius:999px;
+}
+.plan h3{font-size:22px}
+.plan .amount{font-family:var(--serif); font-size:44px; font-weight:600; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.plan .amount small{font-family:var(--mono); font-size:12px; font-weight:400; color:var(--muted); letter-spacing:0}
+.plan ul{display:flex; flex-direction:column; gap:10px; font-size:14px; color:var(--ink-soft)}
+.plan li{display:flex; gap:10px; align-items:flex-start}
+.plan li svg{width:15px; height:15px; color:var(--accent); flex:none; margin-top:4px}
+
+/* faq */
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  cursor:pointer; list-style:none; padding:22px 44px 22px 0; position:relative;
+  font-family:var(--serif); font-size:clamp(18px,2vw,23px); transition:color .2s;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--accent)}
+.faq summary::after{
+  content:"+"; position:absolute; right:6px; top:50%; transform:translateY(-50%); font-family:var(--sans);
+  font-size:22px; color:var(--accent); transition:transform .3s;
+}
+.faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq .ans{padding:0 clamp(0px,8vw,90px) 24px 0; color:var(--muted); font-size:15px}
+
+/* booking */
+.booking{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-l); padding:clamp(24px,4vw,44px); box-shadow:var(--shadow)}
+.steps{display:flex; gap:10px; margin-bottom:28px; align-items:center; flex-wrap:wrap}
+.step{display:flex; align-items:center; gap:9px; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.step i{width:24px; height:24px; border-radius:50%; border:1px solid var(--line-strong); display:grid; place-items:center; font-style:normal; font-size:11px; transition:.3s}
+.step.on{color:var(--ink)} .step.on i{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+.step.done i{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+.step-sep{flex:1; height:1px; background:var(--line); min-width:14px}
+.panel{display:none; flex-direction:column; gap:18px}
+.panel.on{display:flex; animation:fade .4s ease}
+@keyframes fade{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:none}}
+.opts{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px}
+.opt{border:1px solid var(--line); border-radius:var(--r-m); padding:16px; cursor:pointer; transition:.25s; background:transparent; text-align:left}
+.opt:hover{border-color:var(--line-strong); transform:translateY(-2px)}
+.opt.sel{border-color:var(--accent); background:var(--accent-soft)}
+.opt b{display:block; font-size:15px}
+.opt small{color:var(--muted); font-family:var(--mono); font-size:11px}
+.slots{display:grid; grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); gap:10px}
+.slot{border:1px solid var(--line); border-radius:999px; padding:10px; background:transparent; cursor:pointer; font-family:var(--mono); font-size:13px; transition:.2s}
+.slot:hover:not(:disabled){border-color:var(--accent); color:var(--accent)}
+.slot.sel{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+.slot:disabled{opacity:.35; cursor:not-allowed; text-decoration:line-through}
+.field{display:flex; flex-direction:column; gap:7px}
+.field label{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.field input{background:var(--ground); border:1px solid var(--line); border-radius:var(--r-m); padding:13px 15px; transition:border-color .2s}
+.field input:focus{border-color:var(--accent); outline:none}
+.two{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+@media (max-width:600px){.two{grid-template-columns:1fr}}
+.form-foot{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:6px}
+.summary{background:var(--ground); border:1px dashed var(--line-strong); border-radius:var(--r-m); padding:16px 18px; font-family:var(--mono); font-size:12.5px; color:var(--muted); display:flex; flex-wrap:wrap; gap:6px 22px}
+.summary b{color:var(--ink); font-weight:500}
+.done{text-align:center; padding:22px 0}
+.done .tick{width:62px; height:62px; border-radius:50%; background:var(--accent-soft); color:var(--accent); display:grid; place-items:center; margin:0 auto 18px}
+.done .tick svg{width:28px; height:28px}
+.err{color:#C0392B; font-size:12.5px; font-family:var(--mono)}
+:root[data-theme="dark"] .err{color:#FF9B8E}
+
+/* footer */
+footer{border-top:1px solid var(--line); background:var(--surface-2); padding-top:clamp(46px,6vw,72px)}
+.f-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1.1fr; gap:36px}
+@media (max-width:900px){.f-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.f-grid{grid-template-columns:1fr}}
+footer h4{font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; font-weight:500}
+footer ul{display:flex; flex-direction:column; gap:9px; font-size:14.5px; color:var(--ink-soft)}
+footer a{text-decoration:none; transition:color .2s}
+footer a:hover{color:var(--accent)}
+.hours{display:flex; justify-content:space-between; font-size:14px; color:var(--ink-soft); gap:16px}
+.hours span:last-child{font-family:var(--mono); font-size:12.5px; color:var(--muted)}
+.f-bot{margin-top:46px; padding:20px 0 30px; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size:12.5px; color:var(--muted)}
+
+/* floating cta */
+.fab{
+  position:fixed; right:20px; bottom:20px; z-index:45; display:flex; align-items:center; gap:10px;
+  background:var(--accent); color:var(--on-accent); padding:14px 20px; border-radius:999px; text-decoration:none;
+  font-weight:600; font-size:14.5px; box-shadow:0 18px 40px -16px var(--accent); transform:translateY(90px);
+  transition:transform .4s cubic-bezier(.2,.8,.3,1), box-shadow .3s;
+}
+.fab.show{transform:none}
+.fab:hover{box-shadow:0 22px 50px -16px var(--accent)}
+.fab svg{width:18px; height:18px}
+
+/* modo grabación */
+.rec-dot{position:relative}
+.rec-dot::after{content:""; position:absolute; top:7px; right:7px; width:6px; height:6px; border-radius:50%; background:var(--gold)}
+body.rec header.nav, body.rec .progress, body.rec .fab{display:none !important}
+body.rec .rv{transition-duration:1.5s}
+body.rec .marquee{animation-duration:78s}
+body.rec .tag-a{animation-duration:13s} body.rec .tag-b{animation-duration:16s} body.rec .tag-c{animation-duration:18s}
+body.rec .card{transition-duration:.75s}
+body.rec .quote{transition:opacity 1.2s ease, transform 1.2s ease}
+body.rec .panel.on{animation-duration:.9s}
+body.rec.nocursor, body.rec.nocursor *{cursor:none !important}
+.hud{
+  position:fixed; left:18px; bottom:18px; z-index:70; pointer-events:none;
+  font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  background:rgba(9,20,19,.86); color:#DDE9E5; border:1px solid rgba(150,200,190,.22);
+  padding:9px 14px; border-radius:999px; display:flex; gap:14px; align-items:center;
+  opacity:0; transition:opacity .45s ease;
+}
+.hud.show{opacity:1}
+.hud b{color:#E0B463; font-weight:500}
+.hud i{width:7px; height:7px; border-radius:50%; background:#E05A4F; font-style:normal; animation:blink 1.6s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* reveal */
+.rv{transition:opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1)}
+.rv.pre{opacity:0; transform:translateY(26px)}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important}
+  .rv.pre{opacity:1; transform:none}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 4.6c3.1-2 7.4-1.6 9.6 1.2 2.4 3.1 1.7 7.7.6 11.6-.8 2.9-1.6 6-2.5 8.4-.7 1.9-3 2-3.6.1l-1.6-5c-.7-2.2-3.9-2.2-4.6 0l-1.6 5c-.6 1.9-2.9 1.8-3.6-.1-.9-2.4-1.7-5.5-2.5-8.4C5.1 13.5 4.4 8.9 6.8 5.8 9 3 13.3 2.6 16 4.6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M11 9.5c1.6-1 3.4-1.1 5-.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+      </svg>
+      <span style="display:block">
+        <b>Dental Áurea</b>
+        <span>Odontología de precisión</span>
+      </span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#tratamientos">Tratamientos</a>
+      <a href="#casos">Casos</a>
+      <a href="#tecnologia">Tecnología</a>
+      <a href="#equipo">Equipo</a>
+      <a href="#precios">Precios</a>
+      <a href="#cita">Cita</a>
+    </nav>
+    <button class="icon-btn rec-dot" id="recBtn" aria-label="Modo grabación" title="Modo grabación (G)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+    </button>
+    <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" id="themeIcon">
+        <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+      </svg>
+    </button>
+    <button class="icon-btn burger" id="burger" aria-label="Menú" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="btn btn-primary" href="#cita">Pedir cita</a>
+  </div>
+</header>
+
+<div class="hud" id="hud" hidden></div>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Clínica dental · Valencia</p>
+      <h1>Cada sonrisa se diseña <em>antes</em> de tocarla.</h1>
+      <p class="lede">Escaneamos, simulamos y validamos contigo el resultado en 3D. Solo cuando la sonrisa te convence en pantalla, la llevamos a tu boca. Sin sorpresas, sin impresiones de silicona, sin prisas.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#cita">Reservar primera visita gratuita</a>
+        <a class="btn btn-ghost" href="#casos">Ver casos reales</a>
+      </div>
+      <div class="hero-meta">
+        <div><b>4,9/5</b><small>312 reseñas</small></div>
+        <div><b>18</b><small>años en Ruzafa</small></div>
+        <div><b>0 %</b><small>TAE hasta 24 meses</small></div>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <canvas id="tooth" aria-label="Modelo 3D interactivo de un molar escaneado"></canvas>
+      <div class="stage-tag tag-a"><i></i> Escáner iTero · 0,02 mm</div>
+      <div class="stage-tag tag-b">Molar 3.6 · corona e.max</div>
+      <div class="stage-tag tag-c">CBCT 3D</div>
+      <div class="stage-hint">Arrastra para girar</div>
+    </div>
+  </div>
+</section>
+
+<div class="strip" aria-hidden="true">
+  <div class="marquee" id="marquee"></div>
+</div>
+
+<section id="cifras">
+  <div class="wrap">
+    <div class="counters rv" id="counters">
+      <div><b data-to="18" data-suffix="">0</b><small>Años de clínica</small></div>
+      <div><b data-to="9400" data-suffix="+">0</b><small>Pacientes tratados</small></div>
+      <div><b data-to="2150" data-suffix="">0</b><small>Implantes colocados</small></div>
+      <div><b data-to="98" data-suffix="%">0</b><small>Supervivencia a 10 años</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="tratamientos">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="eyebrow">Tratamientos</p>
+        <h2>Seis especialidades, un mismo protocolo digital.</h2>
+      </div>
+      <p class="lede">Todo empieza igual: escaneo intraoral, TAC 3D y plan de tratamiento por escrito con presupuesto cerrado. Lo que cambia es lo que hacemos después.</p>
+    </div>
+
+    <div class="carousel">
+      <div class="track" id="track"></div>
+      <div class="car-nav">
+        <button class="icon-btn" id="prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="icon-btn" id="next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+        <div class="dots" id="dots"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="casos">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="eyebrow">Caso 214 · Rehabilitación estética</p>
+        <h2>Ocho carillas y una encía que nadie había mirado.</h2>
+      </div>
+      <p class="lede">Mujer de 41 años, desgaste incisal por bruxismo y sonrisa gingival de 4 mm. Cuatro citas, tres semanas. Desliza para comparar el escaneo inicial con el resultado a los 6 meses.</p>
+    </div>
+    <div class="ba-grid">
+      <div class="ba rv" id="ba">
+        <svg id="smileBefore" viewBox="0 0 640 400" role="img" aria-label="Sonrisa antes del tratamiento"></svg>
+        <svg id="smileAfter" class="after" viewBox="0 0 640 400" role="img" aria-label="Sonrisa después del tratamiento"></svg>
+        <span class="ba-lbl l">Antes</span>
+        <span class="ba-lbl r">6 meses después</span>
+        <div class="ba-handle" id="baHandle" role="slider" tabindex="0" aria-label="Comparador antes y después" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></div>
+      </div>
+      <div class="rv">
+        <h3 style="font-size:clamp(22px,2.4vw,30px)">Qué se hizo, en orden</h3>
+        <ul class="ba-list">
+          <li><b>01</b><span>Alargamiento coronario con láser diodo en 6 dientes anterosuperiores.</span></li>
+          <li><b>02</b><span>Blanqueamiento interno + ambulatorio, 12 días, peróxido de carbamida 16 %.</span></li>
+          <li><b>03</b><span>Encerado digital y mock-up probado en boca durante 7 días.</span></li>
+          <li><b>04</b><span>8 carillas de disilicato de litio, 0,4 mm, cementado adhesivo.</span></li>
+          <li><b>05</b><span>Férula de descarga rígida para proteger el trabajo por la noche.</span></li>
+        </ul>
+        <p class="lede" style="margin-top:22px; font-size:14px">Coste total 6.480 € · financiado en 24 cuotas de 270 € sin intereses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tecnologia">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="eyebrow">Tecnología</p>
+        <h2>La parte incómoda la hace una máquina.</h2>
+      </div>
+      <p class="lede">Nada de pastas que dan arcadas ni radiografías repetidas. El flujo entero es digital de principio a fin y tú ves cada paso en la pantalla.</p>
+    </div>
+    <div class="tech rv">
+      <article>
+        <span class="num">01</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V4h3M21 7V4h-3M3 17v3h3M21 17v3h-3"/><rect x="7" y="8" width="10" height="8" rx="2"/></svg>
+        <h3>Escáner intraoral iTero 5D</h3>
+        <p>Impresión digital de las dos arcadas en 90 segundos, precisión de 20 micras. Detecta caries interproximales sin radiación.</p>
+      </article>
+      <article>
+        <span class="num">02</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18" opacity=".5"/><circle cx="12" cy="12" r="3.4"/></svg>
+        <h3>TAC 3D de haz cónico</h3>
+        <p>Volumetría ósea real antes de cada implante, con un 80 % menos de dosis que un TAC médico convencional.</p>
+      </article>
+      <article>
+        <span class="num">03</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 4v5h5M8 13h8M8 17h5"/></svg>
+        <h3>Cirugía guiada estática</h3>
+        <p>Planificamos la posición del implante en software y fabricamos una férula quirúrgica. Desviación media: 0,4 mm.</p>
+      </article>
+      <article>
+        <span class="num">04</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10h4M7 14h7"/><circle cx="17" cy="10" r="1.6"/></svg>
+        <h3>Fresadora CAD/CAM propia</h3>
+        <p>Coronas y carillas fresadas en el laboratorio de la planta baja. Provisional el mismo día, definitiva en 72 horas.</p>
+      </article>
+      <article>
+        <span class="num">05</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6M12 15v6M5 12h14"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 6.5 8 8M17.5 6.5 16 8M6.5 17.5 8 16M17.5 17.5 16 16" opacity=".55"/></svg>
+        <h3>Láser de diodo 980 nm</h3>
+        <p>Cirugía de encía sin bisturí ni puntos. Menos inflamación y alta el mismo día en el 90 % de los casos.</p>
+      </article>
+      <article>
+        <span class="num">06</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.6-7-10a7 7 0 0 1 14 0c0 5.4-7 10-7 10Z"/><path d="M9.5 11.5 11 13l3.5-3.5"/></svg>
+        <h3>Sedación consciente</h3>
+        <p>Óxido nitroso para pacientes con fobia dental. Sales por tu propio pie y puedes conducir a los 15 minutos.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="equipo">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="eyebrow">Equipo</p>
+        <h2>Tres manos, ninguna rotación de personal.</h2>
+      </div>
+      <p class="lede">Te atiende siempre la misma persona, de la primera visita a la revisión anual. Es la única forma de que alguien recuerde tu boca sin abrir la ficha.</p>
+    </div>
+    <div class="team rv" id="team"></div>
+  </div>
+</section>
+
+<section id="opiniones" style="background:var(--surface-2); border-block:1px solid var(--line)">
+  <div class="wrap">
+    <p class="eyebrow">Opiniones verificadas</p>
+    <div class="quotes" id="quotes"></div>
+    <div class="car-nav" style="margin-top:26px">
+      <button class="icon-btn" id="qPrev" aria-label="Opinión anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="icon-btn" id="qNext" aria-label="Opinión siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="dots" id="qDots"></div>
+    </div>
+  </div>
+</section>
+
+<section id="precios">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="eyebrow">Precios</p>
+        <h2>Lo que cuesta, escrito antes de empezar.</h2>
+      </div>
+      <p class="lede">Presupuesto cerrado y firmado en la segunda visita. Si durante el tratamiento aparece algo que no estaba previsto, lo asumimos nosotros.</p>
+    </div>
+    <div class="plans rv">
+      <div class="plan">
+        <h3>Revisión y prevención</h3>
+        <p class="amount">0 €<small> primera visita</small></p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Exploración, escaneo 3D y ortopantomografía</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Informe con fotos y plan por escrito</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Higiene profesional: 55 €</li>
+        </ul>
+        <a class="btn btn-ghost" href="#cita">Reservar</a>
+      </div>
+      <div class="plan feat">
+        <h3>Ortodoncia invisible</h3>
+        <p class="amount">128 €<small> /mes · 24 meses</small></p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Todos los alineadores del caso, sin límite</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Revisiones cada 8 semanas incluidas</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Retenedores fijo y removible al terminar</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Refinamientos incluidos durante 12 meses</li>
+        </ul>
+        <a class="btn btn-primary" href="#cita">Estudio gratuito</a>
+      </div>
+      <div class="plan">
+        <h3>Implante unitario</h3>
+        <p class="amount">1.150 €<small> corona incluida</small></p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Implante de titanio grado 4, garantía de por vida</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Cirugía guiada y corona de zirconio</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg>Revisiones y radiografías de control 5 años</li>
+        </ul>
+        <a class="btn btn-ghost" href="#cita">Valorar mi caso</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv" style="margin-bottom:20px">
+      <div><p class="eyebrow">Dudas frecuentes</p><h2>Lo que más nos preguntáis.</h2></div>
+    </div>
+    <div class="faq rv">
+      <details open>
+        <summary>¿La primera visita es realmente gratuita?</summary>
+        <div class="ans">Sí, incluye exploración, escaneo intraoral 3D, ortopantomografía y el informe con el plan de tratamiento. No hay letra pequeña ni obligación de continuar: si prefieres tratarte en otro sitio, te damos el informe y las imágenes en un USB.</div>
+      </details>
+      <details>
+        <summary>¿Duele ponerse un implante?</summary>
+        <div class="ans">La cirugía se hace con anestesia local y no se siente nada. El postoperatorio habitual es una molestia leve durante 48 horas que se controla con ibuprofeno. Con cirugía guiada no hacemos incisiones grandes, así que el 70 % de los pacientes no necesita ni puntos.</div>
+      </details>
+      <details>
+        <summary>¿Cuánto tarda la ortodoncia invisible?</summary>
+        <div class="ans">Un caso de apiñamiento leve se resuelve en 6-9 meses. Casos complejos con mordida cruzada o extracciones se van a 18-24 meses. En el estudio inicial verás la simulación completa del movimiento y el número exacto de alineadores antes de decidir.</div>
+      </details>
+      <details>
+        <summary>¿Trabajáis con seguros dentales?</summary>
+        <div class="ans">Somos clínica concertada con Adeslas, Sanitas, DKV y Asisa. Si tu póliza cubre parte del tratamiento, lo tramitamos nosotros y solo pagas la diferencia. También financiamos hasta 24 meses al 0 % TAE con aprobación en el momento.</div>
+      </details>
+      <details>
+        <summary>¿Qué pasa si tengo miedo al dentista?</summary>
+        <div class="ans">Dilo al reservar y bloqueamos una cita más larga en la franja de menos ruido, sin sala de espera. Trabajamos con sedación consciente por óxido nitroso y, si lo prefieres, la primera visita puede ser solo hablar, sin sillón.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="cita">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><p class="eyebrow">Reserva</p><h2>Tu cita en tres pasos.</h2></div>
+      <p class="lede">Elige tratamiento y hora. Te confirmamos por WhatsApp en menos de 2 horas laborables.</p>
+    </div>
+    <div class="booking rv">
+      <div class="steps" id="steps">
+        <span class="step on" data-step="1"><i>1</i> Tratamiento</span><span class="step-sep"></span>
+        <span class="step" data-step="2"><i>2</i> Día y hora</span><span class="step-sep"></span>
+        <span class="step" data-step="3"><i>3</i> Tus datos</span>
+      </div>
+
+      <div class="panel on" data-panel="1">
+        <div class="opts" id="opts"></div>
+        <div class="form-foot"><button class="btn btn-primary" data-go="2">Continuar</button><span class="err" id="err1"></span></div>
+      </div>
+
+      <div class="panel" data-panel="2">
+        <div class="field">
+          <label>Elige día</label>
+          <div class="slots" id="days"></div>
+        </div>
+        <div class="field">
+          <label>Horas libres</label>
+          <div class="slots" id="hours"></div>
+        </div>
+        <div class="form-foot">
+          <button class="btn btn-ghost" data-go="1">Atrás</button>
+          <button class="btn btn-primary" data-go="3">Continuar</button>
+          <span class="err" id="err2"></span>
+        </div>
+      </div>
+
+      <div class="panel" data-panel="3">
+        <div class="summary" id="summary"></div>
+        <div class="two">
+          <div class="field"><label for="nombre">Nombre y apellidos</label><input id="nombre" type="text" placeholder="Marta Ferrer Ibáñez" autocomplete="name"></div>
+          <div class="field"><label for="tel">Teléfono</label><input id="tel" type="tel" placeholder="600 123 456" autocomplete="tel"></div>
+        </div>
+        <div class="field"><label for="mail">Correo electrónico</label><input id="mail" type="email" placeholder="marta@correo.com" autocomplete="email"></div>
+        <div class="form-foot">
+          <button class="btn btn-ghost" data-go="2">Atrás</button>
+          <button class="btn btn-primary" id="confirm">Confirmar cita</button>
+          <span class="err" id="err3"></span>
+        </div>
+      </div>
+
+      <div class="panel" data-panel="4">
+        <div class="done">
+          <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg></div>
+          <h3 style="font-size:28px">Cita solicitada</h3>
+          <p class="lede" id="doneText" style="margin:12px auto 0"></p>
+          <p style="font-family:var(--mono); font-size:11.5px; color:var(--muted); margin-top:18px">Demostración: no se envía ningún dato a ningún servidor.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a class="brand" href="#top" style="margin-bottom:16px">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M16 4.6c3.1-2 7.4-1.6 9.6 1.2 2.4 3.1 1.7 7.7.6 11.6-.8 2.9-1.6 6-2.5 8.4-.7 1.9-3 2-3.6.1l-1.6-5c-.7-2.2-3.9-2.2-4.6 0l-1.6 5c-.6 1.9-2.9 1.8-3.6-.1-.9-2.4-1.7-5.5-2.5-8.4C5.1 13.5 4.4 8.9 6.8 5.8 9 3 13.3 2.6 16 4.6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+          <span style="display:block"><b>Dental Áurea</b><span>Odontología de precisión</span></span>
+        </a>
+        <p class="lede" style="font-size:14px; max-width:34ch">Carrer de Sueca 48, bajo · 46006 València<br>A 3 minutos del metro Xàtiva.</p>
+      </div>
+      <div>
+        <h4>Tratamientos</h4>
+        <ul>
+          <li><a href="#tratamientos">Ortodoncia invisible</a></li>
+          <li><a href="#tratamientos">Implantes dentales</a></li>
+          <li><a href="#tratamientos">Carillas y estética</a></li>
+          <li><a href="#tratamientos">Periodoncia</a></li>
+          <li><a href="#tratamientos">Odontopediatría</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="tel:+34960000000">960 00 00 00</a></li>
+          <li><a href="mailto:hola@dentalaurea.es">hola@dentalaurea.es</a></li>
+          <li><a href="#cita">Urgencias 24 h</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Horario</h4>
+        <ul>
+          <li class="hours"><span>Lunes a jueves</span><span>09:00 – 20:30</span></li>
+          <li class="hours"><span>Viernes</span><span>09:00 – 15:00</span></li>
+          <li class="hours"><span>Sábado</span><span>Solo urgencias</span></li>
+          <li class="hours"><span>Domingo</span><span>Cerrado</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span>© 2026 Dental Áurea · Registro sanitario 46/00000 · Dir. sanitario Dr. A. Bertrán, col. 46001234</span>
+      <span>Sitio de demostración · datos y casos ficticios</span>
+    </div>
+  </div>
+</footer>
+
+<a class="fab" id="fab" href="#cita">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 15h3"/></svg>
+  Pedir cita
+</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+var $ = function(s,c){ return (c||document).querySelector(s); };
+var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------------- tema ---------------- */
+var root = document.documentElement, themeBtn = $("#themeBtn"), themeIcon = $("#themeIcon");
+var SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+var MOON = '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/>';
+function currentDark(){
+  var t = root.getAttribute("data-theme");
+  if (t) return t === "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function paintThemeIcon(){ themeIcon.innerHTML = currentDark() ? MOON : SUN; }
+try { var saved = localStorage.getItem("aurea-theme"); if (saved) root.setAttribute("data-theme", saved); } catch(e){}
+paintThemeIcon();
+themeBtn.addEventListener("click", function(){
+  var next = currentDark() ? "light" : "dark";
+  root.setAttribute("data-theme", next);
+  try { localStorage.setItem("aurea-theme", next); } catch(e){}
+  paintThemeIcon();
+  if (window.__aureaScene) window.__aureaScene.theme(next === "dark");
+});
+
+/* ---------------- navegación ---------------- */
+var nav = $("#nav"), progress = $("#progress"), fab = $("#fab");
+var links = $$("#navLinks a"), sections = links.map(function(a){ return $(a.getAttribute("href")); });
+function onScroll(){
+  var y = window.scrollY;
+  nav.classList.toggle("stuck", y > 8);
+  fab.classList.toggle("show", y > 700);
+  var h = document.body.scrollHeight - window.innerHeight;
+  progress.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
+  var active = -1;
+  for (var i = 0; i < sections.length; i++){
+    if (sections[i] && sections[i].getBoundingClientRect().top <= 140) active = i;
+  }
+  links.forEach(function(a, i){ a.classList.toggle("active", i === active); });
+}
+window.addEventListener("scroll", onScroll, {passive:true});
+onScroll();
+var burger = $("#burger"), navLinks = $("#navLinks");
+burger.addEventListener("click", function(){
+  var open = navLinks.classList.toggle("open");
+  burger.setAttribute("aria-expanded", open ? "true" : "false");
+});
+navLinks.addEventListener("click", function(e){ if (e.target.tagName === "A") navLinks.classList.remove("open"); });
+
+/* ---------------- marquesina ---------------- */
+var claims = ["Primera visita gratuita","Financiación 0 % TAE","Escáner 3D sin pastas","Urgencias en 24 h","Garantía de por vida en implantes","Clínica concertada Adeslas · Sanitas · DKV","Presupuesto cerrado por escrito"];
+var mq = $("#marquee");
+var run = claims.map(function(c){ return "<span>" + c + "</span>"; }).join("");
+mq.innerHTML = run + run;
+
+/* ---------------- revelado al hacer scroll ---------------- */
+var revealer = null;
+function armReveals(){
+  if (!("IntersectionObserver" in window) || reduce) return;
+  if (revealer) revealer.disconnect();
+  revealer = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){ en.target.classList.remove("pre"); revealer.unobserve(en.target); }
+    });
+  }, {threshold:0.12, rootMargin:"0px 0px -60px 0px"});
+  $$(".rv").forEach(function(el){
+    var r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight - 60){ el.classList.remove("pre"); return; }  /* ya visible: en reposo */
+    el.classList.add("pre");
+    revealer.observe(el);
+  });
+}
+armReveals();
+
+/* ---------------- contadores ---------------- */
+var countDur = 1400;
+function animateCount(el){
+  var to = parseFloat(el.dataset.to), suffix = el.dataset.suffix || "", t0 = performance.now(), dur = countDur;
+  if (reduce){ el.textContent = to.toLocaleString("es-ES") + suffix; return; }
+  (function tick(now){
+    var p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(to * e).toLocaleString("es-ES") + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+var counters = $("#counters"), countObs = null;
+function armCounters(){
+  if (countObs) countObs.disconnect();
+  if (!("IntersectionObserver" in window)){ $$("b", counters).forEach(animateCount); return; }
+  $$("b", counters).forEach(function(el){ el.textContent = "0"; });
+  countObs = new IntersectionObserver(function(en){
+    if (en[0].isIntersecting){ $$("b", counters).forEach(animateCount); countObs.disconnect(); }
+  }, {threshold:0.4});
+  countObs.observe(counters);
+}
+armCounters();
+
+/* ---------------- carrusel de tratamientos ---------------- */
+var ICONS = {
+  aligner:'<path d="M4 9c0-2.2 3.6-4 8-4s8 1.8 8 4c0 1.5-.7 4.4-1.6 6.6-.7 1.8-1.3 3.4-2.6 3.4-1.1 0-1.3-1.3-1.6-2.6-.3-1.2-1.1-2-2.2-2s-1.9.8-2.2 2c-.3 1.3-.5 2.6-1.6 2.6-1.3 0-1.9-1.6-2.6-3.4C4.7 13.4 4 10.5 4 9Z"/><path d="M7.5 9.4c2.8-1.2 6.2-1.2 9 0" opacity=".6"/>',
+  implant:'<path d="M12 3v7"/><path d="M9.2 6h5.6M9.6 8.4h4.8"/><path d="M12 10.5c2.4 0 3.6 1.4 3.6 3.2 0 2.3-1.2 4-1.9 5.6-.5 1.2-1.1 1.9-1.7 1.9s-1.2-.7-1.7-1.9c-.7-1.6-1.9-3.3-1.9-5.6 0-1.8 1.2-3.2 3.6-3.2Z"/>',
+  veneer:'<path d="M8 4h8a2 2 0 0 1 2 2v7c0 4-2.7 7-6 7s-6-3-6-7V6a2 2 0 0 1 2-2Z"/><path d="M10 7.5c1.3-.6 2.7-.6 4 0" opacity=".6"/>',
+  whitening:'<path d="M12 3.5 13.6 8l4.6.3-3.6 3 1.2 4.5L12 13.4 8.2 15.8l1.2-4.5-3.6-3L10.4 8 12 3.5Z"/><path d="M18.5 18.5 20 20M5.5 18.5 4 20" opacity=".6"/>',
+  gums:'<path d="M4 8.5c0-2 3.6-3.5 8-3.5s8 1.5 8 3.5c0 3-1.6 6-2.8 8-.7 1.2-1.6 1.5-2.2.4l-1.3-2.3c-.7-1.3-2.7-1.3-3.4 0L9 16.9c-.6 1.1-1.5.8-2.2-.4C5.6 14.5 4 11.5 4 8.5Z"/><path d="M4.6 10.6c4.8-1.7 9.9-1.7 14.8 0" opacity=".6"/>',
+  kids:'<circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M8.5 14.5c1 1.2 2.1 1.8 3.5 1.8s2.5-.6 3.5-1.8"/><circle cx="12" cy="12" r="9"/>'
+};
+var TREAT = [
+  {i:"aligner", t:"Ortodoncia invisible", d:"Alineadores transparentes que casi nadie nota. Simulación del resultado antes de empezar y refinamientos incluidos.", chip:"6–24 meses", price:"desde 128 €/mes", old:""},
+  {i:"implant", t:"Implantes dentales", d:"Cirugía guiada por férula sobre TAC 3D. Diente provisional el mismo día en la mayoría de casos unitarios.", chip:"3 citas", price:"1.150 € con corona", old:""},
+  {i:"veneer", t:"Carillas de porcelana", d:"Disilicato de litio de 0,4 mm, con desgaste mínimo. Pruebas en boca antes de cementar nada.", chip:"3 semanas", price:"690 €/diente", old:"850 €"},
+  {i:"whitening", t:"Blanqueamiento LED", d:"Sesión en clínica de 45 minutos más férulas para casa. Entre 4 y 7 tonos de mejora medidos con guía Vita.", chip:"45 min", price:"290 €", old:""},
+  {i:"gums", t:"Periodoncia y encías", d:"Tratamiento de la enfermedad periodontal con láser y control de mantenimiento cada 4 meses.", chip:"2 citas", price:"desde 240 €", old:""},
+  {i:"kids", t:"Odontopediatría", d:"Primera visita a los 3 años, sin sillón si hace falta. Selladores, flúor y ortodoncia interceptiva.", chip:"30 min", price:"revisión gratuita", old:""}
+];
+var track = $("#track");
+track.innerHTML = TREAT.map(function(t){
+  return '<article class="card">' +
+    '<span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + ICONS[t.i] + '</svg></span>' +
+    '<h3>' + t.t + '</h3><p>' + t.d + '</p>' +
+    '<div class="specs"><span class="price">' + (t.old ? "<s>" + t.old + "</s>" : "") + t.price + '</span><span class="chip">' + t.chip + '</span></div>' +
+  '</article>';
+}).join("");
+
+var cards = $$(".card", track), dots = $("#dots");
+dots.innerHTML = cards.map(function(_, i){ return '<button aria-label="Ir a la tarjeta ' + (i + 1) + '"></button>'; }).join("");
+var dotBtns = $$("button", dots);
+function cardStep(){ return cards[0].offsetWidth + 20; }
+function syncDots(){
+  var idx = Math.round(track.scrollLeft / cardStep());
+  dotBtns.forEach(function(b, i){ b.classList.toggle("on", i === idx); });
+}
+track.addEventListener("scroll", syncDots, {passive:true});
+syncDots();
+$("#next").addEventListener("click", function(){ track.scrollBy({left: cardStep(), behavior:"smooth"}); });
+$("#prev").addEventListener("click", function(){ track.scrollBy({left: -cardStep(), behavior:"smooth"}); });
+dotBtns.forEach(function(b, i){ b.addEventListener("click", function(){ track.scrollTo({left: i * cardStep(), behavior:"smooth"}); }); });
+
+/* arrastre con el ratón */
+var down = false, startX = 0, startScroll = 0, moved = 0;
+track.addEventListener("pointerdown", function(e){
+  if (e.pointerType === "touch") return;
+  down = true; moved = 0; startX = e.clientX; startScroll = track.scrollLeft;
+  track.classList.add("dragging"); track.setPointerCapture(e.pointerId);
+});
+track.addEventListener("pointermove", function(e){
+  if (!down) return;
+  var dx = e.clientX - startX; moved = Math.abs(dx);
+  track.scrollLeft = startScroll - dx;
+});
+function endDrag(){ if (!down) return; down = false; track.classList.remove("dragging"); syncDots(); }
+track.addEventListener("pointerup", endDrag);
+track.addEventListener("pointercancel", endDrag);
+
+/* inclinación 3D de las tarjetas */
+if (!reduce){
+  cards.forEach(function(card){
+    card.addEventListener("pointermove", function(e){
+      if (down) return;
+      var r = card.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = "perspective(900px) rotateY(" + (px * 9) + "deg) rotateX(" + (-py * 9) + "deg) translateY(-6px)";
+    });
+    card.addEventListener("pointerleave", function(){ card.style.transform = ""; });
+  });
+}
+
+/* ---------------- sonrisas antes / después ---------------- */
+var TW = [28,33,37,40,50,50,40,37,33,28];
+var TH = [52,62,80,72,96,96,72,80,62,52];
+function smile(svg, after){
+  var id = after ? "A" : "B";
+  var gum = after ? "#C4787F" : "#A24C57";
+  var top = after ? "#FFFFFF" : "#E6D6A8";
+  var bot = after ? "#E4EBE8" : "#C0A971";
+  var mouth = "M78 200 Q320 56 562 200 Q320 352 78 200Z";
+  var o = [];
+  o.push('<defs>' +
+    '<linearGradient id="en' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + top + '"/><stop offset="1" stop-color="' + bot + '"/></linearGradient>' +
+    '<clipPath id="cl' + id + '"><path d="' + mouth + '"/></clipPath>' +
+  '</defs>');
+  o.push('<rect width="640" height="400" fill="' + (after ? "#F3F0E9" : "#EFEADF") + '"/>');
+  o.push('<path d="M52 200 Q320 22 588 200 Q320 386 52 200Z" fill="' + (after ? "#C9868C" : "#B06770") + '"/>');
+  o.push('<path d="' + mouth + '" fill="#210E12"/>');
+  o.push('<g clip-path="url(#cl' + id + ')">');
+  o.push('<path d="M70 190 Q320 44 570 190" fill="none" stroke="' + gum + '" stroke-width="' + (after ? 46 : 74) + '" stroke-linecap="round"/>');
+  o.push('<path d="M70 322 Q320 430 570 322" fill="none" stroke="' + gum + '" stroke-width="70" stroke-linecap="round" opacity=".75"/>');
+  var span = 0, i;
+  for (i = 0; i < TW.length; i++) span += TW[i] + 5;
+  var x = 320 - span / 2;
+  for (i = 0; i < TW.length; i++){
+    var w = TW[i], h = TH[i] * (after ? 1 : 0.78);
+    var cx = x + w / 2, t = (cx - 320) / (span / 2);
+    var y = 118 + t * t * 46 + (after ? 0 : 12);
+    var rot = t * 13 + (after ? 0 : [0,-8,6,-3,5,-6,3,7,-5,2][i]);
+    var dx = after ? 0 : [0,3,-5,7,-4,5,-6,4,-3,0][i];
+    var fill = (!after && i === 2) ? "#AE9A6A" : "url(#en" + id + ")";
+    o.push('<g transform="translate(' + (cx + dx).toFixed(1) + ',' + y.toFixed(1) + ') rotate(' + rot.toFixed(1) + ')">' +
+      '<rect x="' + (-w / 2) + '" y="0" width="' + w + '" height="' + h.toFixed(1) + '" rx="' + (w * 0.26).toFixed(1) + '" fill="' + fill + '" stroke="rgba(70,52,26,.2)"/>' +
+      '<rect x="' + (-w / 2 + 4) + '" y="7" width="' + (w * 0.26).toFixed(1) + '" height="' + (h * 0.46).toFixed(1) + '" rx="4" fill="#FFFFFF" opacity="' + (after ? ".7" : ".28") + '"/>' +
+    '</g>');
+    x += w + 5;
+  }
+  var lw = [22,26,28,30,32,32,30,28,26,22];
+  var lx = 320 - (lw.reduce(function(a,b){return a+b;}, 0) + 45) / 2;
+  for (i = 0; i < lw.length; i++){
+    var w2 = lw[i], t2 = (lx + w2 / 2 - 320) / 190;
+    var y2 = 288 - t2 * t2 * 34;
+    o.push('<rect x="' + lx.toFixed(1) + '" y="' + y2.toFixed(1) + '" width="' + w2 + '" height="34" rx="8" fill="url(#en' + id + ')" opacity="' + (after ? ".9" : ".8") + '"/>');
+    lx += w2 + 5;
+  }
+  o.push('</g>');
+  o.push('<path d="M52 200 Q320 22 588 200" fill="none" stroke="#8B3E48" stroke-width="9" opacity=".9"/>');
+  o.push('<path d="M52 200 Q320 386 588 200" fill="none" stroke="#8B3E48" stroke-width="9" opacity=".9"/>');
+  svg.innerHTML = o.join("");
+}
+smile($("#smileBefore"), false);
+smile($("#smileAfter"), true);
+
+var ba = $("#ba"), handle = $("#baHandle"), afterLayer = $("#smileAfter");
+function setSplit(pct){
+  pct = Math.max(2, Math.min(98, pct));
+  var ins = "inset(0 0 0 " + pct + "%)";
+  afterLayer.style.clipPath = ins;
+  afterLayer.style.webkitClipPath = ins;
+  handle.style.left = pct + "%";
+  handle.setAttribute("aria-valuenow", Math.round(pct));
+}
+setSplit(50);
+var dragBA = false;
+function moveBA(e){
+  var r = ba.getBoundingClientRect();
+  setSplit(((e.clientX - r.left) / r.width) * 100);
+}
+handle.addEventListener("pointerdown", function(e){ dragBA = true; handle.setPointerCapture(e.pointerId); e.preventDefault(); });
+window.addEventListener("pointermove", function(e){ if (dragBA) moveBA(e); });
+window.addEventListener("pointerup", function(){ dragBA = false; });
+ba.addEventListener("click", function(e){ if (e.target !== handle) moveBA(e); });
+handle.addEventListener("keydown", function(e){
+  var cur = parseFloat(handle.style.left);
+  if (e.key === "ArrowLeft"){ setSplit(cur - 4); e.preventDefault(); }
+  if (e.key === "ArrowRight"){ setSplit(cur + 4); e.preventDefault(); }
+});
+
+/* ---------------- equipo y opiniones ---------------- */
+function avatar(seed, size){
+  var a = seed.h1, b = seed.h2;
+  return '<svg viewBox="0 0 120 120" role="img" aria-label="Retrato ilustrado">' +
+    '<defs><linearGradient id="g' + seed.id + '" x1="0" y1="0" x2="1" y2="1">' +
+    '<stop offset="0" stop-color="hsl(' + a + ',34%,72%)"/><stop offset="1" stop-color="hsl(' + b + ',38%,44%)"/></linearGradient></defs>' +
+    '<rect width="120" height="120" fill="url(#g' + seed.id + ')"/>' +
+    '<circle cx="60" cy="47" r="21" fill="rgba(255,255,255,.9)"/>' +
+    '<path d="M18 120c4-24 20-36 42-36s38 12 42 36Z" fill="rgba(255,255,255,.82)"/>' +
+    '<text x="60" y="' + (size === "s" ? 74 : 76) + '" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="20" fill="hsl(' + b + ',42%,30%)">' + seed.ini + '</text>' +
+  '</svg>';
+}
+var DOCS = [
+  {ini:"AB", id:"d1", h1:172, h2:186, n:"Dr. Álex Bertrán", r:"Director · Implantología", b:"Máster en Implantología por la UIC. Coloca implantes desde 2007 y dirige la parte quirúrgica de la clínica.", c:"Col. 46001234 · 2.150 implantes"},
+  {ini:"NS", id:"d2", h1:38, h2:26, n:"Dra. Nerea Solá", r:"Ortodoncia y estética", b:"Ortodoncista exclusiva. Más de 800 casos de alineadores y experta en diseño digital de sonrisa.", c:"Col. 46004521 · 812 casos"},
+  {ini:"MC", id:"d3", h1:198, h2:210, n:"Dra. Marta Cifuentes", r:"Periodoncia · Odontopediatría", b:"Especialista en encías y en el trato con niños y pacientes con fobia dental. Trabaja con óxido nitroso.", c:"Col. 46007790 · 14 años"}
+];
+$("#team").innerHTML = DOCS.map(function(d){
+  return '<article class="doc"><figure>' + avatar(d, "l") + '</figure><div class="info">' +
+    '<h3>' + d.n + '</h3><p class="role">' + d.r + '</p><p>' + d.b + '</p><p class="col">' + d.c + '</p></div></article>';
+}).join("");
+
+var VOICES = [
+  {ini:"CR", id:"q1", h1:172, h2:190, n:"Cristina R.", m:"Ortodoncia invisible · 14 meses", q:"Me enseñaron la simulación el primer día y el resultado final fue exactamente eso."},
+  {ini:"JM", id:"q2", h1:32, h2:20, n:"Jorge M.", m:"Dos implantes · 2024", q:"Llevaba seis años sin muelas por miedo. Salí de la cirugía andando y sin dolor."},
+  {ini:"LP", id:"q3", h1:200, h2:214, n:"Laura P.", m:"Carillas · caso 214", q:"Nadie nota que llevo carillas. Notan que me río más."},
+  {ini:"AV", id:"q4", h1:150, h2:164, n:"Andrés V.", m:"Revisión familiar", q:"Mi hijo de cinco años pide ir al dentista. Con eso lo digo todo."}
+];
+var quotes = $("#quotes");
+quotes.innerHTML = VOICES.map(function(v, i){
+  return '<figure class="quote' + (i === 0 ? " on" : "") + '">' +
+    '<div class="stars" aria-label="5 sobre 5">★★★★★</div>' +
+    '<blockquote>' + v.q + '</blockquote>' +
+    '<figcaption class="who">' + avatar(v, "s") + '<span><b>' + v.n + '</b><small>' + v.m + '</small></span></figcaption>' +
+  '</figure>';
+}).join("");
+var qEls = $$(".quote", quotes), qDots = $("#qDots"), qi = 0;
+qDots.innerHTML = VOICES.map(function(_, i){ return '<button aria-label="Opinión ' + (i + 1) + '"></button>'; }).join("");
+var qDotBtns = $$("button", qDots);
+function showQuote(n){
+  qi = (n + qEls.length) % qEls.length;
+  qEls.forEach(function(e, i){ e.classList.toggle("on", i === qi); });
+  qDotBtns.forEach(function(b, i){ b.classList.toggle("on", i === qi); });
+}
+showQuote(0);
+$("#qNext").addEventListener("click", function(){ showQuote(qi + 1); resetAuto(); });
+$("#qPrev").addEventListener("click", function(){ showQuote(qi - 1); resetAuto(); });
+qDotBtns.forEach(function(b, i){ b.addEventListener("click", function(){ showQuote(i); resetAuto(); }); });
+var auto = null, quoteMs = 6000;
+function resetAuto(){
+  if (reduce) return;
+  clearInterval(auto);
+  auto = setInterval(function(){ showQuote(qi + 1); }, quoteMs);
+}
+resetAuto();
+
+/* ---------------- reserva de cita ---------------- */
+var booking = {treat:null, day:null, hour:null};
+var OPTS = [
+  {t:"Revisión + escáner 3D", d:"30 min · gratuita"},
+  {t:"Ortodoncia invisible", d:"45 min · estudio"},
+  {t:"Implantes", d:"45 min · con TAC"},
+  {t:"Estética y carillas", d:"40 min"},
+  {t:"Limpieza / encías", d:"45 min"},
+  {t:"Urgencia (dolor)", d:"hoy mismo"}
+];
+$("#opts").innerHTML = OPTS.map(function(o, i){
+  return '<button class="opt" type="button" data-i="' + i + '"><b>' + o.t + '</b><small>' + o.d + '</small></button>';
+}).join("");
+$$(".opt").forEach(function(b){
+  b.addEventListener("click", function(){
+    $$(".opt").forEach(function(x){ x.classList.remove("sel"); });
+    b.classList.add("sel");
+    booking.treat = OPTS[b.dataset.i].t;
+    $("#err1").textContent = "";
+  });
+});
+
+var DIAS = ["dom","lun","mar","mié","jue","vie","sáb"];
+var MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var days = [], probe = new Date();
+while (days.length < 6){
+  probe.setDate(probe.getDate() + 1);
+  if (probe.getDay() !== 0) days.push(new Date(probe));
+}
+$("#days").innerHTML = days.map(function(d, i){
+  return '<button class="slot" type="button" data-i="' + i + '">' + DIAS[d.getDay()] + " " + d.getDate() + " " + MESES[d.getMonth()] + '</button>';
+}).join("");
+var HOURS = [["09:30",1],["10:15",0],["11:00",1],["12:30",1],["16:00",0],["17:15",1],["18:00",1],["19:30",1]];
+$("#hours").innerHTML = HOURS.map(function(h){
+  return '<button class="slot" type="button"' + (h[1] ? "" : " disabled") + '>' + h[0] + '</button>';
+}).join("");
+$$("#days .slot").forEach(function(b){
+  b.addEventListener("click", function(){
+    $$("#days .slot").forEach(function(x){ x.classList.remove("sel"); });
+    b.classList.add("sel");
+    booking.day = b.textContent;
+    $("#err2").textContent = "";
+  });
+});
+$$("#hours .slot").forEach(function(b){
+  b.addEventListener("click", function(){
+    if (b.disabled) return;
+    $$("#hours .slot").forEach(function(x){ x.classList.remove("sel"); });
+    b.classList.add("sel");
+    booking.hour = b.textContent;
+    $("#err2").textContent = "";
+  });
+});
+
+function goStep(n){
+  $$(".panel").forEach(function(p){ p.classList.toggle("on", p.dataset.panel === String(n)); });
+  $$(".step").forEach(function(s){
+    var v = parseInt(s.dataset.step, 10);
+    s.classList.toggle("on", v === n);
+    s.classList.toggle("done", v < n);
+  });
+  if (n === 3){
+    $("#summary").innerHTML = "<span>Tratamiento <b>" + booking.treat + "</b></span>" +
+      "<span>Día <b>" + booking.day + "</b></span><span>Hora <b>" + booking.hour + "</b></span>";
+  }
+  $(".booking").scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"center"});
+}
+$$("[data-go]").forEach(function(b){
+  b.addEventListener("click", function(){
+    var n = parseInt(b.dataset.go, 10);
+    if (n === 2 && !booking.treat){ $("#err1").textContent = "Elige un tratamiento para continuar."; return; }
+    if (n === 3 && (!booking.day || !booking.hour)){ $("#err2").textContent = "Falta el día o la hora."; return; }
+    goStep(n);
+  });
+});
+$("#confirm").addEventListener("click", function(){
+  var nom = $("#nombre").value.trim(), tel = $("#tel").value.replace(/\s/g, ""), mail = $("#mail").value.trim();
+  if (nom.length < 3){ $("#err3").textContent = "Escribe tu nombre completo."; return; }
+  if (!/^[+]?\d{9,13}$/.test(tel)){ $("#err3").textContent = "El teléfono necesita al menos 9 dígitos."; return; }
+  if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(mail)){ $("#err3").textContent = "Revisa el correo electrónico."; return; }
+  $("#err3").textContent = "";
+  $("#doneText").textContent = nom.split(" ")[0] + ", te esperamos el " + booking.day + " a las " + booking.hour +
+    " para " + booking.treat.toLowerCase() + ". Te confirmamos por WhatsApp en menos de 2 horas.";
+  $$(".step").forEach(function(s){ s.classList.remove("on"); s.classList.add("done"); });
+  $$(".panel").forEach(function(p){ p.classList.toggle("on", p.dataset.panel === "4"); });
+});
+
+/* ---------------- molar 3D ---------------- */
+(function(){
+  if (typeof THREE === "undefined") return;
+  var canvas = $("#tooth"), stage = $("#stage");
+  var renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+  camera.position.set(0, 0.2, 8.8);
+
+  var group = new THREE.Group();
+  group.scale.setScalar(0.92);
+  group.position.y = 0.55;
+  scene.add(group);
+
+  var enamel = new THREE.MeshPhysicalMaterial({color:0xEFE9DB, roughness:0.22, metalness:0.02, clearcoat:1, clearcoatRoughness:0.12, reflectivity:0.75});
+  var dentin = new THREE.MeshStandardMaterial({color:0xCDBB98, roughness:0.62, metalness:0.02});
+
+  var profile = [[0.06,0],[0.5,0.02],[0.82,0.16],[0.97,0.5],[1.0,0.92],[0.94,1.24],[0.8,1.5],[0.56,1.66],[0.3,1.74],[0,1.76]];
+  var pts = profile.map(function(p){ return new THREE.Vector2(p[0], p[1]); });
+  var crown = new THREE.Mesh(new THREE.LatheGeometry(pts, 72), enamel);
+  crown.position.y = -0.35;
+  group.add(crown);
+
+  var cusps = [[0.4,0.4],[-0.4,0.4],[0.4,-0.4],[-0.4,-0.4]];
+  cusps.forEach(function(c){
+    var b = new THREE.Mesh(new THREE.SphereGeometry(0.34, 28, 20), enamel);
+    b.position.set(c[0], 1.02, c[1]);
+    b.scale.set(1, 0.62, 1);
+    group.add(b);
+  });
+
+  [[0.42, 0.17], [-0.42, -0.17]].forEach(function(r){
+    var root = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.09, 1.5, 28), dentin);
+    root.position.set(r[0], -1.1, 0);
+    root.rotation.z = r[1];
+    group.add(root);
+  });
+
+  var ringMat = new THREE.MeshStandardMaterial({color:0xE0B463, roughness:0.2, metalness:1, emissive:0x3A2708});
+  var ringA = new THREE.Mesh(new THREE.TorusGeometry(2.05, 0.012, 12, 160), ringMat);
+  ringA.rotation.x = Math.PI / 2.1;
+  var ringB = new THREE.Mesh(new THREE.TorusGeometry(2.45, 0.008, 12, 160), ringMat);
+  ringB.rotation.set(Math.PI / 2.6, 0.4, 0);
+  scene.add(ringA, ringB);
+
+  var pGeo = new THREE.BufferGeometry(), pPos = [];
+  for (var i = 0; i < 420; i++){
+    var th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1), rr = 2.4 + Math.random() * 1.9;
+    pPos.push(rr * Math.sin(ph) * Math.cos(th), rr * Math.cos(ph) * 0.8, rr * Math.sin(ph) * Math.sin(th));
+  }
+  pGeo.setAttribute("position", new THREE.Float32BufferAttribute(pPos, 3));
+  var pMat = new THREE.PointsMaterial({size:0.03, color:0x5FD6C1, transparent:true, opacity:0.7});
+  var dust = new THREE.Points(pGeo, pMat);
+  scene.add(dust);
+
+  var hemi = new THREE.HemisphereLight(0xDCF2EC, 0x0A1918, 0.5);
+  var key = new THREE.DirectionalLight(0xFFF6E6, 1.05); key.position.set(3.2, 4.5, 4);
+  var teal = new THREE.PointLight(0x2FD8BE, 2.4, 24); teal.position.set(-4.2, 1.2, 2.2);
+  var gold = new THREE.PointLight(0xE0A94F, 1.9, 24); gold.position.set(3.6, -2.4, 1.8);
+  scene.add(hemi, key, teal, gold);
+
+  function applyTheme(dark){
+    /* el visor es siempre oscuro: solo variamos el matiz del polvo y el brillo */
+    hemi.intensity = dark ? 0.42 : 0.55;
+    teal.intensity = dark ? 2.7 : 2.2;
+    pMat.color.set(dark ? 0x7FE6D2 : 0x5FD6C1);
+    pMat.opacity = dark ? 0.85 : 0.7;
+  }
+  applyTheme(currentDark());
+  var slowF = 1;
+  window.__aureaScene = {theme: applyTheme, slow: function(on){ slowF = on ? 0.45 : 1; }};
+
+  function resize(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(stage);
+  else window.addEventListener("resize", resize);
+
+  var rotY = -0.5, rotX = -0.12, velY = 0, velX = 0, dragging = false, lastX = 0, lastY = 0, pointerX = 0, pointerY = 0;
+  canvas.addEventListener("pointerdown", function(e){
+    dragging = true; lastX = e.clientX; lastY = e.clientY; canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener("pointermove", function(e){
+    var r = stage.getBoundingClientRect();
+    pointerX = (e.clientX - r.left) / r.width - 0.5;
+    pointerY = (e.clientY - r.top) / r.height - 0.5;
+    if (!dragging) return;
+    velY = (e.clientX - lastX) * 0.006;
+    velX = (e.clientY - lastY) * 0.004;
+    rotY += velY; rotX += velX;
+    lastX = e.clientX; lastY = e.clientY;
+  });
+  ["pointerup","pointercancel","pointerleave"].forEach(function(ev){
+    canvas.addEventListener(ev, function(){ dragging = false; });
+  });
+
+  var scrollRot = 0;
+  window.addEventListener("scroll", function(){ scrollRot = window.scrollY * 0.0011; }, {passive:true});
+
+  var visible = true;
+  if ("IntersectionObserver" in window){
+    new IntersectionObserver(function(en){ visible = en[0].isIntersecting; }, {threshold:0.02}).observe(stage);
+  }
+
+  var t0 = performance.now();
+  (function loop(now){
+    requestAnimationFrame(loop);
+    if (!visible) return;
+    var t = (now - t0) / 1000;
+    if (!dragging){
+      velY *= 0.94; velX *= 0.9;
+      rotY += velY + (reduce ? 0 : 0.0032 * slowF);
+      rotX += velX;
+    }
+    rotX = Math.max(-0.75, Math.min(0.75, rotX));
+    group.rotation.y = rotY + scrollRot;
+    group.rotation.x = rotX + (reduce ? 0 : Math.sin(t * 0.6 * slowF) * 0.05);
+    group.position.y = reduce ? 0 : Math.sin(t * 0.8 * slowF) * 0.07;
+    ringA.rotation.z = t * 0.18 * slowF;
+    ringB.rotation.z = -t * 0.12 * slowF;
+    dust.rotation.y = -t * 0.05 * slowF;
+    camera.position.x += (pointerX * 0.85 - camera.position.x) * 0.05;
+    camera.position.y += (0.15 - pointerY * 0.6 - camera.position.y) * 0.05;
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+  })(t0);
+})();
+
+/* ---------------- modo grabación ---------------- */
+(function(){
+  var hud = $("#hud"), body = document.body;
+  var TOUR = ["#top","#tratamientos","#casos","#tecnologia","#equipo","#opiniones","#precios","#faq","#cita"];
+  var on = false, idle = null, hudTimer = null;
+  var tour = {run:false, i:0, phase:"hold", t0:0, from:0, to:0, dur:0, speed:1, raf:null};
+
+  function say(html, keep){
+    hud.hidden = false;
+    hud.innerHTML = html;
+    hud.classList.add("show");
+    clearTimeout(hudTimer);
+    if (!keep) hudTimer = setTimeout(function(){ hud.classList.remove("show"); }, 2600);
+  }
+  function hideHud(){ clearTimeout(hudTimer); hud.classList.remove("show"); }
+
+  function setMode(v){
+    on = v;
+    body.classList.toggle("rec", on);
+    countDur = on ? 2800 : 1400;
+    quoteMs = on ? 9000 : 6000;
+    resetAuto();
+    if (window.__aureaScene) window.__aureaScene.slow(on);
+    if (on){
+      document.documentElement.style.scrollBehavior = "auto";
+      window.scrollTo(0, 0);
+      tour.i = 0;
+      setTimeout(function(){ armReveals(); armCounters(); }, 60);
+      say('<i></i> Grabación · <b>espacio</b> recorrido · <b>← →</b> saltar · <b>↑ ↓</b> ritmo · <b>G</b> salir');
+      idleWatch();
+    } else {
+      stopTour();
+      document.documentElement.style.scrollBehavior = "";
+      body.classList.remove("nocursor");
+      window.removeEventListener("mousemove", onMove);
+      say("Modo grabación desactivado");
+    }
+  }
+
+  function onMove(){
+    body.classList.remove("nocursor");
+    clearTimeout(idle);
+    idle = setTimeout(function(){ if (on) body.classList.add("nocursor"); }, 2200);
+  }
+  function idleWatch(){ window.addEventListener("mousemove", onMove); onMove(); }
+
+  function maxScroll(){ return Math.max(0, document.body.scrollHeight - window.innerHeight); }
+  function stopAt(i){
+    var el = $(TOUR[i]);
+    if (!el) return 0;
+    return Math.min(el.getBoundingClientRect().top + window.scrollY - 26, maxScroll());
+  }
+  function ease(x){ return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+
+  function travelTo(i){
+    tour.i = Math.max(0, Math.min(TOUR.length - 1, i));
+    tour.from = window.scrollY;
+    tour.to = stopAt(tour.i);
+    var dist = Math.abs(tour.to - tour.from);
+    tour.dur = Math.max(900, Math.min(7000, (dist / (250 * tour.speed)) * 1000));
+    tour.phase = "move";
+    tour.t0 = performance.now();
+  }
+  function tick(now){
+    if (!tour.run) return;
+    tour.raf = requestAnimationFrame(tick);
+    var el = now - tour.t0;
+    if (tour.phase === "move"){
+      var p = Math.min(1, el / tour.dur);
+      window.scrollTo(0, tour.from + (tour.to - tour.from) * ease(p));
+      if (p === 1){ tour.phase = "hold"; tour.t0 = now; }
+    } else {
+      if (el > 2800 / tour.speed){
+        if (tour.i >= TOUR.length - 1){ stopTour(); say("Fin del recorrido"); return; }
+        travelTo(tour.i + 1);
+      }
+    }
+  }
+  function startTour(){
+    if (!on) setMode(true);
+    tour.run = true;
+    hideHud();
+    tour.phase = "hold";
+    tour.t0 = performance.now() - 2000;
+    cancelAnimationFrame(tour.raf);
+    tour.raf = requestAnimationFrame(tick);
+  }
+  function stopTour(){
+    tour.run = false;
+    cancelAnimationFrame(tour.raf);
+  }
+
+  $("#recBtn").addEventListener("click", function(){ setMode(!on); });
+
+  window.addEventListener("keydown", function(e){
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    var k = e.key.toLowerCase();
+    if (k === "g"){ setMode(!on); e.preventDefault(); return; }
+    if (!on) return;
+    if (k === "escape"){ setMode(false); return; }
+    if (k === " " || k === "spacebar"){
+      e.preventDefault();
+      if (tour.run){ stopTour(); say('<i></i> Recorrido en pausa'); }
+      else startTour();
+      return;
+    }
+    if (k === "arrowright"){ e.preventDefault(); startTour(); travelTo(tour.i + 1); return; }
+    if (k === "arrowleft"){ e.preventDefault(); startTour(); travelTo(tour.i - 1); return; }
+    if (k === "arrowup"){ e.preventDefault(); tour.speed = Math.min(2, tour.speed + 0.25); say("Ritmo <b>" + tour.speed.toFixed(2) + "×</b>"); return; }
+    if (k === "arrowdown"){ e.preventDefault(); tour.speed = Math.max(0.5, tour.speed - 0.25); say("Ritmo <b>" + tour.speed.toFixed(2) + "×</b>"); return; }
+  });
+
+  if (/grabacion|rec/.test(location.hash) || /grabacion|rec/.test(location.search)) setMode(true);
+})();
+})();
+</script>
+<!--ARTIFACT-END-->
+</body>
+</html>

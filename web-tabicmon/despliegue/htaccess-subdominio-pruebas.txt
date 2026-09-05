@@ -1,0 +1,35 @@
+# ------------------------------------------------------------------
+# Sitio de pruebas — se sube renombrado a  .htaccess
+# (con el punto delante; en el gestor de archivos hay que activar
+#  "mostrar archivos ocultos" para verlo después).
+#
+# NO subir este archivo al dominio definitivo: la primera regla
+# esconde la web de Google, que es justo lo que allí no quieres.
+# ------------------------------------------------------------------
+
+# 1. Fuera de los buscadores. robots.txt pide no rastrear; esta cabecera
+#    además impide indexar una URL que alguien enlace desde fuera.
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow, noarchive"
+</IfModule>
+
+# 2. Siempre por HTTPS. El candado da confianza al enseñar la demo.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+</IfModule>
+
+# 3. Comprimir. La página son unos 90 KB de HTML que bajan a menos de 20.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+</IfModule>
+
+# 4. Caché corta en la página, para que cada cambio que subas se vea ya.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html "access plus 5 minutes"
+</IfModule>
+
+# 5. El receptor del formulario no se sirve como texto ni se lista la carpeta.
+Options -Indexes

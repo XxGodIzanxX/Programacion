@@ -1,0 +1,3067 @@
+<!doctype html>
+<html lang="es">
+<head>
+<!--
+  ARCHIVO GENERADO — NO LO EDITES A MANO.
+  Sale de: node despliegue/construir-autocontenido.js
+  Edita los originales (datos/libros.js, estilos/, scripts/) y reconstruye.
+  Generado el 2026-09-05
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Ares Ediciones — Editorial digital</title>
+<meta name="description" content="Conversaciones existenciales con la I.A: la colección de Alan Gutiérrez en la que César, Cleopatra o Napoleón responden hoy. Sello digital Ares Ediciones. En Amazon.">
+<meta name="theme-color" content="#08070B">
+
+<!-- Redes sociales. Cuando tengas una imagen de marca (1200x630 px),
+     guárdala en imagenes/ y pon aquí su ruta o su URL completa. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ares Ediciones — Editorial digital">
+<meta property="og:description" content="Conversaciones con la I.A de César, Cleopatra, Napoleón, Alejandro Magno y Vlad III. Una colección de Alan Gutiérrez.">
+<meta property="og:image" content="imagenes/og-ares.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308070B'/%3E%3Cpath d='M16 6l8 20h-4l-1.6-4h-4.8L12 26H8z' fill='%23D4A537'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;600;700;800&display=swap">
+
+<style>
+/* ===== estilos/base.css ===== */
+/* ===========================================================================
+   ARES EDICIONES — BASE
+   Variables de color, reset, tipografía y utilidades de maquetación.
+   La paleta es de marca: negro (lienzo), oro (marca), rojo (acción),
+   azul (profundidad y atmósfera). Un solo protagonista por capa.
+   =========================================================================== */
+
+:root{
+  color-scheme: dark;
+
+  /* --- Lienzo ------------------------------------------------------------ */
+  --negro:        #08070B;
+  --negro-2:      #0E0D14;
+  --negro-3:      #16141E;
+  --negro-4:      #201D2B;
+
+  /* --- Oro: marca, títulos, filetes -------------------------------------- */
+  --oro:          #D4A537;
+  --oro-claro:    #F2DCA0;
+  --oro-hondo:    #8A6A1C;
+  --oro-vel:      rgba(212,165,55,.14);
+
+  /* --- Rojo: SOLO acción (comprar, CTA principal) ------------------------- */
+  --rojo:         #C1121F;
+  --rojo-vivo:    #E4222F;
+  --rojo-vel:     rgba(193,18,31,.16);
+
+  /* --- Azul: profundidad, atmósfera, sombras del 3D ----------------------- */
+  --azul:         #0B2A5B;
+  --azul-luz:     #2B5FD9;
+  --azul-vel:     rgba(43,95,217,.14);
+
+  /* --- Texto ------------------------------------------------------------- */
+  --tinta:        #F4F1EA;
+  --tinta-2:      #C3BCB0;
+  --tinta-3:      #8B8479;
+
+  /* --- Líneas ------------------------------------------------------------ */
+  --linea:        rgba(244,241,234,.10);
+  --linea-fuerte: rgba(212,165,55,.32);
+
+  /* --- Tipografías ------------------------------------------------------- */
+  --display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --serif:   "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans:    "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  /* --- Ritmo ------------------------------------------------------------- */
+  --marco:  clamp(20px, 5vw, 72px);
+  --ancho:  1240px;
+  --ancho-texto: 62ch;
+
+  --r-s: 4px;
+  --r-m: 10px;
+  --r-l: 20px;
+
+  /* --- Sombras ----------------------------------------------------------- */
+  --sombra:      0 2px 6px rgba(0,0,0,.5), 0 24px 60px -28px rgba(0,0,0,.9);
+  --sombra-alta: 0 4px 12px rgba(0,0,0,.6), 0 48px 100px -40px rgba(0,0,0,1);
+
+  /* --- Estado del motor 3D ------------------------------------------------
+     Se declaran aquí para que TODA la página pueda leerlos por herencia.
+     JS escribe los valores vivos sobre .panel-fijo; el libro, el texto de la
+     cabecera y el indicador de scroll los heredan del mismo sitio y por eso
+     van perfectamente sincronizados sin tocarlos uno a uno. */
+  --p: 0;    /* apertura del libro, 0 cerrado .. 1 abierto */
+  --mx: 0;   /* paralaje del puntero, eje X, -1..1 */
+  --my: 0;   /* paralaje del puntero, eje Y, -1..1 */
+
+  /* --- Curvas de animación ----------------------------------------------- */
+  --curva:       cubic-bezier(.22,.61,.36,1);
+  --curva-suave: cubic-bezier(.4,0,.2,1);
+  --curva-libro: cubic-bezier(.65,.05,.36,1);
+}
+
+/* --------------------------------------------------------------------------
+   RESET
+   -------------------------------------------------------------------------- */
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{
+  scroll-behavior: smooth;
+  /* El ancla de las secciones no queda tapada por la barra superior */
+  scroll-padding-top: 92px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body{
+  margin: 0;
+  background: var(--negro);
+  color: var(--tinta);
+  font-family: var(--sans);
+  font-size: clamp(15px, .55vw + 13.5px, 17px);
+  line-height: 1.65;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg{ display: block; max-width: 100%; }
+button{ font: inherit; color: inherit; }
+a{ color: inherit; }
+
+/* Foco visible y acorde a la marca: accesibilidad sin romper el diseño */
+:focus-visible{
+  outline: 2px solid var(--oro);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection{ background: var(--oro); color: var(--negro); }
+
+/* --------------------------------------------------------------------------
+   TIPOGRAFÍA
+   -------------------------------------------------------------------------- */
+
+h1, h2, h3, h4{
+  font-family: var(--display);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: .02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.t-xxl{ font-size: clamp(38px, 7.2vw, 104px); letter-spacing: .06em; }
+.t-xl { font-size: clamp(32px, 5.4vw, 68px); }
+.t-l  { font-size: clamp(24px, 3.2vw, 40px); }
+.t-m  { font-size: clamp(19px, 1.7vw, 25px); }
+
+.serif{ font-family: var(--serif); font-weight: 400; }
+
+/* Texto de lectura larga: serif, más aire, ancho limitado */
+.lectura{
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.3vw, 22px);
+  line-height: 1.72;
+  color: var(--tinta-2);
+  max-width: var(--ancho-texto);
+}
+
+/* Antetítulo de sección: mayúsculas, tracking abierto, filete dorado */
+.antetitulo{
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--oro);
+  margin: 0 0 20px;
+}
+.antetitulo::before{
+  content: "";
+  width: 42px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--oro));
+}
+
+.oro{ color: var(--oro); }
+.apagado{ color: var(--tinta-3); }
+
+/* --------------------------------------------------------------------------
+   MAQUETACIÓN
+   -------------------------------------------------------------------------- */
+
+.marco{
+  width: 100%;
+  max-width: var(--ancho);
+  margin-inline: auto;
+  padding-inline: var(--marco);
+}
+
+.seccion{
+  position: relative;
+  padding-block: clamp(80px, 11vh, 160px);
+}
+
+/* Filete dorado que separa secciones sin usar un border duro */
+.seccion + .seccion::before{
+  content: "";
+  position: absolute;
+  inset-inline: var(--marco);
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--linea-fuerte) 30%, var(--linea-fuerte) 70%, transparent);
+  opacity: .5;
+}
+
+/* --------------------------------------------------------------------------
+   ATMÓSFERA DE FONDO
+   Manchas de luz azul y dorada, muy difusas, fijas al viewport.
+   Van en un pseudo-elemento para no crear nodos ni capturar clics.
+   -------------------------------------------------------------------------- */
+
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60vw 60vw at 12% 8%,  var(--azul-vel), transparent 62%),
+    radial-gradient(52vw 52vw at 88% 32%, var(--oro-vel),  transparent 60%),
+    radial-gradient(70vw 50vw at 50% 105%, var(--rojo-vel), transparent 65%);
+  opacity: .85;
+}
+
+/* Grano de papel: le quita el plástico al negro plano */
+body::after{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: .038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* Todo el contenido por encima de la atmósfera */
+header, main, footer, .barra{ position: relative; z-index: 2; }
+
+/* --------------------------------------------------------------------------
+   ACCESIBILIDAD: MOVIMIENTO REDUCIDO
+   Si el sistema lo pide, se apaga todo el motor 3D. El libro de portada
+   aparece ya abierto (lo resuelve animaciones-3d.css) y nada se mueve solo.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *, *::before, *::after{
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+</style>
+<style>
+/* ===== estilos/animaciones-3d.css ===== */
+/* ===========================================================================
+   ARES EDICIONES — MOTOR 3D
+   ---------------------------------------------------------------------------
+   Todo el 3D es CSS puro (transform-style: preserve-3d + perspective).
+   No hay WebGL ni ninguna librería: el navegador compone estas capas en la
+   GPU, así que va a 60fps en móvil y el texto sigue siendo texto real
+   (seleccionable e indexable por Google).
+
+   El scroll no anima nada directamente. JS solo escribe UNA variable,
+   --p (de 0 a 1), en la escena; el CSS de aquí decide qué significa eso.
+   Así separamos "cuánto has scrolleado" de "qué hace el libro".
+   =========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. ESCENA: LA CÁMARA
+   -------------------------------------------------------------------------- */
+
+/* Ojo: --p, --mx y --my NO se declaran aquí. Viven en :root (base.css) y JS
+   los escribe sobre .panel-fijo, para que los hereden a la vez el libro, el
+   texto de la cabecera y el indicador de scroll. Si los declarásemos aquí,
+   cortaríamos esa herencia. */
+.escena{
+  perspective: 2200px;
+  perspective-origin: 50% 46%;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   2. EL LIBRO
+   Medidas en una sola variable: --alto-libro. Todo lo demás se deriva,
+   así el libro escala entero sin descuadrarse.
+   -------------------------------------------------------------------------- */
+
+.libro{
+  --alto-libro: clamp(200px, 38vh, 420px);
+  /* 0.625 = 5:8, que es la proporción REAL de las portadas (1280x2048).
+     Con 2:3 el recorte se comía 6% por los lados, justo donde va el
+     nombre de la figura en estas portadas. */
+  --ancho-libro: calc(var(--alto-libro) * .625);
+  --grosor: calc(var(--alto-libro) * .075);       /* lomo                     */
+  --color-libro: var(--rojo);
+
+  position: relative;
+  width: var(--ancho-libro);
+  height: var(--alto-libro);
+  transform-style: preserve-3d;
+
+  /* La cámara gira mientras el libro se abre: empieza mirándolo de frente y
+     de canto, y acaba de plano, como si te lo pusieran delante en la mesa.
+     El paralaje del ratón se suma encima, muy suave. */
+  transform:
+    /* Cámara: empieza mirando el libro de canto y acaba casi de frente,
+       con poca inclinación (más de 12° y la doble página se ve aplastada). */
+    rotateX(calc( (9deg  + var(--p) *  3deg) + var(--my) * -4deg ))
+    rotateY(calc( (-27deg + var(--p) * 23deg) + var(--mx) *  6deg ))
+    rotateZ(calc( -1deg + var(--p) * 1deg ))
+    translateZ(calc(var(--p) * 30px))
+    /* Al abrirse: sube (deja libre la franja del texto), se desplaza a la
+       derecha (la tapa se va a la izquierda, así la doble página queda
+       centrada) y se encoge (ahora ocupa el doble de ancho). */
+    translateY(calc(19vh - var(--p) * 32vh))
+    translateX(calc(var(--p) * 47%))
+    scale(calc(1 - var(--p) * .26));
+}
+
+/* Todas las caras comparten esto */
+.libro .cara{
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 2px 5px 5px 2px;   /* esquina del lomo casi recta */
+  overflow: hidden;
+}
+
+/* --- 2.1 Tapa: la que se abre --------------------------------------------
+   IMPORTANTE, y es el error clásico de esta técnica: la tapa NO puede ser
+   un solo elemento con una cara pintada por delante y otra por detrás.
+   En cuanto le pones overflow:hidden (que hace falta para recortar la
+   portada), el navegador APLANA su contenido y la cara interior deja de
+   existir en 3D: el libro se abre y no ves la página izquierda.
+
+   Solución: la tapa es un envoltorio SIN overflow y con preserve-3d, y
+   dentro van dos caras hermanas, cada una con su propio recorte. Es el
+   mismo patrón de una carta que se voltea.
+   ------------------------------------------------------------------------ */
+
+.tapa{
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transform:
+    translateZ(calc(var(--grosor) / 2))
+    rotateY(calc(var(--p) * -168deg));
+  z-index: 10;
+}
+
+/* Cara exterior: la portada */
+.tapa .exterior{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  border-radius: 2px 5px 5px 2px;
+  background:
+    linear-gradient(115deg, rgba(255,255,255,.16) 0%, transparent 34%, transparent 66%, rgba(0,0,0,.4) 100%),
+    linear-gradient(160deg, var(--color-libro), color-mix(in srgb, var(--color-libro) 55%, #000));
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.09),
+    inset -14px 0 26px -18px rgba(0,0,0,.9);
+}
+
+/* Cara interior: es, literalmente, la PÁGINA IZQUIERDA del libro abierto.
+   Por eso es papel y no cartón oscuro: sin esto, al abrirse solo se ve el
+   bloque blanco de la derecha y no parece un libro abierto, sino una hoja. */
+.tapa .interior{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  border-radius: 5px 2px 2px 5px;
+  display: grid;
+  place-items: center;
+  padding: 14% 12%;
+  text-align: center;
+  background:
+    /* Sombra del canal central: cae en el borde DERECHO de esta página,
+       que es el que toca el lomo. */
+    linear-gradient(270deg, rgba(60,45,20,.45), transparent 24%),
+    linear-gradient(200deg, #FFFDF6, #EFE7D5);
+}
+
+.tapa .interior .guarda{
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  /* Aparece solo cuando la tapa ya está girada: si no, se lee del revés
+     durante medio giro. */
+  opacity: clamp(0, calc((var(--p) - .60) / .22), 1);
+}
+.tapa .interior .marca-agua{
+  font-family: var(--display);
+  font-size: clamp(13px, 1.3vw, 20px);
+  letter-spacing: .3em;
+  color: #9A7A2E;
+}
+.tapa .interior .filete{ width: 46px; height: 1px; background: #C0A45E; }
+.tapa .interior .autor-guarda{
+  font-family: var(--serif);
+  font-size: clamp(11px, 1.1vw, 16px);
+  font-style: italic;
+  color: #6B5B3A;
+}
+
+/* Barniz que barre la portada */
+.tapa .exterior .brillo{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    calc(105deg + var(--mx) * 18deg),
+    transparent 38%,
+    rgba(255,255,255,.17) 47%,
+    rgba(255,255,255,.03) 54%,
+    transparent 62%
+  );
+  mix-blend-mode: screen;
+}
+
+/* --- 2.2 Hojas: se abren detrás de la tapa, escalonadas ------------------- */
+
+/* Las hojas son más pequeñas que la tapa: es la "ceja" que tiene cualquier
+   libro de verdad (la tapa sobresale unos milímetros por los tres cantos).
+   Además de ser lo correcto, resuelve un problema real: si tapa y hojas
+   miden EXACTAMENTE lo mismo y están casi en el mismo plano, Chromium
+   rompe el orden de pintado y saca media hoja por delante de la portada.
+   Con la ceja no hay coincidencia posible. */
+.hoja{
+  --i: 0;                                  /* índice de la hoja (lo pone JS) */
+  --n: 6;                                  /* total de hojas                 */
+  inset: 4px 6px 4px 0;                    /* pegadas al lomo, recogidas del resto */
+
+  /* Y no se pintan hasta que la tapa empieza a levantarse. En un libro
+     cerrado las hojas NO se ven: solo ves tapa, lomo y corte. Además
+     de ser lo cierto, evita de raíz que Chromium las cuele por delante
+     de la portada cuando los dos planos están casi pegados. El fundido
+     ocurre bajo la tapa, así que nadie lo ve. */
+  opacity: clamp(0, calc((var(--p) - .012) / .05), 1);
+  /* Cada hoja arranca un poco más tarde y gira un poco menos que la anterior:
+     eso es lo que produce el abanico. */
+  --retardo: calc(var(--i) / var(--n) * .34);
+  --ph: clamp(0, calc((var(--p) - var(--retardo)) / .5), 1);
+
+  transform-origin: left center;
+  transform:
+    translateZ(calc(var(--grosor) / 2 - 6px - var(--i) * 1.6px))
+    /* OJO: el ángulo va multiplicado por --ph, nunca sumado suelto. Con el
+       libro cerrado (--ph = 0) todas las hojas quedan EXACTAMENTE paralelas
+       a la tapa. Si se les deja un ángulo fijo, sus planos cortan el de la
+       tapa y se ve media hoja por delante de la portada. */
+    rotateY(calc(var(--ph) * -164deg));
+  background: linear-gradient(100deg, #FFFDF6 0%, #F3EEE0 55%, #E4DCC9 100%);
+  box-shadow: inset -10px 0 18px -14px rgba(0,0,0,.55);
+  z-index: calc(9 - var(--i));
+}
+
+/* Sombra de la hoja que gira sobre las de abajo. Se apaga al final. */
+.hoja::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.4), transparent 45%);
+  opacity: calc(1 - var(--ph));
+}
+
+/* --- 2.3 Páginas interiores visibles al abrirse --------------------------- */
+
+.pagina-interior{
+  position: absolute;
+  inset: 4px 6px 4px 0;
+  transform: translateZ(calc(var(--grosor) / 2 - 14px));
+  background: linear-gradient(95deg, #FFFDF6, #F1EBDC);
+  border-radius: 2px 5px 5px 2px;
+  z-index: 1;
+  box-shadow: inset 22px 0 30px -20px rgba(60,45,20,.55);
+  display: grid;
+  place-items: center;
+  padding: 12% 14%;
+  /* Solo se ve cuando el libro ya está bastante abierto */
+  opacity: clamp(0, calc((var(--p) - .45) / .3), 1);
+}
+
+.pagina-interior p{
+  font-family: var(--serif);
+  font-size: clamp(11px, 1.05vw, 15px);
+  line-height: 1.5;
+  color: #3A3428;
+  text-align: center;
+  font-style: italic;
+  margin: 0;
+}
+
+/* --- 2.4 Tapa trasera ---------------------------------------------------- */
+
+.tapa-trasera{
+  transform: translateZ(calc(var(--grosor) / -2));
+  background: linear-gradient(200deg, color-mix(in srgb, var(--color-libro) 70%, #000), #0A0910);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+  z-index: 0;
+}
+
+/* --- 2.5 Lomo, canto y cabeza: el grosor real ---------------------------- */
+
+.lomo{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--grosor);
+  height: 100%;
+  transform-origin: left center;
+  transform: translateZ(calc(var(--grosor) / -2)) rotateY(-90deg);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-libro) 45%, #000), var(--color-libro), color-mix(in srgb, var(--color-libro) 50%, #000));
+  display: grid;
+  place-items: center;
+  border-radius: 3px 0 0 3px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.07);
+}
+
+.lomo span{
+  font-family: var(--display);
+  font-size: calc(var(--grosor) * .34);
+  letter-spacing: .18em;
+  color: var(--oro-claro);
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+/* Canto derecho: el corte de las páginas. Las rayas son las hojas. */
+.canto{
+  position: absolute;
+  top: 0;
+  left: calc(100% - var(--grosor));
+  width: var(--grosor);
+  height: 100%;
+  transform-origin: right center;
+  transform: translateZ(calc(var(--grosor) / -2)) rotateY(90deg);
+  background:
+    repeating-linear-gradient(90deg, #EFE8D8 0 1.5px, #CFC5AC 1.5px 3px),
+    #E8E0CE;
+  border-radius: 0 4px 4px 0;
+  z-index: 0;
+}
+
+/* Cabeza (canto superior) */
+.cabeza{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--grosor);
+  transform-origin: center top;
+  transform: translateZ(calc(var(--grosor) / -2)) rotateX(90deg);
+  background: repeating-linear-gradient(0deg, #EFE8D8 0 1.5px, #C9BFA6 1.5px 3px);
+  z-index: 0;
+}
+
+/* --- 2.6 Portada: imagen o portada tipográfica generada ------------------- */
+
+.portada-img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Portada de emergencia (cuando aún no hay imagen). No es un placeholder
+   feo: es una portada tipográfica de verdad con los colores de marca. */
+.portada-tipo{
+  container-type: inline-size;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 6%;
+  padding: 11% 10%;
+  text-align: center;
+}
+.portada-tipo .sello{
+  font-family: var(--sans);
+  font-size: clamp(6px, 3.4cqw, 11px);
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--oro-claro);
+  opacity: .85;
+}
+.portada-tipo .tit{
+  align-self: center;
+  font-family: var(--display);
+  font-size: clamp(13px, 11cqw, 34px);
+  line-height: 1.12;
+  letter-spacing: .04em;
+  color: #FFF8E6;
+  text-shadow: 0 2px 10px rgba(0,0,0,.5);
+}
+.portada-tipo .aut{
+  font-family: var(--serif);
+  font-size: clamp(9px, 5.6cqw, 17px);
+  font-style: italic;
+  color: rgba(255,248,230,.86);
+}
+.portada-tipo::before{
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border: 1px solid rgba(212,165,55,.4);
+  pointer-events: none;
+}
+
+/* Sombra proyectada del libro sobre el "suelo" */
+.sombra-suelo{
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  width: calc(var(--ancho-libro) * (1 + var(--p) * 1.05));
+  height: calc(var(--alto-libro) * .12);
+  transform: translateX(-50%) translateZ(-60px) rotateX(78deg);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.85), transparent 70%);
+  filter: blur(18px);
+  opacity: calc(.75 - var(--p) * .2);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. SECCIÓN ANCLADA (la cabecera que dura varias pantallas)
+   El truco: un contenedor alto y dentro un panel sticky de 100vh.
+   Mientras recorres el contenedor, el panel se queda quieto y el libro se
+   abre. Nada de position:fixed ni de secuestrar el scroll.
+   -------------------------------------------------------------------------- */
+
+.pista{
+  position: relative;
+  /* La altura ES la duración de la animación. 320vh = se abre en poco más
+     de tres pantallas de scroll. Bájalo si te parece largo. */
+  height: 320vh;
+}
+
+.panel-fijo{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  display: grid;
+}
+/* Escena y texto ocupan LA MISMA celda: se superponen en vez de apilarse. */
+.panel-fijo > .escena,
+.panel-fijo > .capa-texto{ grid-area: 1 / 1; }
+
+/* --------------------------------------------------------------------------
+   4. TEXTO DE LA CABECERA, SINCRONIZADO CON LA APERTURA
+   Aparece y desaparece en función de --p, sin JS extra.
+   -------------------------------------------------------------------------- */
+
+.capa-texto{
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 96px var(--marco) 96px;
+  pointer-events: none;
+}
+/* Los dos actos comparten celda: uno se va justo cuando entra el otro. */
+.capa-texto > *{ grid-area: 1 / 1; pointer-events: auto; }
+
+/* Bloque 1: el nombre. Se ancla ARRIBA para no pisar al libro, que ocupa
+   la mitad inferior de la pantalla. */
+.acto-1{
+  align-self: start;
+  opacity: clamp(0, calc(1 - var(--p) / .28), 1);
+  transform: translateY(calc(var(--p) * -60px)) scale(calc(1 - var(--p) * .06));
+}
+
+/* Bloque 2: el libro destacado. Entra cuando el libro ya está abierto y se
+   queda en la franja inferior, bajo el libro. */
+.acto-2{
+  --e: clamp(0, calc((var(--p) - .52) / .26), 1);   /* su propio progreso */
+  align-self: end;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  opacity: var(--e);
+  transform: translateY(calc((1 - var(--e)) * 44px));
+  /* Velo oscuro por detrás: garantiza contraste caiga donde caiga el libro */
+  padding: 26px var(--marco) 8px;
+  background: radial-gradient(80% 130% at 50% 100%, rgba(8,7,11,.92) 30%, transparent 72%);
+  border-radius: var(--r-l);
+}
+.acto-2 .boton{ margin-top: 4px; }
+
+/* --------------------------------------------------------------------------
+   5. MINI-LIBROS DEL CATÁLOGO
+   Misma técnica, mucho más barata: solo tapa + lomo + bloque.
+   Se abren al pasar el ratón (o al enfocar con teclado).
+   -------------------------------------------------------------------------- */
+
+.escena-mini{
+  perspective: 1200px;
+  perspective-origin: 46% 50%;
+  display: grid;
+  place-items: center;
+  padding: 14px 0 22px;
+}
+
+.mini-libro{
+  --grosor-mini: 16px;
+  --color-libro: var(--rojo);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 8;   /* proporción real de las portadas */
+  transform-style: preserve-3d;
+  transform: rotateX(4deg) rotateY(-22deg);
+  transition: transform .7s var(--curva);
+  will-change: transform;
+}
+
+.tarjeta-libro:hover .mini-libro,
+.tarjeta-libro:focus-within .mini-libro{
+  transform: rotateX(2deg) rotateY(-34deg) translateZ(18px);
+}
+
+.mini-libro .mini-tapa{
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: translateZ(calc(var(--grosor-mini) / 2));
+  transition: transform .7s var(--curva-libro);
+  border-radius: 2px 4px 4px 2px;
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--color-libro), color-mix(in srgb, var(--color-libro) 50%, #000));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.1), -10px 14px 34px rgba(0,0,0,.55);
+}
+
+/* Al pasar el ratón la tapa se entreabre: enseña que hay algo dentro
+   sin llegar a abrirse del todo. Es la promesa, no el spoiler. */
+.tarjeta-libro:hover .mini-tapa,
+.tarjeta-libro:focus-within .mini-tapa{
+  transform: translateZ(calc(var(--grosor-mini) / 2)) rotateY(-38deg);
+}
+
+/* Mismo criterio que en el libro grande: las hojas solo existen cuando la
+   tapa se levanta. Con el libro cerrado no hay plano que pueda colarse
+   por delante de la portada. */
+.mini-libro .mini-hojas{
+  position: absolute;
+  inset: 3px 5px 3px 7px;
+  transform: translateZ(calc(var(--grosor-mini) / 2 - 10px));
+  background: linear-gradient(95deg, #FFFDF6, #EDE6D6);
+  border-radius: 2px 4px 4px 2px;
+  opacity: 0;
+  transition: opacity .35s var(--curva) .12s;
+}
+.tarjeta-libro:hover .mini-hojas,
+.tarjeta-libro:focus-within .mini-hojas{ opacity: 1; }
+
+.mini-libro .mini-lomo{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--grosor-mini);
+  height: 100%;
+  transform-origin: left center;
+  transform: translateZ(calc(var(--grosor-mini) / -2)) rotateY(-90deg);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-libro) 40%, #000), var(--color-libro));
+  border-radius: 3px 0 0 3px;
+}
+
+.mini-libro .mini-canto{
+  position: absolute;
+  top: 0;
+  left: calc(100% - var(--grosor-mini));
+  width: var(--grosor-mini);
+  height: 100%;
+  transform-origin: right center;
+  transform: translateZ(calc(var(--grosor-mini) / -2)) rotateY(90deg);
+  background: repeating-linear-gradient(90deg, #EFE8D8 0 1.5px, #CDC3AA 1.5px 3px);
+  border-radius: 0 4px 4px 0;
+}
+
+/* --------------------------------------------------------------------------
+   6. LIBRO GRANDE DE LA FICHA (se abre del todo al abrirla)
+   -------------------------------------------------------------------------- */
+
+/* La ficha no depende del scroll: el libro entra ya abierto y quieto, así
+   que le damos --p fijo y su propia cámara (la del scroll lo desplazaría
+   fuera de la columna). */
+.ficha .escena{ perspective: 1700px; --p: .95; }
+.ficha .libro{
+  --alto-libro: clamp(180px, 27vh, 310px);
+  transform: rotateX(7deg) rotateY(-7deg) translateX(24%);
+}
+.ficha .sombra-suelo{ opacity: .5; }
+
+/* --------------------------------------------------------------------------
+   7. APARICIONES AL ENTRAR EN PANTALLA
+   JS solo añade la clase .visible; la animación la decide el CSS.
+   -------------------------------------------------------------------------- */
+
+.aparece{
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .9s var(--curva), transform .9s var(--curva);
+  transition-delay: var(--retraso, 0ms);
+}
+.aparece.visible{
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. MOVIMIENTO REDUCIDO: el libro se muestra abierto y quieto
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce){
+  .panel-fijo, .escena{ --p: .82 !important; }
+  .pista{ height: auto !important; }
+  .panel-fijo{ position: static; height: auto; padding-block: 12vh; }
+  .acto-1, .acto-2{ opacity: 1 !important; transform: none !important; }
+  .aparece{ opacity: 1 !important; transform: none !important; }
+  .mini-libro, .mini-tapa, .mini-hojas{ transition: none !important; }
+  .hoja{ opacity: 1 !important; }
+}
+
+/* --------------------------------------------------------------------------
+   9. MÓVIL: menos profundidad, menos hojas, menos coste
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px){
+  .escena{ perspective: 1400px; }
+  .pista{ height: 260vh; }
+  .sombra-suelo{ filter: blur(12px); }
+
+  /* En una pantalla de 844px de alto el libro abierto y el bloque de texto
+     no caben si el libro conserva su tamaño de escritorio: se pisan. Aquí
+     el libro es más pequeño y sube más al abrirse. */
+  .libro{ --alto-libro: clamp(150px, 26vh, 230px); }
+  .panel-fijo .libro{
+    transform:
+      rotateX(calc( 9deg + var(--p) * 3deg ))
+      rotateY(calc( -27deg + var(--p) * 23deg ))
+      rotateZ(-1deg)
+      translateY(calc(10vh - var(--p) * 26vh))
+      translateX(calc(var(--p) * 47%))
+      scale(calc(1 - var(--p) * .22));
+  }
+  .acto-2{ padding-bottom: 4px; }
+  .acto-2 .t-xl{ font-size: clamp(24px, 7.4vw, 34px); }
+
+  /* La ficha, en vertical, con el libro más pequeño arriba */
+  .ficha .libro{ --alto-libro: clamp(140px, 20vh, 190px); }
+}
+
+/* Línea corta bajo el nombre de la editorial */
+.linea-hero{
+  margin: 20px auto 0;
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.3vw, 20px);
+  letter-spacing: .04em;
+  color: var(--tinta-2);
+}
+
+</style>
+<style>
+/* ===== estilos/componentes.css ===== */
+/* ===========================================================================
+   ARES EDICIONES — COMPONENTES
+   Barra, botones, catálogo, ficha de libro, formulario y pie.
+   =========================================================================== */
+
+/* --------------------------------------------------------------------------
+   BARRA SUPERIOR
+   Transparente sobre la cabecera; al bajar se vuelve sólida (clase .posada,
+   la pone interacciones.js).
+   -------------------------------------------------------------------------- */
+
+.barra{
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px var(--marco);
+  transition: background .5s var(--curva), backdrop-filter .5s var(--curva),
+              border-color .5s var(--curva), padding .5s var(--curva);
+  border-bottom: 1px solid transparent;
+}
+.barra.posada{
+  background: rgba(8,7,11,.82);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom-color: var(--linea);
+  padding-block: 11px;
+}
+
+.marca{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.marca .escudo{
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+.marca .nombre{
+  font-family: var(--display);
+  font-size: 17px;
+  letter-spacing: .17em;
+  color: var(--tinta);
+  line-height: 1;
+}
+.marca .sub{
+  display: block;
+  font-family: var(--sans);
+  font-size: 8.5px;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--oro);
+  margin-top: 4px;
+}
+
+.menu{
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu a{
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--tinta-2);
+  padding: 6px 0;
+  position: relative;
+  transition: color .3s var(--curva);
+}
+.menu a::after{
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--oro);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .4s var(--curva);
+}
+.menu a:hover{ color: var(--tinta); }
+.menu a:hover::after{ transform: scaleX(1); transform-origin: left; }
+
+/* Botón hamburguesa (solo móvil) */
+.hamburguesa{
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--linea);
+  background: transparent;
+  border-radius: var(--r-s);
+  cursor: pointer;
+  padding: 0;
+  place-items: center;
+}
+.hamburguesa span{
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--tinta);
+  position: relative;
+  transition: background .2s;
+}
+.hamburguesa span::before,
+.hamburguesa span::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 1.5px;
+  background: var(--tinta);
+  transition: transform .35s var(--curva);
+}
+.hamburguesa span::before{ top: -6px; }
+.hamburguesa span::after{ top: 6px; }
+.barra.abierta .hamburguesa span{ background: transparent; }
+.barra.abierta .hamburguesa span::before{ transform: translateY(6px) rotate(45deg); }
+.barra.abierta .hamburguesa span::after{ transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 860px){
+  .hamburguesa{ display: grid; }
+  .menu{
+    position: fixed;
+    inset: 68px 0 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: rgba(8,7,11,.97);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--linea);
+    padding: 8px var(--marco) 26px;
+    transform: translateY(-120%);
+    transition: transform .5s var(--curva);
+  }
+  .barra.abierta .menu{ transform: none; }
+  .menu a{
+    display: block;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--linea);
+    font-size: 13px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   BOTONES
+   Regla de marca: el ROJO está reservado a la acción de comprar.
+   Nada más en toda la web usa rojo de fondo.
+   -------------------------------------------------------------------------- */
+
+.boton{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+  transition: transform .3s var(--curva), background .3s var(--curva),
+              border-color .3s var(--curva), color .3s var(--curva),
+              box-shadow .3s var(--curva);
+}
+.boton:hover{ transform: translateY(-2px); }
+.boton:active{ transform: translateY(0); }
+
+/* Comprar en Amazon */
+.boton-comprar{
+  background: linear-gradient(150deg, var(--rojo-vivo), var(--rojo));
+  color: #FFF;
+  box-shadow: 0 10px 30px -12px rgba(228,34,47,.85), inset 0 1px 0 rgba(255,255,255,.25);
+}
+.boton-comprar:hover{
+  box-shadow: 0 16px 42px -12px rgba(228,34,47,1), inset 0 1px 0 rgba(255,255,255,.35);
+}
+.boton-comprar[aria-disabled="true"]{
+  background: var(--negro-4);
+  color: var(--tinta-3);
+  box-shadow: none;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Secundario dorado (contorno) */
+.boton-oro{
+  border-color: var(--linea-fuerte);
+  color: var(--oro);
+}
+.boton-oro:hover{
+  background: var(--oro);
+  color: var(--negro);
+  border-color: var(--oro);
+}
+
+/* Terciario, discreto */
+.boton-fantasma{
+  border-color: var(--linea);
+  color: var(--tinta-2);
+}
+.boton-fantasma:hover{ border-color: var(--tinta-2); color: var(--tinta); }
+
+/* --------------------------------------------------------------------------
+   INDICADOR DE SCROLL DE LA CABECERA
+   -------------------------------------------------------------------------- */
+
+.pista-scroll{
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  font-size: 9.5px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--tinta-3);
+  /* Desaparece en cuanto empiezas a bajar */
+  opacity: clamp(0, calc(1 - var(--p) / .12), 1);
+  pointer-events: none;
+}
+.pista-scroll .barrita{
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(180deg, var(--oro), transparent);
+  position: relative;
+  overflow: hidden;
+}
+.pista-scroll .barrita::after{
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  height: 14px;
+  background: var(--oro-claro);
+  animation: gotea 2.2s var(--curva-suave) infinite;
+}
+@keyframes gotea{
+  0%   { transform: translateY(-16px); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: translateY(48px); opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   CATÁLOGO
+   -------------------------------------------------------------------------- */
+
+.cabecera-seccion{
+  display: grid;
+  gap: 18px;
+  margin-bottom: clamp(40px, 6vw, 72px);
+  max-width: 720px;
+}
+
+.rejilla-libros{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: clamp(22px, 3vw, 42px);
+}
+
+.tarjeta-libro{
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  text-align: left;
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+  border: 1px solid var(--linea);
+  border-radius: var(--r-l);
+  padding: 18px 18px 22px;
+  cursor: pointer;
+  transition: border-color .45s var(--curva), background .45s var(--curva),
+              transform .45s var(--curva), box-shadow .45s var(--curva);
+  /* El acento de cada tarjeta es el color de su libro */
+  --acento: var(--oro);
+}
+.tarjeta-libro:hover,
+.tarjeta-libro:focus-within{
+  border-color: color-mix(in srgb, var(--acento) 55%, transparent);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  transform: translateY(-6px);
+  box-shadow: 0 30px 70px -40px color-mix(in srgb, var(--acento) 80%, #000);
+}
+
+.tarjeta-libro .chip{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--negro);
+  background: var(--acento);
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.tarjeta-libro .datos{
+  display: grid;
+  gap: 7px;
+  align-content: start;
+  padding-top: 6px;
+}
+/* Nombre de la colección sobre el de la figura: pequeño, en mayúsculas y
+   apagado. Sitúa el libro sin robarle el sitio a lo que se compra. */
+.tarjeta-libro .serie-tarjeta{
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--tinta-3);
+  line-height: 1.35;
+  margin-bottom: 2px;
+}
+
+.tarjeta-libro .titulo{
+  font-family: var(--display);
+  font-size: 21px;
+  line-height: 1.2;
+  letter-spacing: .03em;
+  color: var(--tinta);
+}
+.tarjeta-libro .autor{
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--tinta-2);
+}
+.tarjeta-libro .meta{
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--tinta-3);
+  margin-top: 4px;
+}
+.tarjeta-libro .abrir{
+  margin-top: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--acento);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.tarjeta-libro .abrir::after{
+  content: "→";
+  transition: transform .4s var(--curva);
+}
+.tarjeta-libro:hover .abrir::after{ transform: translateX(5px); }
+
+/* Un botón dentro de la tarjeta sirve de destino de teclado sin duplicar
+   controles: la tarjeta entera es clicable, pero solo hay UN tabstop. */
+.tarjeta-libro .disparador{
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: inherit;
+  font-size: 0;
+}
+
+.pie-catalogo{
+  margin: clamp(34px, 5vw, 60px) 0 0;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   FICHA DEL LIBRO (panel lateral)
+   Se usa <dialog> nativo: teclado, Esc y foco los gestiona el navegador.
+   -------------------------------------------------------------------------- */
+
+.ficha{
+  width: min(1100px, 94vw);
+  max-height: 92svh;
+  padding: 0;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--r-l);
+  background: linear-gradient(160deg, var(--negro-2), var(--negro));
+  color: var(--tinta);
+  overflow: hidden;
+  box-shadow: var(--sombra-alta);
+}
+.ficha::backdrop{
+  background: rgba(4,3,6,.82);
+  backdrop-filter: blur(8px);
+}
+.ficha[open]{ animation: entra-ficha .5s var(--curva); }
+@keyframes entra-ficha{
+  from{ opacity: 0; transform: translateY(24px) scale(.97); }
+}
+
+.ficha-cuerpo{
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 46px);
+  padding: clamp(26px, 3.4vw, 52px);
+  overflow-y: auto;
+  max-height: 92svh;
+}
+
+.ficha-visual{
+  display: grid;
+  align-content: center;
+  gap: 20px;
+  position: relative;
+}
+
+.ficha-info{ display: grid; align-content: start; gap: 16px; }
+
+.ficha-info .genero{
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--acento, var(--oro));
+}
+.ficha-info .frase{
+  font-family: var(--serif);
+  font-size: clamp(19px, 1.8vw, 26px);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--oro-claro);
+  border-left: 2px solid var(--acento, var(--oro));
+  padding-left: 18px;
+}
+.ficha-info .sinopsis p{
+  font-family: var(--serif);
+  font-size: 17.5px;
+  line-height: 1.72;
+  color: var(--tinta-2);
+  margin: 0 0 14px;
+}
+
+.fichas-datos{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  padding: 16px 0;
+  border-block: 1px solid var(--linea);
+  margin-block: 4px;
+}
+.fichas-datos div{ display: grid; gap: 2px; }
+.fichas-datos dt{
+  font-size: 9.5px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--tinta-3);
+}
+.fichas-datos dd{
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tinta);
+}
+
+.ficha-acciones{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 6px;
+}
+.aviso-sin-enlace{
+  font-size: 12.5px;
+  color: var(--tinta-3);
+  font-style: italic;
+}
+
+.cerrar-ficha{
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--linea);
+  background: rgba(8,7,11,.7);
+  color: var(--tinta-2);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  line-height: 1;
+  transition: border-color .3s, color .3s, transform .3s;
+}
+.cerrar-ficha:hover{ border-color: var(--oro); color: var(--oro); transform: rotate(90deg); }
+
+@media (max-width: 820px){
+  .ficha-cuerpo{ grid-template-columns: 1fr; }
+  .ficha .libro{ --alto-libro: 220px; }
+}
+
+/* --------------------------------------------------------------------------
+   MANIFIESTO / TEXTO A DOS COLUMNAS
+   -------------------------------------------------------------------------- */
+
+.dos-columnas{
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1fr);
+  gap: clamp(30px, 5vw, 80px);
+  align-items: start;
+}
+@media (max-width: 820px){ .dos-columnas{ grid-template-columns: 1fr; } }
+
+.cifras{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: var(--linea);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  overflow: hidden;
+  margin-top: 40px;
+}
+.cifras div{
+  background: var(--negro-2);
+  padding: 26px 22px;
+  display: grid;
+  gap: 6px;
+}
+.cifras .n{
+  font-family: var(--display);
+  font-size: 40px;
+  line-height: 1;
+  color: var(--oro);
+}
+.cifras .l{
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--tinta-3);
+}
+
+/* --------------------------------------------------------------------------
+   EL AUTOR
+   -------------------------------------------------------------------------- */
+
+/* Escudo familiar: ornamento, no logotipo. Va discreto y en su sitio. */
+.escudo-sello{
+  width: min(100%, 220px);
+  margin-top: 34px;
+  opacity: .82;
+  mix-blend-mode: screen;   /* el fondo negro del escudo se funde con la página */
+}
+
+.retrato{
+  position: relative;
+  width: min(100%, 360px);
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-l);
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--negro-3), var(--negro-2));
+  border: 1px solid var(--linea);
+  display: grid;
+  place-items: center;
+}
+/* Filete dorado por dentro: encuadra la foto sin competir con ella */
+.retrato::after{
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(212,165,55,.3);
+  border-radius: calc(var(--r-l) - 8px);
+  pointer-events: none;
+}
+.retrato img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Un retrato de oficina, con su luz neutra, se ve pegado sobre una página
+     casi negra. Bajarle un punto la saturación y subirle el contraste lo
+     asienta en la paleta sin llegar a un filtro que se note. */
+  filter: saturate(.88) contrast(1.06);
+}
+
+/* Degradado al pie del retrato: hace que la foto se hunda en la página en
+   vez de flotar como un rectángulo pegado encima. Solo cuando hay foto. */
+.retrato.con-foto::before{
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 45%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(8,7,11,.72));
+}
+/* Con foto, el filete dorado va por encima de ella */
+.retrato.con-foto::after{ z-index: 3; }
+/* Si aún no hay foto: monograma, no un hueco gris */
+.retrato .monograma{
+  font-family: var(--display);
+  font-size: clamp(46px, 7vw, 82px);
+  letter-spacing: .1em;
+  color: var(--oro);
+  opacity: .55;
+}
+
+.acciones-autor{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin-top: 28px;
+}
+.nota-seguir{
+  font-size: 13px;
+  max-width: 30ch;
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------------------
+   PRÓXIMAMENTE
+   -------------------------------------------------------------------------- */
+
+.proximo{
+  display: grid;
+  gap: 22px;
+  justify-items: center;
+  text-align: center;
+  padding: clamp(40px, 6vw, 78px) var(--marco);
+  border: 1px dashed var(--linea-fuerte);
+  border-radius: var(--r-l);
+  background: radial-gradient(80% 120% at 50% 0%, var(--oro-vel), transparent 70%);
+}
+
+/* --------------------------------------------------------------------------
+   CONTACTO
+   -------------------------------------------------------------------------- */
+
+.campo{ display: grid; gap: 8px; }
+.campo label{
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--tinta-3);
+}
+.campo input,
+.campo textarea{
+  font: inherit;
+  color: var(--tinta);
+  background: var(--negro-2);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  padding: 13px 16px;
+  transition: border-color .3s var(--curva), background .3s var(--curva);
+}
+.campo input:focus,
+.campo textarea:focus{
+  outline: none;
+  border-color: var(--oro);
+  background: var(--negro-3);
+}
+.campo textarea{ min-height: 130px; resize: vertical; }
+
+.formulario{
+  display: grid;
+  gap: 18px;
+  max-width: 520px;
+}
+
+/* --------------------------------------------------------------------------
+   PIE
+   -------------------------------------------------------------------------- */
+
+.pie{
+  border-top: 1px solid var(--linea);
+  padding: 56px var(--marco) 34px;
+  background: linear-gradient(180deg, transparent, rgba(11,42,91,.14));
+}
+.pie-cuerpo{
+  max-width: var(--ancho);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1.2fr repeat(2, minmax(0, .8fr));
+  gap: 40px;
+}
+@media (max-width: 720px){ .pie-cuerpo{ grid-template-columns: 1fr; gap: 30px; } }
+
+.pie h4{
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--oro);
+  margin-bottom: 16px;
+}
+.pie ul{ list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.pie a{
+  color: var(--tinta-2);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color .3s;
+}
+.pie a:hover{ color: var(--oro); }
+
+.pie-legal{
+  max-width: var(--ancho);
+  margin: 44px auto 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--linea);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--tinta-3);
+}
+
+/* Aviso cuando la web se abre sin datos (por si se rompe libros.js) */
+.aviso-datos{
+  padding: 20px 24px;
+  border: 1px solid var(--rojo);
+  border-radius: var(--r-m);
+  background: var(--rojo-vel);
+  font-size: 14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Centinela: cuando deja de verse, la barra se vuelve sólida -->
+<div id="centinelaBarra" style="position:absolute;top:0;height:1px;width:1px"></div>
+
+<!-- ======================================================================
+     BARRA
+     ====================================================================== -->
+<nav class="barra" aria-label="Navegación principal">
+  <a class="marca" href="#" aria-label="Ares Ediciones, inicio">
+    <svg class="escudo" viewBox="0 0 40 40" aria-hidden="true">
+      <defs>
+        <linearGradient id="gOro" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#F2DCA0"/><stop offset="1" stop-color="#8A6A1C"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="url(#gOro)" stroke-width="1.2"/>
+      <path d="M20 9l8.5 22h-4.7l-1.7-4.6h-4.2L16.2 31h-4.7z" fill="url(#gOro)"/>
+      <path d="M13.5 33.5h13" stroke="#C1121F" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <span class="nombre">ARES<span class="sub" data-editorial="lema">Editorial digital</span></span>
+  </a>
+
+  <ul class="menu">
+    <li><a href="#catalogo">Catálogo</a></li>
+    <li><a href="#autor">El autor</a></li>
+    <li><a href="#editorial">El sello</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+
+  <button class="hamburguesa" type="button" aria-label="Abrir menú" aria-expanded="false">
+    <span></span>
+  </button>
+</nav>
+
+<main>
+
+<!-- ======================================================================
+     CABECERA: EL LIBRO QUE SE ABRE CON EL SCROLL
+     .pista mide 320vh; dentro, .panel-fijo se queda pegado y el libro se
+     abre según cuánto has recorrido. Ver scripts/libro-3d.js.
+     ====================================================================== -->
+<header class="pista">
+  <div class="panel-fijo">
+
+    <!-- La escena 3D ocupa toda la pantalla, detrás del texto -->
+    <div class="escena" id="escenaCabecera" aria-hidden="true"></div>
+
+    <div class="capa-texto">
+
+      <!-- ACTO 1: el nombre. Se va cuando el libro empieza a abrirse. -->
+      <div class="acto-1">
+        <p class="antetitulo" data-editorial="lema">Editorial digital</p>
+        <h1 class="t-xxl">ARES<br><span class="oro">EDICIONES</span></h1>
+        <p class="linea-hero">Una colección de Alan Gutiérrez.<br>Conversaciones con quien ya no puede contestar.</p>
+      </div>
+
+      <!-- ACTO 2: entra cuando el libro ya está abierto -->
+      <div class="acto-2">
+        <p class="antetitulo" id="serieDestacado">La colección</p>
+        <h2 class="t-xl" id="tituloDestacado">—</h2>
+        <p class="serif t-m apagado" id="autorDestacado">—</p>
+        <p style="margin-top:26px">
+          <a class="boton boton-oro" href="#" id="botonDestacado">Ver la ficha</a>
+          <a class="boton boton-fantasma" href="#catalogo">Ver la colección</a>
+        </p>
+      </div>
+
+    </div>
+
+    <div class="pista-scroll">
+      <span>Desliza para abrirlo</span>
+      <span class="barrita"></span>
+    </div>
+
+  </div>
+</header>
+
+<!-- ======================================================================
+     LA EDITORIAL
+     ====================================================================== -->
+<section class="seccion" id="editorial">
+  <div class="marco dos-columnas">
+
+    <div class="aparece">
+      <p class="antetitulo">El sello</p>
+      <h2 class="t-xl">Sin paredes<br>y sin permiso.</h2>
+      <!-- Escudo familiar. Solo aparece si EDITORIAL.escudo tiene ruta. -->
+      <img id="escudoSello" class="escudo-sello" alt="" hidden>
+    </div>
+
+    <div class="aparece" style="--retraso:120ms">
+      <p class="lectura" data-editorial="descripcion">
+        Ares Ediciones es el sello desde el que publico mi propio trabajo. No hay
+        almacén, ni escaparate, ni una estantería que llenar por obligación. Hay
+        una colección y el tiempo para escribir el siguiente título.
+      </p>
+      <p class="lectura" style="margin-top:22px">
+        Montar el sello no fue una rabieta contra el sector: fue quedarme con las
+        decisiones que me importaban. Qué se publica, cuándo y con qué portada.
+        Cada título ha pasado por una única pregunta:
+        <em class="oro">¿merece que alguien le dedique seis horas de su vida?</em>
+        Si la respuesta no es un sí rotundo, no sale.
+      </p>
+
+      <div class="cifras">
+        <div><span class="n" id="contadorLibros">7</span><span class="l">Títulos en la colección</span></div>
+        <div><span class="n">1</span><span class="l">Autor, sin intermediarios</span></div>
+        <div><span class="n">0</span><span class="l">Metros de almacén</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======================================================================
+     CATÁLOGO
+     Las tarjetas las genera scripts/catalogo.js a partir de datos/libros.js
+     ====================================================================== -->
+<section class="seccion" id="catalogo">
+  <div class="marco">
+
+    <div class="cabecera-seccion aparece">
+      <p class="antetitulo" data-serie="nombre">La colección</p>
+      <h2 class="t-xl">Elige con quién hablas.</h2>
+      <p class="lectura" data-serie="descripcion"></p>
+      <p class="lectura apagado" style="font-size:16px">
+        Abre cualquiera para leer su sinopsis y llevártelo desde Amazon.
+      </p>
+    </div>
+
+    <div class="rejilla-libros" id="rejillaLibros"></div>
+
+    <!-- Solo aparece si EDITORIAL.amazonAutor tiene URL -->
+    <p class="pie-catalogo" id="pieCatalogo" hidden>
+      <a class="boton boton-oro" id="enlaceAutor" href="#" target="_blank" rel="noopener noreferrer">
+        Ver todos en Amazon
+      </a>
+    </p>
+
+  </div>
+</section>
+
+<!-- ======================================================================
+     EL AUTOR
+     Los 7 libros son suyos, así que es la sección que más peso tiene
+     después del catálogo: quien termina un libro compra el siguiente por
+     el autor, no por el sello.
+     ====================================================================== -->
+<section class="seccion" id="autor">
+  <div class="marco dos-columnas">
+
+    <div class="aparece">
+      <p class="antetitulo">El autor</p>
+      <div class="retrato" id="retratoAutor">
+        <span class="monograma">AG</span>
+      </div>
+    </div>
+
+    <div class="aparece" style="--retraso:120ms">
+      <h2 class="t-xl" id="nombreAutor">Alan Gutiérrez</h2>
+      <p class="serif t-m oro" id="titularAutor" style="margin:14px 0 24px"></p>
+      <div class="lectura" id="bioAutor"></div>
+
+      <!-- Seguir al autor en Amazon es el CTA más rentable de toda la web:
+           Amazon avisa por correo a quien te sigue cada vez que publicas.
+           Para alguien con 7 libros y el octavo en camino, esa lista es el
+           lanzamiento del octavo. -->
+      <p class="acciones-autor">
+        <a class="boton boton-oro" id="seguirAutor" href="#" target="_blank" rel="noopener noreferrer" hidden>
+          Seguir en Amazon
+        </a>
+        <span class="nota-seguir apagado">Amazon te avisa cuando publique el siguiente.</span>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======================================================================
+     PRÓXIMAMENTE
+     ====================================================================== -->
+<section class="seccion" id="proximamente">
+  <div class="marco">
+    <div class="proximo aparece">
+      <p class="antetitulo">El octavo</p>
+      <h2 class="t-l">¿Con quién toca hablar<br>la próxima vez?</h2>
+      <p class="lectura" style="text-align:center" data-editorial="proximos">
+        El octavo está en marcha.
+      </p>
+      <a class="boton boton-oro" id="proximoSeguir" href="#" target="_blank" rel="noopener noreferrer" hidden>
+        Que me avisen cuando salga
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     CONTACTO
+     ====================================================================== -->
+<section class="seccion" id="contacto">
+  <div class="marco dos-columnas">
+
+    <div class="aparece">
+      <p class="antetitulo">Contacto</p>
+      <h2 class="t-xl">Escríbeme.</h2>
+      <p class="lectura" style="margin-top:20px">
+        Si has leído alguno y quieres decirme algo, si llevas un club de lectura,
+        si escribes en un medio o si te interesan los derechos de traducción:
+        este es el sitio. Contesto yo.
+      </p>
+      <p class="lectura" style="margin-top:16px">
+        O directamente a
+        <a class="oro" data-email href="mailto:hola@aresediciones.com">hola@aresediciones.com</a>.
+      </p>
+    </div>
+
+    <form class="formulario aparece" id="formularioContacto" style="--retraso:120ms">
+      <div class="campo">
+        <label for="nombre">Tu nombre</label>
+        <input id="nombre" name="nombre" type="text" required autocomplete="name">
+      </div>
+      <div class="campo">
+        <label for="correo">Tu correo</label>
+        <input id="correo" name="correo" type="email" required autocomplete="email">
+      </div>
+      <div class="campo">
+        <label for="mensaje">Tu mensaje</label>
+        <textarea id="mensaje" name="mensaje" required placeholder="Cuéntame."></textarea>
+      </div>
+      <button class="boton boton-oro" type="submit">Enviar</button>
+    </form>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ======================================================================
+     PIE
+     ====================================================================== -->
+<footer class="pie">
+  <div class="pie-cuerpo">
+
+    <div>
+      <div class="marca" style="margin-bottom:16px">
+        <span class="nombre">ARES<span class="sub">Editorial digital</span></span>
+      </div>
+      <p class="apagado" style="font-size:14px;max-width:34ch" data-editorial="claim">
+        Libros que se abren solos.
+      </p>
+    </div>
+
+    <div>
+      <h4>Navegar</h4>
+      <ul>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#autor">El autor</a></li>
+        <li><a href="#editorial">El sello</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Encontrarnos</h4>
+      <ul id="listaRedes"></ul>
+      <ul style="margin-top:10px">
+        <li><a data-email href="mailto:hola@aresediciones.com">hola@aresediciones.com</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="pie-legal">
+    <span>© <span id="anioActual">2026</span> <span data-editorial="nombre">Ares Ediciones</span>. Todos los derechos reservados.</span>
+    <!-- Obligatorio si se usa etiqueta de afiliado. Se muestra solo entonces. -->
+    <span id="avisoAfiliado" hidden>Como afiliados de Amazon, obtenemos ingresos por las compras que cumplen los requisitos.</span>
+    <span>Editorial 100% digital · Sin sede física</span>
+  </div>
+</footer>
+
+<!-- ======================================================================
+     FICHA DEL LIBRO
+     Se rellena al elegir un libro. <dialog> nativo: el navegador gestiona
+     el foco, la tecla Esc y el bloqueo del fondo.
+     ====================================================================== -->
+<dialog class="ficha" id="fichaLibro" aria-label="Ficha del libro">
+  <button class="cerrar-ficha" id="cerrarFicha" type="button" aria-label="Cerrar ficha">✕</button>
+  <div class="ficha-cuerpo" id="fichaCuerpo"></div>
+</dialog>
+
+<!-- ======================================================================
+     SCRIPTS
+     Orden obligatorio: primero los datos, luego el motor 3D, luego quien
+     los usa. Son scripts clásicos (no módulos) a propósito: así la web
+     funciona abriendo index.html con doble clic, sin servidor local.
+     ====================================================================== -->
+<script>
+/* ===== datos/libros.js ===== */
+/* ===========================================================================
+   ARES EDICIONES — CATÁLOGO
+   ---------------------------------------------------------------------------
+   ESTE ES EL ÚNICO ARCHIVO QUE TIENES QUE TOCAR.
+   Todo lo demás (portada 3D, tarjetas, ficha, botón de Amazon) se genera solo
+   a partir de esta lista.
+
+   LOS LIBROS SON UNA COLECCIÓN, no títulos sueltos. Por eso hay dos campos
+   separados:
+
+       serie   "Conversaciones existenciales con la I.A"   ← lo que comparten
+       figura  "Julio César"                               ← lo que los distingue
+
+   La tarjeta enseña la FIGURA en grande y la serie en pequeño encima. Si
+   pusiéramos el título completo siete veces, el lector tendría que leer cinco
+   palabras idénticas antes de llegar a la única que decide su compra.
+
+   CAMPOS
+   -------
+   id        Identificador corto sin espacios ni acentos. Va en la URL
+             (#julio-cesar) y sirve para enlazar una ficha concreta. Único.
+   serie     Nombre de la colección. Deja "" si publicas algo fuera de ella.
+   figura    El personaje. Es lo que se lee en grande en la tarjeta.
+   titulo    Título completo, tal cual va en la portada y en Amazon.
+   autor     Quien firma.
+   anio      Año de publicación. Si lo dejas en "" no se muestra.
+   paginas   Nº de páginas. Además de informar, DECIDE EL GROSOR DEL LOMO en
+             la animación 3D: un libro de 190 y otro de 412 no se ven igual.
+             Si lo dejas en null no se muestra y el lomo usa un grosor medio.
+   genero    Etiqueta corta. Sale como chip sobre la tarjeta.
+   color     Color de la tapa: tiñe el lomo y el acento de su ficha.
+             Uno de los cuatro de marca:
+               "#C1121F" rojo · "#0B2A5B" azul · "#D4A537" oro · "#12111A" negro
+   portada   Ruta de la imagen. Las cinco que subiste ya están puestas.
+   frase     Una línea gancho. Sale en grande sobre la ficha.
+   sinopsis  Texto de la ficha. Párrafos separados por \n\n.
+   amazon    ASIN ("B0CH3XKQ7M") o la URL del libro, en cualquier formato.
+             Mientras esté en "" el botón sale desactivado.
+   formatos  Ej. ["Tapa blanda", "Kindle"]
+   destacado true en UNO solo: es el que se abre en la portada de la web.
+   =========================================================================== */
+
+const LIBROS = [
+
+  {
+    id: "julio-cesar",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Julio César",
+    titulo: "Conversaciones existenciales con la I.A de Julio César",
+    autor: "Alan Gutiérrez",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
+    color: "#C1121F",
+    portada: "imagenes/portadas/julio-cesar.jpg",
+    frase: "",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.\n\nNo la copies de Amazon: si tu web dice lo mismo que tu ficha de Amazon, no le das al lector ninguna razón para estar aquí.",
+    amazon: "",
+    formatos: ["Tapa blanda", "Kindle"],
+    destacado: true
+  },
+
+  {
+    id: "napoleon",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Napoleón",
+    titulo: "Conversaciones existenciales con la I.A de Napoleón",
+    autor: "Alan Gutiérrez",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
+    color: "#0B2A5B",
+    portada: "imagenes/portadas/napoleon.jpg",
+    frase: "",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.",
+    amazon: "",
+    formatos: ["Tapa blanda", "Kindle"],
+    destacado: false
+  },
+
+  {
+    id: "alejandro-magno",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Alejandro Magno",
+    titulo: "Conversaciones existenciales con la I.A de Alejandro Magno",
+    autor: "Alan Gutiérrez",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
+    color: "#D4A537",
+    portada: "imagenes/portadas/alejandro-magno.jpg",
+    frase: "",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.",
+    amazon: "",
+    formatos: ["Tapa blanda", "Kindle"],
+    destacado: false
+  },
+
+  {
+    id: "cleopatra",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Cleopatra",
+    titulo: "Conversaciones existenciales con la I.A de Cleopatra",
+    autor: "Alan Gutiérrez",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
+    color: "#0B2A5B",
+    portada: "imagenes/portadas/cleopatra.jpg",
+    frase: "",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.",
+    amazon: "",
+    formatos: ["Tapa blanda", "Kindle"],
+    destacado: false
+  },
+
+  {
+    id: "vlad-iii",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "Vlad III",
+    titulo: "Conversaciones existenciales con la I.A de Vlad III",
+    autor: "Alan Gutiérrez",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
+    color: "#12111A",
+    portada: "imagenes/portadas/vlad-iii.jpg",
+    frase: "",
+    sinopsis: "PENDIENTE: escribe aquí la contraportada de este título.",
+    amazon: "",
+    formatos: ["Tapa blanda", "Kindle"],
+    destacado: false
+  },
+
+  /* ---------------------------------------------------------------------
+     LOS DOS QUE FALTAN
+     Dijiste siete títulos y subiste cinco portadas. Estos dos quedan como
+     plantilla: cambia figura, titulo, color y portada, o BORRA el bloque
+     entero si al final son cinco. La web cuenta los libros sola, así que el
+     número de la sección "El sello" se ajusta sin tocar nada más.
+     --------------------------------------------------------------------- */
+
+  {
+    id: "figura-6",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "FIGURA PENDIENTE",
+    titulo: "Conversaciones existenciales con la I.A de ...",
+    autor: "Alan Gutiérrez",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
+    color: "#C1121F",
+    portada: "",
+    frase: "",
+    sinopsis: "PENDIENTE.",
+    amazon: "",
+    formatos: ["Tapa blanda", "Kindle"],
+    destacado: false
+  },
+
+  {
+    id: "figura-7",
+    serie: "Conversaciones existenciales con la I.A",
+    figura: "FIGURA PENDIENTE",
+    titulo: "Conversaciones existenciales con la I.A de ...",
+    autor: "Alan Gutiérrez",
+    anio: "",
+    paginas: null,
+    genero: "Diálogos",
+    color: "#D4A537",
+    portada: "",
+    frase: "",
+    sinopsis: "PENDIENTE.",
+    amazon: "",
+    formatos: ["Tapa blanda", "Kindle"],
+    destacado: false
+  }
+
+];
+
+/* ---------------------------------------------------------------------------
+   DATOS DE LA EDITORIAL
+   --------------------------------------------------------------------------- */
+
+const EDITORIAL = {
+  nombre: "Ares Ediciones",
+  lema: "Editorial digital",
+  claim: "Los muertos también tienen algo que decir.",
+  descripcion: "Ares Ediciones es el sello desde el que publico mi propio trabajo. No hay almacén, ni escaparate, ni una estantería que llenar por obligación. Hay una colección y el tiempo para escribir el siguiente título.",
+  email: "hola@aresediciones.com",
+
+  /* La colección da sentido al catálogo entero, así que se explica una vez
+     aquí arriba y no se repite en las siete fichas. */
+  serie: {
+    nombre: "Conversaciones existenciales con la I.A",
+    descripcion: "Cada libro es una conversación con la inteligencia artificial de una figura histórica. No es una biografía ni una novela: es un diálogo. Qué contestaría César si pudiera responder hoy, y qué dice de nosotros su respuesta."
+  },
+
+  redes: [
+    { nombre: "Instagram", url: "" },
+    { nombre: "X",         url: "" },
+    { nombre: "TikTok",    url: "" }
+  ],
+
+  /* --- Amazon --------------------------------------------------------- */
+  amazonAutor: "https://www.amazon.es/stores/Alan-Gutierrez/author/B0GJN9V1D5",
+  amazonTag: "",              // Alan no es afiliado: se queda vacío
+  amazonDominio: "www.amazon.es",
+
+  /* --- El autor ------------------------------------------------------- */
+  autor: {
+    nombre: "Alan Gutiérrez",
+    titular: "Escribo los libros y decido cuáles se publican.",
+    bio: "PENDIENTE: tu biografía, en primera persona. De dónde vienes, qué te llevó a escribir y por qué acabaste montando tu propio sello.\n\nSegundo párrafo: de dónde sale la idea de sentar a hablar a un César o a una Cleopatra con una inteligencia artificial. Esa es justo la pregunta que se está haciendo quien llega hasta aquí.",
+    foto: "imagenes/alan-gutierrez.jpg"
+  },
+
+  /* Escudo familiar. Ornamento de la sección del sello. Vacío = no aparece. */
+  escudo: "imagenes/escudo-gutierrez-martinez.jpg",
+
+  proximos: "El siguiente está en marcha. Publico poco y despacio, y prefiero tardar a sacar algo que no aguante una segunda lectura."
+};
+
+</script>
+<script>
+/* ===== scripts/libro-3d.js ===== */
+/* ===========================================================================
+   ARES EDICIONES — MOTOR DEL LIBRO 3D
+   ---------------------------------------------------------------------------
+   Dos cosas y nada más:
+
+   1) construirLibro()  — fabrica el objeto libro (tapa, hojas, lomo, canto)
+                          en DOM. Lo usan la cabecera y la ficha.
+   2) MotorApertura     — traduce el scroll a una variable CSS --p (0..1).
+
+   Por qué así: el JS no anima nada, solo mide. Todas las transformaciones
+   viven en animaciones-3d.css. Si mañana quieres que el libro se abra de otra
+   forma, tocas el CSS y este archivo no se entera.
+   =========================================================================== */
+
+(function () {
+  "use strict";
+
+  /* ------------------------------------------------------------------------
+     UTILIDADES
+     ------------------------------------------------------------------------ */
+
+  const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const esMovil = window.matchMedia("(max-width: 720px)").matches;
+
+  function crear(etiqueta, clase, texto) {
+    const el = document.createElement(etiqueta);
+    if (clase) el.className = clase;
+    if (texto != null) el.textContent = texto;
+    return el;
+  }
+
+  /* Escapa texto que va dentro de un atributo o de innerHTML.
+     Los datos salen de libros.js (los escribes tú), pero si algún día vienen
+     de un CMS esto evita que un título con < > rompa la página. */
+  function limpio(txt) {
+    return String(txt == null ? "" : txt)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  /* Grosor del lomo derivado de las páginas reales del libro.
+     Un libro de 190 págs. y otro de 412 no se ven igual: ese detalle es el
+     que hace que el 3D parezca un libro y no una caja. */
+  function grosorSegunPaginas(paginas) {
+    // Sin dato de páginas usamos un grosor medio: es mejor un lomo creíble
+    // que inventarse un número que luego se muestra como si fuera cierto.
+    const p = Number(paginas) || 260;
+    // 0.05 a 0.11 de la altura, saturando en los extremos
+    const t = Math.min(1, Math.max(0, (p - 140) / 380));
+    return (0.05 + t * 0.06).toFixed(4);
+  }
+
+  /* ------------------------------------------------------------------------
+     LA PORTADA
+     Si hay imagen, se usa. Si no, se genera una portada tipográfica con los
+     colores de marca (no un rectángulo gris: una portada de verdad).
+     ------------------------------------------------------------------------ */
+
+  function construirPortada(libro) {
+    if (libro.portada) {
+      const img = crear("img", "portada-img");
+      img.src = libro.portada;
+      img.alt = "Portada de " + libro.titulo;
+      img.loading = "lazy";
+      img.decoding = "async";
+      // Si la ruta está mal, no dejamos un icono roto: caemos a la tipográfica
+      img.addEventListener("error", function () {
+        const sust = construirPortadaTipografica(libro);
+        img.replaceWith(sust);
+      });
+      return img;
+    }
+    return construirPortadaTipografica(libro);
+  }
+
+  function construirPortadaTipografica(libro) {
+    const cont = crear("div", "portada-tipo");
+    cont.appendChild(crear("div", "sello", "Ares Ediciones"));
+    cont.appendChild(crear("div", "tit", libro.titulo || "Sin título"));
+    cont.appendChild(crear("div", "aut", libro.autor || ""));
+    return cont;
+  }
+
+  /* ------------------------------------------------------------------------
+     CONSTRUIR EL LIBRO COMPLETO
+     opciones.hojas  — nº de hojas que se abren (menos en móvil)
+     opciones.cita   — texto que se ve en la página interior al abrirse
+     ------------------------------------------------------------------------ */
+
+  function construirLibro(libro, opciones) {
+    const op = opciones || {};
+    const nHojas = op.hojas != null ? op.hojas : (esMovil ? 3 : 6);
+
+    const el = crear("div", "libro");
+    el.style.setProperty("--color-libro", libro.color || "#C1121F");
+    el.style.setProperty("--grosor", "calc(var(--alto-libro) * " + grosorSegunPaginas(libro.paginas) + ")");
+
+    /* --- Grosor: cabeza, canto y lomo --- */
+    el.appendChild(crear("div", "cabeza"));
+    el.appendChild(crear("div", "canto"));
+
+    const lomo = crear("div", "lomo");
+    lomo.appendChild(crear("span", null, libro.titulo || "Ares"));
+    el.appendChild(lomo);
+
+    /* --- Tapa trasera --- */
+    el.appendChild(crear("div", "cara tapa-trasera"));
+
+    /* --- Página interior visible cuando se abre --- */
+    const paginaDerecha = crear("div", "pagina-interior");
+    paginaDerecha.appendChild(crear("p", null, op.cita || libro.frase || ""));
+    el.appendChild(paginaDerecha);
+
+    /* --- Hojas --- */
+    for (let i = 0; i < nHojas; i++) {
+      const hoja = crear("div", "cara hoja");
+      hoja.style.setProperty("--i", i);
+      hoja.style.setProperty("--n", nHojas);
+      el.appendChild(hoja);
+    }
+
+    /* --- Tapa frontal, con portada, brillo y reverso --- */
+    /* La tapa son DOS caras hermanas dentro de un envoltorio con
+       preserve-3d: exterior (la portada) e interior (la página izquierda
+       del libro abierto). Ver el comentario largo en animaciones-3d.css:
+       si se hace con una sola cara, la interior no se ve nunca. */
+    const tapa = crear("div", "tapa");
+
+    const exterior = crear("div", "exterior");
+    exterior.appendChild(construirPortada(libro));
+    exterior.appendChild(crear("div", "brillo"));
+
+    const caraInterior = crear("div", "interior");
+    const guarda = crear("div", "guarda");
+    guarda.appendChild(crear("div", "marca-agua", "ARES"));
+    guarda.appendChild(crear("div", "filete"));
+    guarda.appendChild(crear("div", "autor-guarda", libro.autor || ""));
+    caraInterior.appendChild(guarda);
+
+    tapa.append(exterior, caraInterior);
+    el.appendChild(tapa);
+
+    /* --- Sombra sobre el suelo --- */
+    el.appendChild(crear("div", "sombra-suelo"));
+
+    return el;
+  }
+
+  /* ------------------------------------------------------------------------
+     MOTOR DE APERTURA POR SCROLL
+     ------------------------------------------------------------------------
+     Cómo funciona:
+       .pista es un contenedor alto (320vh). Dentro, .panel-fijo es sticky.
+       Mientras recorres la pista, el panel se queda quieto en pantalla y
+       nosotros calculamos qué porcentaje de la pista llevas: ese porcentaje
+       es --p, y el CSS lo convierte en grados de apertura.
+
+     Por qué NO usamos animation-timeline: scroll() todavía:
+       lo soportan Chrome y Edge, pero no Safari ni Firefox en versiones
+       estables recientes. Este cálculo son 4 líneas, funciona en todos y
+       nos deja además reusar --p para el texto y el indicador de scroll.
+
+     Coste: un listener de scroll pasivo que solo apunta una posición, y un
+     requestAnimationFrame que escribe una variable. No hay layout ni repaint
+     provocados por JS: el navegador solo recompone capas en GPU.
+     ------------------------------------------------------------------------ */
+
+  /* pista   = el contenedor alto (.pista)
+     destino = el nodo donde se escribe --p (.panel-fijo). Todo lo que cuelga
+               de él lo hereda: libro, textos y el indicador de scroll. */
+  function MotorApertura(pista, destino) {
+    let objetivo = 0;      // valor real del scroll
+    let actual = 0;        // valor suavizado que se pinta
+    let corriendo = false;
+    let visible = true;
+
+    function medir() {
+      const caja = pista.getBoundingClientRect();
+      // Recorrido útil = altura de la pista menos una pantalla (lo que dura
+      // el sticky). Al empezar la pista arriba, top = 0 -> p = 0.
+      const recorrido = caja.height - window.innerHeight;
+      if (recorrido <= 0) { objetivo = 0; return; }
+      const avance = -caja.top / recorrido;
+      objetivo = Math.min(1, Math.max(0, avance));
+    }
+
+    function pintar() {
+      // Suavizado exponencial: el libro sigue al scroll con un pelín de
+      // inercia. Sin esto el movimiento se ve digital y a saltos.
+      actual += (objetivo - actual) * 0.14;
+      if (Math.abs(objetivo - actual) < 0.0004) actual = objetivo;
+      destino.style.setProperty("--p", actual.toFixed(4));
+
+      if (visible && Math.abs(objetivo - actual) > 0.0002) {
+        requestAnimationFrame(pintar);
+      } else {
+        corriendo = false;
+      }
+    }
+
+    function arrancar() {
+      if (corriendo || !visible) return;
+      corriendo = true;
+      requestAnimationFrame(pintar);
+    }
+
+    function alScroll() {
+      medir();
+      arrancar();
+    }
+
+    // Cuando la cabecera no está en pantalla, paramos el bucle entero.
+    // Es la diferencia entre gastar batería siempre o solo cuando se ve.
+    const centinela = new IntersectionObserver(function (entradas) {
+      visible = entradas[0].isIntersecting;
+      if (visible) { medir(); arrancar(); }
+    }, { rootMargin: "120px" });
+    centinela.observe(pista);
+
+    window.addEventListener("scroll", alScroll, { passive: true });
+    window.addEventListener("resize", alScroll, { passive: true });
+    medir();
+    actual = objetivo;
+    destino.style.setProperty("--p", actual.toFixed(4));
+    arrancar();
+  }
+
+  /* ------------------------------------------------------------------------
+     PARALAJE DE RATÓN
+     El libro te sigue muy ligeramente. Solo en dispositivos con puntero fino:
+     en táctil no hay ratón y en un portátil sin ratón tampoco molesta.
+     ------------------------------------------------------------------------ */
+
+  function paralaje(destino) {
+    if (sinMovimiento) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+
+    let px = 0, py = 0, mx = 0, my = 0, activo = false;
+
+    window.addEventListener("pointermove", function (e) {
+      px = (e.clientX / window.innerWidth - 0.5) * 2;
+      py = (e.clientY / window.innerHeight - 0.5) * 2;
+      if (!activo) { activo = true; requestAnimationFrame(suavizar); }
+    }, { passive: true });
+
+    function suavizar() {
+      mx += (px - mx) * 0.07;
+      my += (py - my) * 0.07;
+      destino.style.setProperty("--mx", mx.toFixed(4));
+      destino.style.setProperty("--my", my.toFixed(4));
+      if (Math.abs(px - mx) > 0.001 || Math.abs(py - my) > 0.001) {
+        requestAnimationFrame(suavizar);
+      } else {
+        activo = false;
+      }
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     API PÚBLICA
+     ------------------------------------------------------------------------ */
+
+  window.Ares3D = {
+    construirLibro: construirLibro,
+    MotorApertura: MotorApertura,
+    paralaje: paralaje,
+    sinMovimiento: sinMovimiento,
+    esMovil: esMovil,
+    limpio: limpio
+  };
+})();
+
+</script>
+<script>
+/* ===== scripts/catalogo.js ===== */
+/* ===========================================================================
+   ARES EDICIONES — CATÁLOGO Y FICHA
+   ---------------------------------------------------------------------------
+   Pinta el libro grande de la cabecera, la rejilla de libros y la ficha que
+   se abre al elegir uno. Todo sale de datos/libros.js: esta web no tiene los
+   libros escritos a mano en ningún sitio.
+   =========================================================================== */
+
+(function () {
+  "use strict";
+
+  const L = window.Ares3D;
+
+  /* ------------------------------------------------------------------------
+     COLOR DE ACENTO DE CADA LIBRO
+     El color del libro sirve para la TAPA, pero no siempre sirve para el
+     texto: un libro negro sobre fondo negro deja el "Ver ficha" y la
+     etiqueta de género invisibles. Así que calculamos su luminancia y, si
+     es demasiado oscuro, la interfaz de esa tarjeta usa el oro de marca.
+     La tapa se queda negra: cambia el acento, no el libro.
+     ------------------------------------------------------------------------ */
+
+  function luminancia(hex) {
+    const h = String(hex || "").replace("#", "");
+    if (h.length !== 6) return 1;
+    const c = [0, 2, 4].map(function (i) {
+      const v = parseInt(h.substr(i, 2), 16) / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+
+  const ORO = "#D4A537";
+  function acentoDe(libro) {
+    const color = libro.color || "#C1121F";
+    // Umbral bajo: solo rescatamos los que de verdad no se leerían.
+    return luminancia(color) < 0.05 ? ORO : color;
+  }
+
+  /* ------------------------------------------------------------------------
+     ENLACE DE AMAZON
+     ------------------------------------------------------------------------
+     Admite tres formas en el campo `amazon` de libros.js, para que puedas
+     pegar lo que tengas a mano sin pensar:
+
+       "B0CXXXXXXX"                          → solo el ASIN
+       "https://www.amazon.es/dp/B0CXXXXXXX" → la URL limpia
+       "https://www.amazon.es/Titulo-largo/dp/B0CXXXXXXX/ref=sr_1_1?crid=..."
+                                             → lo que te copia el navegador
+
+     De cualquiera de las tres sacamos el ASIN y reconstruimos una URL corta.
+     Por qué molestarse: las URLs que copia Amazon llevan la sesión de quien
+     copió, el término de búsqueda y media docena de parámetros de rastreo.
+     Enviar eso a tus lectores es feo, se rompe con el tiempo y encima delata
+     de dónde salió el enlace.
+
+     Si eres afiliado, pon la etiqueta UNA vez en EDITORIAL.amazonTag y se
+     añade sola a los siete enlaces. Ten en cuenta que ser afiliado obliga a
+     declararlo de forma visible: eso ya está en el pie.
+     ------------------------------------------------------------------------ */
+
+  const ASIN = /(?:\/dp\/|\/gp\/product\/|\/product\/)([A-Z0-9]{10})|^([A-Z0-9]{10})$/;
+
+  function enlaceAmazon(valor) {
+    const bruto = String(valor || "").trim();
+    if (!bruto) return "";
+
+    const dominio = (typeof EDITORIAL !== "undefined" && EDITORIAL.amazonDominio) || "www.amazon.es";
+    const tag = (typeof EDITORIAL !== "undefined" && EDITORIAL.amazonTag) || "";
+
+    const m = bruto.match(ASIN);
+    if (m) {
+      const asin = m[1] || m[2];
+      return "https://" + dominio + "/dp/" + asin + (tag ? "?tag=" + encodeURIComponent(tag) : "");
+    }
+
+    // No hemos sabido sacar el ASIN (un enlace de tienda, un acortador...).
+    // Lo dejamos tal cual, pero solo si es http(s): así un "javascript:" o un
+    // "data:" pegado por error nunca llega a convertirse en un enlace.
+    return /^https?:\/\//i.test(bruto) ? bruto : "";
+  }
+
+  /* ------------------------------------------------------------------------
+     COMPROBACIÓN DE DATOS
+     Si libros.js falta o tiene un error de sintaxis, no dejamos una página
+     rota y muda: avisamos en pantalla de qué pasa y cómo arreglarlo.
+     ------------------------------------------------------------------------ */
+
+  if (typeof LIBROS === "undefined" || !Array.isArray(LIBROS) || !LIBROS.length) {
+    const hueco = document.getElementById("rejillaLibros");
+    if (hueco) {
+      hueco.innerHTML =
+        '<div class="aviso-datos"><strong>No se han cargado los libros.</strong><br>' +
+        'Revisa <code>datos/libros.js</code>: probablemente falte una coma o una comilla. ' +
+        'Abre la consola del navegador (F12) para ver la línea exacta.</div>';
+    }
+    return;
+  }
+
+  /* ------------------------------------------------------------------------
+     1. LIBRO DE LA CABECERA
+     Es el que tenga destacado: true. Si no hay ninguno, el primero.
+     ------------------------------------------------------------------------ */
+
+  const destacado = LIBROS.find(function (l) { return l.destacado; }) || LIBROS[0];
+
+  const escenaCabecera = document.getElementById("escenaCabecera");
+  if (escenaCabecera) {
+    escenaCabecera.appendChild(
+      L.construirLibro(destacado, {
+        cita: destacado.frase || (EDITORIAL && EDITORIAL.claim) || ""
+      })
+    );
+
+    // Rellenamos los textos de la cabecera con los datos del destacado
+    const serieDest = document.getElementById("serieDestacado");
+    if (serieDest && destacado.serie) serieDest.textContent = destacado.serie;
+
+    const t = document.getElementById("tituloDestacado");
+    const a = document.getElementById("autorDestacado");
+    const b = document.getElementById("botonDestacado");
+    if (t) t.textContent = destacado.figura || destacado.titulo;
+    if (a) a.textContent = destacado.autor;
+    if (b) {
+      b.addEventListener("click", function (e) {
+        e.preventDefault();
+        abrirFicha(destacado.id);
+      });
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     2. REJILLA DE LIBROS
+     Cada tarjeta lleva un mini-libro 3D que se entreabre al pasar por encima.
+     ------------------------------------------------------------------------ */
+
+  const rejilla = document.getElementById("rejillaLibros");
+
+  function construirTarjeta(libro, indice) {
+    const color = libro.color || "#C1121F";
+
+    const tarjeta = document.createElement("article");
+    tarjeta.className = "tarjeta-libro aparece";
+    tarjeta.style.setProperty("--acento", acentoDe(libro));
+    // Escalonamos la aparición para que la rejilla "caiga" en cascada
+    tarjeta.style.setProperty("--retraso", (indice % 4) * 90 + "ms");
+    tarjeta.id = libro.id;
+
+    /* --- mini libro 3D --- */
+    const escena = document.createElement("div");
+    escena.className = "escena-mini";
+    escena.setAttribute("aria-hidden", "true");
+
+    const mini = document.createElement("div");
+    mini.className = "mini-libro";
+    mini.style.setProperty("--color-libro", color);
+
+    const canto = document.createElement("div"); canto.className = "mini-canto";
+    const lomo  = document.createElement("div"); lomo.className  = "mini-lomo";
+    const hojas = document.createElement("div"); hojas.className = "mini-hojas";
+    const tapa  = document.createElement("div"); tapa.className  = "mini-tapa";
+
+    if (libro.portada) {
+      const img = document.createElement("img");
+      img.className = "portada-img";
+      img.src = libro.portada;
+      img.alt = "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.addEventListener("error", function () {
+        img.replaceWith(portadaTipografica(libro));
+      });
+      tapa.appendChild(img);
+    } else {
+      tapa.appendChild(portadaTipografica(libro));
+    }
+
+    mini.append(canto, lomo, hojas, tapa);
+    escena.appendChild(mini);
+
+    /* --- datos --- */
+    const datos = document.createElement("div");
+    datos.className = "datos";
+    /* La FIGURA en grande y la serie en pequeño encima. Los siete títulos
+       empiezan igual: poner el título completo obligaría a leer cinco
+       palabras idénticas antes de llegar a la que decide la compra. */
+    let html = "";
+    if (libro.serie) html += '<p class="serie-tarjeta">' + L.limpio(libro.serie) + "</p>";
+    html += '<h3 class="titulo">' + L.limpio(libro.figura || libro.titulo) + "</h3>";
+    html += '<p class="autor">' + L.limpio(libro.autor) + "</p>";
+
+    // Año y páginas solo si los hay: un "· págs." suelto delata un hueco
+    const meta = [];
+    if (libro.anio) meta.push(L.limpio(libro.anio));
+    if (libro.paginas) meta.push(L.limpio(libro.paginas) + " págs.");
+    if (meta.length) html += '<p class="meta">' + meta.join(" · ") + "</p>";
+
+    html += '<span class="abrir">Ver ficha</span>';
+    datos.innerHTML = html;
+
+    /* --- chip de género ---
+       Solo si aporta algo. En una colección donde los siete libros son
+       "Diálogos", repetir la etiqueta siete veces no informa: decora. Si
+       algún día publicas una novela suelta, los chips vuelven solos. */
+    if (libro.genero && generosDistintos) {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = libro.genero;
+      tarjeta.appendChild(chip);
+    }
+
+    /* --- disparador: un único punto de foco para teclado --- */
+    const boton = document.createElement("button");
+    boton.className = "disparador";
+    boton.type = "button";
+    boton.textContent = "Ver la ficha de " + (libro.titulo || libro.figura);
+    boton.addEventListener("click", function () { abrirFicha(libro.id); });
+
+    tarjeta.append(escena, datos, boton);
+    return tarjeta;
+  }
+
+  function portadaTipografica(libro) {
+    const cont = document.createElement("div");
+    cont.className = "portada-tipo";
+    cont.innerHTML =
+      '<div class="sello">Ares Ediciones</div>' +
+      '<div class="tit">' + L.limpio(libro.figura || libro.titulo) + "</div>" +
+      '<div class="aut">' + L.limpio(libro.autor) + "</div>";
+    return cont;
+  }
+
+  // ¿Tienen todos los libros el mismo género? Entonces el chip no distingue.
+  const generosDistintos = new Set(
+    LIBROS.map(function (l) { return l.genero || ""; })
+  ).size > 1;
+
+  if (rejilla) {
+    const fragmento = document.createDocumentFragment();
+    LIBROS.forEach(function (libro, i) {
+      fragmento.appendChild(construirTarjeta(libro, i));
+    });
+    rejilla.appendChild(fragmento);
+  }
+
+  // Contador de títulos en la sección del manifiesto
+  const contador = document.getElementById("contadorLibros");
+  if (contador) contador.textContent = LIBROS.length;
+
+  /* ------------------------------------------------------------------------
+     3. FICHA DEL LIBRO
+     Usamos <dialog> nativo: el navegador ya sabe atrapar el foco, cerrar con
+     Esc y bloquear el fondo. Reimplementar eso a mano sale peor y accesible
+     no queda nunca.
+     ------------------------------------------------------------------------ */
+
+  const dialogo = document.getElementById("fichaLibro");
+  const cuerpo  = document.getElementById("fichaCuerpo");
+
+  function abrirFicha(id) {
+    const libro = LIBROS.find(function (l) { return l.id === id; });
+    if (!libro || !dialogo || !cuerpo) return;
+
+    cuerpo.innerHTML = "";
+    cuerpo.style.setProperty("--acento", acentoDe(libro));
+
+    /* --- columna izquierda: el libro en 3D, entreabierto --- */
+    const visual = document.createElement("div");
+    visual.className = "ficha-visual";
+
+    const escena = document.createElement("div");
+    escena.className = "escena";
+    escena.setAttribute("aria-hidden", "true");
+    escena.appendChild(L.construirLibro(libro, { hojas: L.esMovil ? 2 : 4 }));
+    visual.appendChild(escena);
+
+    /* --- columna derecha: la información --- */
+    const info = document.createElement("div");
+    info.className = "ficha-info";
+
+    let html = "";
+    const encabezado = [libro.genero, libro.serie].filter(Boolean).join(" · ");
+    if (encabezado) html += '<p class="genero">' + L.limpio(encabezado) + "</p>";
+    html += '<h2 class="t-l">' + L.limpio(libro.titulo || libro.figura) + "</h2>";
+    if (libro.subtitulo) html += '<p class="serif t-m apagado">' + L.limpio(libro.subtitulo) + "</p>";
+    if (libro.frase) html += '<p class="frase">' + L.limpio(libro.frase) + "</p>";
+
+    html += '<div class="sinopsis">';
+    String(libro.sinopsis || "").split("\n\n").forEach(function (parrafo) {
+      if (parrafo.trim()) html += "<p>" + L.limpio(parrafo.trim()) + "</p>";
+    });
+    html += "</div>";
+
+    /* Solo se listan los datos que existen. Una fila "Páginas: —" no informa
+       de nada y hace que la ficha parezca a medio hacer. */
+    const filas = [["Autoría", libro.autor], ["Año", libro.anio],
+                   ["Páginas", libro.paginas],
+                   ["Formatos", (libro.formatos || []).join(" · ")]]
+      .filter(function (f) { return f[1]; })
+      .map(function (f) { return "<div><dt>" + f[0] + "</dt><dd>" + L.limpio(f[1]) + "</dd></div>"; });
+    if (filas.length) html += '<dl class="fichas-datos">' + filas.join("") + "</dl>";
+
+    info.innerHTML = html;
+
+    /* --- acciones: el único rojo de la página --- */
+    const acciones = document.createElement("div");
+    acciones.className = "ficha-acciones";
+
+    const comprar = document.createElement("a");
+    comprar.className = "boton boton-comprar";
+    const url = enlaceAmazon(libro.amazon);
+    if (url) {
+      comprar.href = url;
+      comprar.target = "_blank";
+      /* noopener evita que la pestaña de Amazon pueda tocar la nuestra.
+         "sponsored" SOLO si hay etiqueta de afiliado: marca un enlace como
+         pagado, y ponerlo sin serlo le dice a Google que tus enlaces son
+         publicidad cuando no lo son. */
+      comprar.rel = "noopener noreferrer" +
+        ((typeof EDITORIAL !== "undefined" && EDITORIAL.amazonTag) ? " sponsored" : "");
+      comprar.textContent = "Comprar en Amazon";
+    } else {
+      comprar.href = "#";
+      comprar.setAttribute("aria-disabled", "true");
+      comprar.textContent = "Próximamente";
+    }
+    acciones.appendChild(comprar);
+
+    if (!url) {
+      const aviso = document.createElement("p");
+      aviso.className = "aviso-sin-enlace";
+      aviso.textContent = "Aún no está a la venta. Pega su enlace o su ASIN de Amazon en datos/libros.js.";
+      acciones.appendChild(aviso);
+    }
+
+    const cerrar = document.createElement("button");
+    cerrar.type = "button";
+    cerrar.className = "boton boton-fantasma";
+    cerrar.textContent = "Cerrar";
+    cerrar.addEventListener("click", function () { dialogo.close(); });
+    acciones.appendChild(cerrar);
+
+    info.appendChild(acciones);
+    cuerpo.append(visual, info);
+
+    if (typeof dialogo.showModal === "function") {
+      dialogo.showModal();
+    } else {
+      dialogo.setAttribute("open", "");   // navegadores muy viejos
+    }
+
+    // Dejamos el libro en la URL: se puede compartir el enlace de una ficha
+    if (history.replaceState) history.replaceState(null, "", "#" + libro.id);
+  }
+
+  if (dialogo) {
+    // Clic en el fondo oscuro = cerrar
+    dialogo.addEventListener("click", function (e) {
+      if (e.target === dialogo) dialogo.close();
+    });
+    dialogo.addEventListener("close", function () {
+      cuerpo.innerHTML = "";              // liberamos el 3D al cerrar
+      if (history.replaceState) history.replaceState(null, "", location.pathname + location.search);
+    });
+    const botonCerrar = document.getElementById("cerrarFicha");
+    if (botonCerrar) botonCerrar.addEventListener("click", function () { dialogo.close(); });
+  }
+
+  /* Si alguien llega con .../#libro-3 en la URL, le abrimos esa ficha */
+  const hash = location.hash.replace("#", "");
+  if (hash && LIBROS.some(function (l) { return l.id === hash; })) {
+    // Esperamos a que la página se asiente para que el scroll no dé un salto
+    window.addEventListener("load", function () { setTimeout(function(){ abrirFicha(hash); }, 400); });
+  }
+
+  window.Ares3D.abrirFicha = abrirFicha;
+})();
+
+</script>
+<script>
+/* ===== scripts/interacciones.js ===== */
+/* ===========================================================================
+   ARES EDICIONES — INTERACCIONES GENERALES
+   Barra, menú móvil, apariciones al hacer scroll, arranque del motor 3D
+   y datos de la editorial.
+   =========================================================================== */
+
+(function () {
+  "use strict";
+
+  const L = window.Ares3D;
+
+  /* ------------------------------------------------------------------------
+     1. ARRANQUE DEL MOTOR 3D DE LA CABECERA
+     ------------------------------------------------------------------------ */
+
+  const pista = document.querySelector(".pista");
+  const panel = document.querySelector(".panel-fijo");
+
+  if (pista && panel && !L.sinMovimiento) {
+    L.MotorApertura(pista, panel);
+    L.paralaje(panel);
+  }
+
+  /* ------------------------------------------------------------------------
+     2. BARRA SUPERIOR
+     Se vuelve sólida al bajar. Lo resolvemos con IntersectionObserver sobre
+     un centinela invisible arriba del todo: cero listeners de scroll.
+     ------------------------------------------------------------------------ */
+
+  const barra = document.querySelector(".barra");
+  const centinela = document.getElementById("centinelaBarra");
+
+  if (barra && centinela) {
+    new IntersectionObserver(function (entradas) {
+      barra.classList.toggle("posada", !entradas[0].isIntersecting);
+    }, { threshold: 0 }).observe(centinela);
+  }
+
+  /* --- Menú móvil --- */
+  const hamburguesa = document.querySelector(".hamburguesa");
+  if (hamburguesa && barra) {
+    hamburguesa.addEventListener("click", function () {
+      const abierta = barra.classList.toggle("abierta");
+      hamburguesa.setAttribute("aria-expanded", String(abierta));
+    });
+    // Al elegir una sección, el menú se cierra solo
+    barra.querySelectorAll(".menu a").forEach(function (enlace) {
+      enlace.addEventListener("click", function () {
+        barra.classList.remove("abierta");
+        hamburguesa.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     3. APARICIONES AL ENTRAR EN PANTALLA
+     Observamos una vez y desconectamos: nada sigue corriendo después.
+     ------------------------------------------------------------------------ */
+
+  const observador = new IntersectionObserver(function (entradas, obs) {
+    entradas.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add("visible");
+        obs.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: "0px 0px -12% 0px", threshold: 0.06 });
+
+  function observarApariciones() {
+    document.querySelectorAll(".aparece:not(.visible)").forEach(function (el) {
+      observador.observe(el);
+    });
+  }
+  observarApariciones();
+  // Las tarjetas del catálogo se crean por JS, así que volvemos a barrer
+  window.addEventListener("load", observarApariciones);
+
+  /* ------------------------------------------------------------------------
+     4. DATOS DE LA EDITORIAL EN LA PÁGINA
+     ------------------------------------------------------------------------ */
+
+  if (typeof EDITORIAL !== "undefined") {
+    document.querySelectorAll("[data-editorial]").forEach(function (el) {
+      const clave = el.getAttribute("data-editorial");
+      const valor = EDITORIAL[clave];
+      if (typeof valor === "string" && valor) el.textContent = valor;
+    });
+
+    // Datos de la colección (nombre y descripción), en un solo sitio
+    if (EDITORIAL.serie) {
+      document.querySelectorAll("[data-serie]").forEach(function (el) {
+        const valor = EDITORIAL.serie[el.getAttribute("data-serie")];
+        if (typeof valor === "string" && valor) el.textContent = valor;
+      });
+    }
+
+    /* Escudo familiar en la sección del sello. Como el retrato: si el archivo
+       no está, no aparece nada roto, simplemente no sale. */
+    const escudo = document.getElementById("escudoSello");
+    if (escudo && EDITORIAL.escudo) {
+      escudo.addEventListener("load", function () { escudo.hidden = false; });
+      escudo.src = EDITORIAL.escudo;
+    }
+
+    // Correo: mismo dato en el texto y en el enlace
+    document.querySelectorAll("[data-email]").forEach(function (el) {
+      el.textContent = EDITORIAL.email;
+      if (el.tagName === "A") el.href = "mailto:" + EDITORIAL.email;
+    });
+
+    /* Botón "Ver todos en Amazon". Si no hay URL de autor, ni aparece: más
+       vale que falte un botón a que haya uno que no lleva a ningún sitio. */
+    const pieCatalogo = document.getElementById("pieCatalogo");
+    const enlaceAutor = document.getElementById("enlaceAutor");
+    if (pieCatalogo && enlaceAutor && EDITORIAL.amazonAutor) {
+      enlaceAutor.href = EDITORIAL.amazonAutor;
+      // "sponsored" solo si hay etiqueta de afiliado (ver catalogo.js)
+      enlaceAutor.rel = "noopener noreferrer" + (EDITORIAL.amazonTag ? " sponsored" : "");
+      pieCatalogo.hidden = false;
+    }
+
+    /* ----------------------------------------------------------------------
+       EL AUTOR
+       Nombre, titular, biografía, retrato y los dos botones de "seguir".
+       Todo sale de EDITORIAL.autor, así que se cambia en un solo sitio.
+       ---------------------------------------------------------------------- */
+    const A = EDITORIAL.autor || {};
+
+    const nombreAutor = document.getElementById("nombreAutor");
+    if (nombreAutor && A.nombre) nombreAutor.textContent = A.nombre;
+
+    const titularAutor = document.getElementById("titularAutor");
+    if (titularAutor && A.titular) titularAutor.textContent = A.titular;
+
+    const bioAutor = document.getElementById("bioAutor");
+    if (bioAutor && A.bio) {
+      bioAutor.innerHTML = String(A.bio).split("\n\n")
+        .filter(function (t) { return t.trim(); })
+        .map(function (t) { return "<p>" + L.limpio(t.trim()) + "</p>"; })
+        .join("");
+    }
+
+    /* Retrato. El monograma se calcula SIEMPRE con las iniciales reales del
+       nombre, y la foto lo sustituye solo cuando ha cargado de verdad.
+       Ese orden importa: si la ruta está mal o la foto aún no existe, queda
+       el monograma en vez de un icono roto, y no hace falta tocar el código
+       para poner la foto — basta con dejar el archivo en su sitio. */
+    const retrato = document.getElementById("retratoAutor");
+    if (retrato) {
+      const mono = retrato.querySelector(".monograma");
+      if (mono && A.nombre) {
+        mono.textContent = A.nombre.trim().split(/\s+/).slice(0, 2)
+          .map(function (w) { return w[0]; }).join("").toUpperCase();
+      }
+
+      if (A.foto) {
+        const img = new Image();
+        img.alt = "Retrato de " + (A.nombre || "");
+        img.decoding = "async";
+        img.addEventListener("load", function () {
+          retrato.replaceChildren(img);
+          retrato.classList.add("con-foto");
+        });
+        img.src = A.foto;   // el src al final: así el listener ya está puesto
+      }
+    }
+
+    /* Los dos botones de "seguir al autor" apuntan a su página de Amazon.
+       Es el CTA más rentable que tiene esta web: Amazon avisa por correo a
+       quien te sigue cada vez que publicas, así que esa lista es, en la
+       práctica, el lanzamiento del octavo libro. Si no hay URL, no salen. */
+    [["seguirAutor"], ["proximoSeguir"]].forEach(function (par) {
+      const el = document.getElementById(par[0]);
+      if (el && EDITORIAL.amazonAutor) {
+        el.href = EDITORIAL.amazonAutor;
+        el.rel = "noopener noreferrer";
+        el.hidden = false;
+      }
+    });
+
+    /* Aviso de afiliación: obligatorio en cuanto usas etiqueta de afiliado,
+       así que lo atamos a la propia etiqueta y no a que alguien se acuerde. */
+    const avisoAfiliado = document.getElementById("avisoAfiliado");
+    if (avisoAfiliado && EDITORIAL.amazonTag) avisoAfiliado.hidden = false;
+
+    // Redes: solo salen las que tengan URL puesta
+    const listaRedes = document.getElementById("listaRedes");
+    if (listaRedes && Array.isArray(EDITORIAL.redes)) {
+      const conUrl = EDITORIAL.redes.filter(function (r) { return r.url; });
+      if (!conUrl.length) {
+        listaRedes.innerHTML = '<li class="apagado">Pon las URLs de tus redes en datos/libros.js</li>';
+      } else {
+        listaRedes.innerHTML = conUrl.map(function (r) {
+          return '<li><a href="' + L.limpio(r.url) + '" target="_blank" rel="noopener">' +
+                 L.limpio(r.nombre) + "</a></li>";
+        }).join("");
+      }
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     5. AÑO DEL PIE
+     ------------------------------------------------------------------------ */
+
+  const anio = document.getElementById("anioActual");
+  if (anio) anio.textContent = new Date().getFullYear();
+
+  /* ------------------------------------------------------------------------
+     6. FORMULARIO
+     No hay servidor: la web es estática. Abrimos el correo del usuario con
+     todo escrito. Cuando tengas hosting con PHP o un servicio tipo Formspree,
+     cambia esto por un envío real (está explicado en el README).
+     ------------------------------------------------------------------------ */
+
+  const formulario = document.getElementById("formularioContacto");
+  if (formulario) {
+    formulario.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const datos = new FormData(formulario);
+      const destino = (typeof EDITORIAL !== "undefined" && EDITORIAL.email) || "";
+      const asunto = "Manuscrito de " + (datos.get("nombre") || "");
+      const cuerpo =
+        "Nombre: " + (datos.get("nombre") || "") + "\n" +
+        "Correo: " + (datos.get("correo") || "") + "\n\n" +
+        (datos.get("mensaje") || "");
+      window.location.href = "mailto:" + destino +
+        "?subject=" + encodeURIComponent(asunto) +
+        "&body=" + encodeURIComponent(cuerpo);
+    });
+  }
+})();
+
+</script>
+
+<!-- Datos estructurados: ayuda a Google a entender qué es esto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "#ares",
+  "name": "Ares Ediciones",
+  "description": "Sello editorial digital independiente de Alan Gutiérrez.",
+  "email": "hola@aresediciones.com",
+  "founder": {
+    "@type": "Person",
+    "name": "Alan Gutiérrez",
+    "sameAs": "https://www.amazon.es/stores/Alan-Gutierrez/author/B0GJN9V1D5"
+  }
+}
+</script>
+
+</body>
+</html>

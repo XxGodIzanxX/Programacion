@@ -1,0 +1,1092 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estudio de contenido</title>
+<style>
+:root{
+  --paper:#F1F4F4;
+  --surface:#FFFFFF;
+  --surface-2:#E8EDED;
+  --line:#D3DBDB;
+  --line-soft:#E2E8E8;
+  --ink:#0E1A1C;
+  --ink-2:#42585B;
+  --ink-3:#7B9295;
+  --accent:#0B6E7F;
+  --accent-soft:#DCEBED;
+  --on-accent:#FFFFFF;
+  --b-ryu:#C4121F;
+  --b-file:#1F6FB2;
+  --b-pers:#6A4CA8;
+  --amber:#B5730F;
+  --green:#2E7D4F;
+  --blue:#2C6FA6;
+  --danger:#A33A2E;
+  --shadow:0 1px 2px rgba(14,26,28,.06), 0 8px 24px -16px rgba(14,26,28,.28);
+  --radius:10px;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,ui-serif,Georgia,serif;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1416;
+    --surface:#132022;
+    --surface-2:#18282B;
+    --line:#274043;
+    --line-soft:#1E3134;
+    --ink:#E4EDED;
+    --ink-2:#A3BABC;
+    --ink-3:#6D8689;
+    --accent:#4FBACB;
+    --accent-soft:#123338;
+    --on-accent:#08191C;
+    --b-ryu:#FF5566;
+    --b-file:#6FB6E8;
+    --b-pers:#B79BE8;
+    --amber:#D9963C;
+    --green:#5CB483;
+    --blue:#6BA6D6;
+    --danger:#DB7A6A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1416;
+  --surface:#132022;
+  --surface-2:#18282B;
+  --line:#274043;
+  --line-soft:#1E3134;
+  --ink:#E4EDED;
+  --ink-2:#A3BABC;
+  --ink-3:#6D8689;
+  --accent:#4FBACB;
+  --accent-soft:#123338;
+  --on-accent:#08191C;
+  --b-ryu:#FF5566;
+  --b-file:#6FB6E8;
+  --b-pers:#B79BE8;
+  --amber:#D9963C;
+  --green:#5CB483;
+  --blue:#6BA6D6;
+  --danger:#DB7A6A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+.shell{max-width:1420px;margin:0 auto;padding:22px 20px 64px;display:flex;flex-direction:column;gap:18px}
+
+/* ---------- cabecera ---------- */
+.masthead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+.wordmark{display:flex;flex-direction:column;gap:2px}
+.wordmark h1{margin:0;font-family:var(--serif);font-size:29px;font-weight:600;letter-spacing:-.01em;text-wrap:balance}
+.wordmark p{margin:0;color:var(--ink-3);font-size:13px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);
+  padding:7px 13px;border-radius:8px;cursor:pointer;
+  font-size:13.5px;transition:background .14s ease,border-color .14s ease;
+}
+.btn:hover{background:var(--surface-2);border-color:var(--ink-3)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:500}
+.btn-primary:hover{background:var(--accent);border-color:var(--accent);filter:brightness(1.08)}
+.btn-quiet{background:transparent;border-color:transparent;color:var(--ink-2);padding:6px 9px}
+.btn-quiet:hover{background:var(--surface-2);border-color:transparent}
+.btn-danger{color:var(--danger);border-color:var(--line)}
+.btn-danger:hover{background:var(--surface-2);border-color:var(--danger)}
+
+/* ---------- barra de control ---------- */
+.controlbar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:10px 12px;box-shadow:var(--shadow);
+}
+.monthnav{display:flex;align-items:center;gap:8px}
+.monthnav .label{font-family:var(--serif);font-size:19px;min-width:170px;text-transform:capitalize}
+.stepper{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.stepper button{background:var(--surface);border:0;padding:6px 11px;cursor:pointer;color:var(--ink-2)}
+.stepper button:hover{background:var(--surface-2);color:var(--ink)}
+.stepper button + button{border-left:1px solid var(--line)}
+
+.viewtabs{display:flex;gap:2px;background:var(--surface-2);padding:3px;border-radius:9px}
+.viewtabs button{
+  border:0;background:transparent;cursor:pointer;padding:6px 14px;border-radius:7px;
+  font-size:13px;color:var(--ink-2);
+}
+.viewtabs button[aria-pressed="true"]{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.field{
+  border:1px solid var(--line);background:var(--surface);border-radius:8px;
+  padding:6px 9px;font-size:13px;min-width:0;
+}
+.field::placeholder{color:var(--ink-3)}
+input.field[type="search"]{width:180px}
+
+/* ---------- métricas ---------- */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px 14px;display:flex;flex-direction:column;gap:2px;box-shadow:var(--shadow);
+}
+.metric .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.metric .v{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.15}
+.metric .n{font-size:12px;color:var(--ink-3)}
+.metric-accent .v{color:var(--accent)}
+
+/* ---------- disposición principal ---------- */
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 306px;gap:16px;align-items:start}
+#main{min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+
+/* ---------- calendario ---------- */
+.calscroll{overflow-x:auto}
+.calinner{min-width:0}
+.weekhead{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-bottom:1px solid var(--line);background:var(--surface-2)}
+.weekhead span{
+  padding:7px 10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.day{
+  min-height:126px;border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+  padding:7px;display:flex;flex-direction:column;gap:5px;position:relative;
+}
+.day:nth-child(7n){border-right:0}
+.day.is-out{background:var(--paper)}
+.day.is-out .daynum{color:var(--ink-3);opacity:.6}
+.day.is-today .daynum{background:var(--accent);color:var(--on-accent);border-radius:999px;padding:0 6px}
+.day.is-drop{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent)}
+.dayhead{display:flex;align-items:center;justify-content:space-between}
+.daynum{font-family:var(--mono);font-size:11.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.dayadd{
+  border:0;background:transparent;color:var(--ink-3);cursor:pointer;line-height:1;
+  font-size:16px;padding:0 4px;border-radius:5px;opacity:0;transition:opacity .12s ease;
+}
+.day:hover .dayadd,.dayadd:focus-visible{opacity:1}
+.dayadd:hover{background:var(--surface-2);color:var(--ink)}
+
+/* ---------- tarjetas de idea ---------- */
+.card{
+  border:1px solid var(--line);border-left:3px solid var(--card-color,var(--ink-3));
+  background:var(--surface);border-radius:7px;padding:6px 8px;cursor:grab;
+  display:flex;flex-direction:column;gap:3px;text-align:left;width:100%;
+  transition:border-color .12s ease,transform .12s ease;
+}
+.card:hover{border-color:var(--ink-3);border-left-color:var(--card-color,var(--ink-3))}
+.card:active{cursor:grabbing}
+.card.is-dragging{opacity:.4}
+.card .title{font-size:12.8px;line-height:1.32;font-weight:500;overflow-wrap:anywhere}
+.card .meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tag{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-3);
+}
+.tag.brand{color:var(--card-color);font-weight:700}
+[data-brand="ryu"]{--card-color:var(--b-ryu)}
+[data-brand="fileforge"]{--card-color:var(--b-file)}
+[data-brand="personal"]{--card-color:var(--b-pers)}
+.dot{width:7px;height:7px;border-radius:999px;background:var(--card-color,var(--ink-3));flex:none}
+.state{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;
+  padding:1px 5px;border-radius:4px;border:1px solid currentColor;
+}
+.state[data-s="idea"]{color:var(--ink-3)}
+.state[data-s="guion"]{color:var(--amber)}
+.state[data-s="grabado"]{color:var(--blue)}
+.state[data-s="editado"]{color:var(--accent)}
+.state[data-s="publicado"]{color:var(--green)}
+
+/* ---------- banco lateral ---------- */
+.aside{position:sticky;top:16px;display:flex;flex-direction:column;gap:16px}
+.panel-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:8px;
+  padding:11px 13px;border-bottom:1px solid var(--line);
+}
+.panel-head h2{margin:0;font-family:var(--serif);font-size:16px;font-weight:600}
+.panel-head .count{font-family:var(--mono);font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.bank{padding:10px;display:flex;flex-direction:column;gap:7px;min-height:130px;max-height:60vh;overflow-y:auto}
+.bank.is-drop{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent)}
+.empty{color:var(--ink-3);font-size:12.5px;padding:14px 6px;text-align:center;line-height:1.55}
+
+/* ---------- tablero ---------- */
+.board{display:grid;grid-template-columns:repeat(5,minmax(190px,1fr));gap:12px;overflow-x:auto;padding:2px}
+.col{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.col.is-drop{box-shadow:inset 0 0 0 2px var(--accent)}
+.colhead{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-bottom:1px solid var(--line)}
+.colhead .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase}
+.colhead .count{font-family:var(--mono);font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.colbody{padding:9px;display:flex;flex-direction:column;gap:7px;min-height:150px}
+
+/* ---------- lista ---------- */
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{
+  text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:400;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap;
+}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--surface-2)}
+td.date{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
+td.name{font-weight:500}
+.rowplat{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+
+/* ---------- modal ---------- */
+dialog{
+  border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);
+  padding:0;width:min(560px,calc(100vw - 32px));box-shadow:0 24px 70px -24px rgba(0,0,0,.5);
+}
+dialog::backdrop{background:rgba(9,20,22,.52)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--line)}
+.modal-head h2{margin:0;font-family:var(--serif);font-size:19px;font-weight:600}
+.form{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.form label{display:flex;flex-direction:column;gap:5px}
+.form .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.form .wide{grid-column:1/-1}
+.form input,.form select,.form textarea{
+  border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:8px 10px;font-size:14px;width:100%;
+}
+.form textarea{resize:vertical;min-height:64px;line-height:1.5}
+.modal-foot{display:flex;justify-content:space-between;gap:10px;padding:13px 18px;border-top:1px solid var(--line);background:var(--paper)}
+.modal-foot .right{display:flex;gap:8px}
+
+.toast{
+  position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+  background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;font-size:13px;
+  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:50;
+}
+.toast.show{opacity:1}
+
+.footnote{color:var(--ink-3);font-size:12px;text-align:center;line-height:1.6}
+.footnote kbd{
+  font-family:var(--mono);font-size:11px;border:1px solid var(--line);border-bottom-width:2px;
+  border-radius:5px;padding:1px 5px;background:var(--surface);color:var(--ink-2);
+}
+
+@media (max-width:1040px){
+  .workspace{grid-template-columns:minmax(0,1fr)}
+  .aside{position:static}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:720px){
+  .calinner{min-width:660px}
+  .day{min-height:92px}
+  .weekhead span{font-size:9px;padding:6px}
+  .form{grid-template-columns:1fr}
+  input.field[type="search"]{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="masthead">
+    <div class="wordmark">
+      <h1>Estudio de contenido</h1>
+      <p>Banco de ideas, calendario de publicación y estado de producción.</p>
+    </div>
+    <div class="tools">
+      <button class="btn" id="btn-export" type="button">Exportar</button>
+      <button class="btn" id="btn-import" type="button">Importar</button>
+      <button class="btn btn-primary" id="btn-new" type="button">+ Nueva idea</button>
+    </div>
+  </header>
+
+  <section class="metrics" id="metrics"></section>
+
+  <div class="controlbar">
+    <div class="monthnav">
+      <div class="stepper">
+        <button type="button" id="prev" aria-label="Mes anterior">‹</button>
+        <button type="button" id="next" aria-label="Mes siguiente">›</button>
+      </div>
+      <span class="label" id="monthlabel"></span>
+      <button class="btn btn-quiet" type="button" id="today">Hoy</button>
+      <button class="btn btn-quiet" type="button" id="btn-fill">Rellenar mes</button>
+    </div>
+
+    <div class="viewtabs" role="group" aria-label="Vista">
+      <button type="button" data-view="calendario">Calendario</button>
+      <button type="button" data-view="tablero">Tablero</button>
+      <button type="button" data-view="lista">Lista</button>
+    </div>
+
+    <div class="filters">
+      <input class="field" type="search" id="q" placeholder="Buscar idea…" aria-label="Buscar idea">
+      <select class="field" id="f-brand" aria-label="Filtrar por marca"></select>
+      <select class="field" id="f-plat" aria-label="Filtrar por plataforma"></select>
+      <select class="field" id="f-state" aria-label="Filtrar por estado"></select>
+    </div>
+  </div>
+
+  <div class="workspace" id="workspace">
+    <div id="main"></div>
+    <aside class="aside" id="aside">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Banco de ideas</h2>
+          <span class="count" id="bank-count"></span>
+        </div>
+        <div class="bank" id="bank" data-drop="bank"></div>
+      </section>
+    </aside>
+  </div>
+
+  <p class="footnote">
+    Arrastra una idea del banco a un día para programarla · <strong>Rellenar mes</strong> completa los días libres ·
+    <kbd>N</kbd> nueva idea · <kbd>Esc</kbd> cerrar
+    <br>Todo se guarda en este navegador. Usa <strong>Exportar</strong> para llevarte una copia.
+  </p>
+</div>
+
+<dialog id="modal">
+  <form method="dialog" id="form">
+    <div class="modal-head">
+      <h2 id="modal-title">Nueva idea</h2>
+      <button class="btn btn-quiet" type="button" id="modal-close" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="form">
+      <label class="wide">
+        <span class="lbl">Título</span>
+        <input name="title" required placeholder="p. ej. Reel: 3 errores al empezar en C" autocomplete="off">
+      </label>
+      <label>
+        <span class="lbl">Marca</span>
+        <select name="brand" id="sel-brand"></select>
+      </label>
+      <label>
+        <span class="lbl">Plataforma</span>
+        <select name="platform" id="sel-plat"></select>
+      </label>
+      <label>
+        <span class="lbl">Formato</span>
+        <select name="format" id="sel-format"></select>
+      </label>
+      <label>
+        <span class="lbl">Estado</span>
+        <select name="status" id="sel-state"></select>
+      </label>
+      <label>
+        <span class="lbl">Fecha de publicación</span>
+        <input type="date" name="date">
+      </label>
+      <label class="wide">
+        <span class="lbl">Gancho / primera frase</span>
+        <input name="hook" placeholder="Lo que se oye en los primeros 3 segundos" autocomplete="off">
+      </label>
+      <label class="wide">
+        <span class="lbl">Notas</span>
+        <textarea name="notes" placeholder="Guion, referencias, recursos que necesitas…"></textarea>
+      </label>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-danger" type="button" id="btn-delete">Eliminar</button>
+      <div class="right">
+        <button class="btn" type="button" id="btn-duplicate">Duplicar</button>
+        <button class="btn btn-primary" type="submit">Guardar</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<input type="file" id="file" accept="application/json" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var KEY = "estudio-contenido.v3";
+
+  var BRANDS = [
+    { id:"ryu",       label:"Ryu Ads" },
+    { id:"fileforge", label:"FileForge" },
+    { id:"personal",  label:"Marca personal" }
+  ];
+
+  var PLATFORMS = [
+    { id:"youtube",   label:"YouTube",   color:"#D0473F" },
+    { id:"tiktok",    label:"TikTok",    color:"#1F9BAE" },
+    { id:"instagram", label:"Instagram", color:"#B4487F" },
+    { id:"linkedin",  label:"LinkedIn",  color:"#2C6FA6" },
+    { id:"blog",      label:"Blog",      color:"#6F62B8" },
+    { id:"otro",      label:"Otro",      color:"#7B9295" }
+  ];
+  var FORMATS = ["Short / Reel","Vídeo largo","Carrusel","Post","Directo","Newsletter","Artículo","Landing"];
+  var STATES = [
+    { id:"idea",      label:"Idea" },
+    { id:"guion",     label:"Guion" },
+    { id:"grabado",   label:"Grabado" },
+    { id:"editado",   label:"Editado" },
+    { id:"publicado", label:"Publicado" }
+  ];
+  var DAYNAMES = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+  var MONTHS = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+
+  var $ = function(sel){ return document.querySelector(sel); };
+  var platformOf = function(id){
+    for (var i=0;i<PLATFORMS.length;i++){ if (PLATFORMS[i].id === id) return PLATFORMS[i]; }
+    return PLATFORMS[PLATFORMS.length-1];
+  };
+  var brandOf = function(id){
+    for (var i=0;i<BRANDS.length;i++){ if (BRANDS[i].id === id) return BRANDS[i]; }
+    return BRANDS[BRANDS.length-1];
+  };
+  var stateLabel = function(id){
+    for (var i=0;i<STATES.length;i++){ if (STATES[i].id === id) return STATES[i].label; }
+    return id;
+  };
+  var uid = function(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); };
+  var iso = function(d){
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  };
+  var addDays = function(d,n){ var c = new Date(d.getTime()); c.setDate(c.getDate()+n); return c; };
+  var esc = function(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  };
+
+  var today = new Date();
+  var TODAY_ISO = iso(today);
+
+  /* Ritmo semanal fijo. Cada día de la semana tiene dueño y formato, y dentro
+     de cada uno rotan las ideas según la semana del mes. */
+  var POOL = {
+    1: [ /* LUNES — Ryu Ads, autoridad y casos */
+      { brand:"ryu", platform:"linkedin", format:"Post", title:"Caso real: 47 leads en un mes con Google Ads en un negocio local",
+        hook:"Nos dijeron que en su pueblo nadie buscaba en Google. Buscaban 2.400 veces al mes.",
+        notes:"Cifras reales sin nombrar al cliente. Cerrar con el coste por lead: es el número que hace clic en la cabeza de un dueño." },
+      { brand:"ryu", platform:"linkedin", format:"Post", title:"Auditamos 20 webs del mismo sector y 17 fallaban en lo mismo",
+        hook:"Ninguna decía en portada a qué distancia estaba de ti.",
+        notes:"Elegir un sector local concreto (fisios, dentistas, talleres). El hallazgo repetido es la prueba de que el problema es del sector, no del cliente." },
+      { brand:"ryu", platform:"linkedin", format:"Post", title:"Por qué dejamos de vender packs de posts al mes",
+        hook:"Cobrábamos por publicar. El cliente quería vender. No es lo mismo.",
+        notes:"Post de posicionamiento. Cuidar el tono: explicar nuestra decisión, no atacar a otras agencias." },
+      { brand:"ryu", platform:"blog", format:"Artículo", title:"Lo que cuesta no medir: tres meses de anuncios sin GA4 bien puesto",
+        hook:"Gastó 6.000 € y no sabe cuál de los ocho anuncios se los llevó.",
+        notes:"La analítica es bloqueante: sin medición, los otros seis servicios van a ciegas. Buen artículo para enlazar desde cualquier propuesta." },
+      { brand:"ryu", platform:"linkedin", format:"Post", title:"Cómo decidimos si un cliente necesita SEO, Ads o los dos",
+        hook:"Si necesitas clientes este mes, el SEO no es tu respuesta.",
+        notes:"Criterio honesto: urgencia, ticket medio y competencia. Vender el servicio que toca da más margen a largo plazo que vender el caro." }
+    ],
+    2: [ /* MARTES — FileForge, SEO y producto */
+      { brand:"fileforge", platform:"blog", format:"Artículo", title:"Cómo comprimir un PDF sin que se vea borroso",
+        hook:"El truco no es bajar la calidad: es saber qué pesa dentro del PDF.",
+        notes:"Cabeza de serie SEO de FileForge. Enlazar a la herramienta en el primer tercio del texto." },
+      { brand:"fileforge", platform:"blog", format:"Artículo", title:"Convertir HEIC a JPG cuando el iPhone te complica la vida",
+        hook:"Le mandas la foto a un cliente y no puede abrirla. Otra vez.",
+        notes:"Confirmar primero que la conversión está disponible en la herramienta antes de publicar el artículo." },
+      { brand:"fileforge", platform:"tiktok", format:"Short / Reel", title:"500 MB a 40 MB sin subir el vídeo a ningún servidor",
+        hook:"Tu archivo no sale de tu ordenador. Mira la pestaña de red: cero subidas.",
+        notes:"Grabar con el panel de red abierto. La privacidad es el argumento que no pueden copiar los grandes." },
+      { brand:"fileforge", platform:"blog", format:"Landing", title:"Comparativa honesta: FileForge frente a iLovePDF y Smallpdf",
+        hook:"Ellos tienen más herramientas. Nosotros no tocamos tus archivos.",
+        notes:"Landing para keyword de marca ajena. Reconocer en qué son mejores da credibilidad y posiciona igual." },
+      { brand:"fileforge", platform:"blog", format:"Artículo", title:"Por qué tu PDF pesa 40 MB: las imágenes que lleva dentro sin que lo sepas",
+        hook:"Un folio de texto no pesa 40 MB. Lo que pesa es la foto a 300 ppp que pegaste sin mirar.",
+        notes:"Explicar la anatomía del PDF con capturas. Cierre natural hacia el compresor." }
+    ],
+    3: [ /* MIÉRCOLES — Ryu Ads, píldora corta */
+      { brand:"ryu", platform:"instagram", format:"Short / Reel", title:"El error de Meta Ads que quema el 40% del presupuesto",
+        hook:"Tienes 12 conjuntos de anuncios compitiendo entre ellos. Estás pujando contra ti mismo.",
+        notes:"Grabar sobre el panel real con los nombres tapados. Máximo 35 segundos." },
+      { brand:"ryu", platform:"tiktok", format:"Short / Reel", title:"Auditoría en 60 segundos: 3 señales de que tu web no convierte",
+        hook:"Tu web es bonita. Por eso no vende.",
+        notes:"Propuesta de valor invisible, CTA por debajo del pliegue, formulario eterno. Formato repetible cada mes con webs distintas." },
+      { brand:"ryu", platform:"tiktok", format:"Short / Reel", title:"Tu formulario tiene nueve campos y por eso nadie lo rellena",
+        hook:"Le estás pidiendo el DNI a alguien que solo quería un presupuesto.",
+        notes:"Enseñar un formulario real recortado a tres campos y el antes/después de conversión." },
+      { brand:"ryu", platform:"instagram", format:"Short / Reel", title:"Pujar por tu propia marca: ¿tirar el dinero o defender el terreno?",
+        hook:"Si no pujas tú por tu nombre, lo hará tu competencia. Y es barato para ellos.",
+        notes:"Pregunta clásica de cliente. Respuesta con matices: depende de si alguien más puja." },
+      { brand:"ryu", platform:"youtube", format:"Short / Reel", title:"Los 5 segundos que deciden si tu anuncio de YouTube existe",
+        hook:"Todo el mundo va a darle a saltar. Diseña el anuncio para eso.",
+        notes:"Ejemplos de aperturas buenas y malas. Cinco segundos de marca y promesa antes del botón." }
+    ],
+    4: [ /* JUEVES — marca personal */
+      { brand:"personal", platform:"youtube", format:"Vídeo largo", title:"Monté una agencia mientras estudiaba programación",
+        hook:"Nadie me contrataba por el currículum, así que me busqué los clientes yo.",
+        notes:"Vídeo pilar de marca personal. Honesto con lo que salió mal, no solo con las victorias." },
+      { brand:"personal", platform:"linkedin", format:"Post", title:"Lo que aprendí lanzando FileForge yo solo",
+        hook:"Lancé una herramienta gratis sin plan de negocio. Esto es lo que me devolvió.",
+        notes:"Conecta las dos marcas: el producto propio es la carta de presentación de la agencia." },
+      { brand:"personal", platform:"tiktok", format:"Short / Reel", title:"Mi setup y las 4 herramientas con las que llevo la agencia",
+        hook:"Tres de las cuatro son gratis.",
+        notes:"Contenido fácil y muy compartible. Grabar con la mesa ordenada." },
+      { brand:"personal", platform:"linkedin", format:"Post", title:"El primer cliente que perdí y por qué fue culpa mía",
+        hook:"Le enseñé métricas. Quería facturación.",
+        notes:"Vulnerabilidad con aprendizaje concreto al final. Sin nombres." },
+      { brand:"personal", platform:"youtube", format:"Vídeo largo", title:"Cómo organizo el contenido de tres marcas sin volverme loco",
+        hook:"Agencia, producto y marca personal. Un solo calendario.",
+        notes:"Enseñar este mismo organizador funcionando. Meta, pero es exactamente lo que la gente pregunta." }
+    ],
+    5: [ /* VIERNES — Ryu Ads, formato largo */
+      { brand:"ryu", platform:"youtube", format:"Vídeo largo", title:"Automatizamos la respuesta a leads: de 6 horas a 2 minutos",
+        hook:"El 78% de los clientes compra al primero que le contesta.",
+        notes:"Enseñar el flujo con IA por dentro. Es el servicio con más margen y el que menos se entiende: merece vídeo largo." },
+      { brand:"ryu", platform:"instagram", format:"Carrusel", title:"Qué mira de verdad Performance Max cuando gasta tu dinero",
+        hook:"No eliges dónde aparece. Eliges qué le enseñas para que decida.",
+        notes:"8 diapositivas: señales de audiencia, feed y creatividades. Aterrizar en que sin datos limpios va a ciegas." },
+      { brand:"ryu", platform:"instagram", format:"Directo", title:"Directo: auditoría en vivo de la web de un seguidor",
+        hook:"Trae tu web. La abrimos y te digo lo que le pasa, gratis.",
+        notes:"Pedir candidatos por formulario la semana anterior. Es captación disfrazada de contenido." },
+      { brand:"ryu", platform:"blog", format:"Newsletter", title:"Los 5 KPIs que sí le importan a un dueño de negocio",
+        hook:"Las impresiones no pagan nóminas.",
+        notes:"Traducir métricas a euros: CPL, coste por cliente, LTV, ROAS real y margen." },
+      { brand:"ryu", platform:"blog", format:"Artículo", title:"Cuánto cuesta de verdad Google Ads en España en 2026",
+        hook:"El clic no es el coste. El coste es el cliente.",
+        notes:"Artículo SEO de intención comercial, tabla de CPC por sector y cálculo de presupuesto mínimo viable." }
+    ],
+    6: [ /* SÁBADO — FileForge, ligero */
+      { brand:"fileforge", platform:"instagram", format:"Carrusel", title:"6 formatos de imagen y cuándo usar cada uno",
+        hook:"Si subes PNG a tu web, le estás cobrando el peaje a cada visita.",
+        notes:"JPG, PNG, WebP, AVIF, SVG y HEIC en seis diapositivas. Cerrar con el conversor." },
+      { brand:"fileforge", platform:"otro", format:"Post", title:"Por qué una herramienta gratis puede permitirse no vender tus datos",
+        hook:"Si el procesado ocurre en tu navegador, no hay datos que vender.",
+        notes:"Para X y comunidades de desarrollo. Explicarlo sin tecnicismos, es el ángulo que mejor funciona ahí." },
+      { brand:"fileforge", platform:"tiktok", format:"Short / Reel", title:"Comprime las fotos del verano antes de que el móvil te pida espacio",
+        hook:"1.400 fotos. 12 GB. Y el móvil avisando otra vez.",
+        notes:"Contenido estacional y de volumen. Muy compartible entre gente que no es del sector." },
+      { brand:"fileforge", platform:"blog", format:"Artículo", title:"WebP o AVIF: cuál usar en tu web en 2026",
+        hook:"AVIF pesa menos. WebP funciona en todo. Elige según a quién sirvas.",
+        notes:"Artículo técnico corto con tabla de compatibilidad. Atrae al público que también necesita la agencia." },
+      { brand:"fileforge", platform:"instagram", format:"Carrusel", title:"Una web que cargaba en 8 segundos y ahora en 2, solo comprimiendo imágenes",
+        hook:"No tocamos el código. Tocamos los 4 MB de fotos de la portada.",
+        notes:"Puente perfecto entre FileForge y el servicio de desarrollo web de Ryu Ads. Capturas de PageSpeed antes y después." }
+    ],
+    0: [ /* DOMINGO — marca personal, reflexión */
+      { brand:"personal", platform:"youtube", format:"Vídeo largo", title:"Construyo en público: semana 1 de la próxima herramienta",
+        hook:"Empiezo con cero usuarios y lo enseño todo, también si sale mal.",
+        notes:"Si funciona, es serie semanal. Decidir la cadencia antes de comprometerse en público." },
+      { brand:"personal", platform:"linkedin", format:"Post", title:"Cinco cosas que haría distinto si empezara la agencia hoy",
+        hook:"La primera: cobrar antes de tener la web perfecta.",
+        notes:"Formato lista, fácil de leer en domingo. Cada punto con una frase de por qué." },
+      { brand:"personal", platform:"linkedin", format:"Post", title:"El error de cobrar barato al principio",
+        hook:"Un precio bajo no te trae clientes fáciles. Te trae los difíciles.",
+        notes:"Tema que resuena mucho con otros autónomos. Cerrar con cómo subí precios sin perder cartera." },
+      { brand:"personal", platform:"tiktok", format:"Short / Reel", title:"Domingo de planificación: dejo la semana cerrada en 40 minutos",
+        hook:"40 minutos hoy me ahorran las siete mañanas de la semana.",
+        notes:"Enseñar el proceso real en pantalla. Encaja con la hora a la que se consume el domingo." },
+      { brand:"personal", platform:"youtube", format:"Vídeo largo", title:"Estudiar y facturar a la vez: mi horario real, sin postureo",
+        hook:"No me levanto a las cinco. Esto es lo que hago de verdad.",
+        notes:"Contra el contenido de productividad de fantasía. Enseñar el calendario tal cual está." }
+    ]
+  };
+
+  /* Ideas de reserva: llegan sin fecha para que el banco no nazca vacío. */
+  var SPARES = [
+    { brand:"ryu", platform:"youtube", format:"Vídeo largo", title:"Serie: desmontamos el embudo de un cliente real, paso a paso",
+      hook:"", notes:"Pedir permiso al cliente y anonimizar cifras sensibles antes de grabar." },
+    { brand:"fileforge", platform:"blog", format:"Landing", title:"Comprimir imágenes para WordPress sin instalar plugins",
+      hook:"", notes:"Keyword con intención muy clara. Landing corta con la herramienta arriba del todo." },
+    { brand:"personal", platform:"instagram", format:"Directo", title:"Q&A: las 10 preguntas que más me hacéis sobre montar una agencia",
+      hook:"", notes:"Recopilar preguntas reales de comentarios durante dos semanas antes de hacerlo." }
+  ];
+
+  /* Semillas de versiones anteriores, para saber si el usuario ya las tocó. */
+  var LEGACY = [
+    { key:"estudio-contenido.v2", titles:[
+      "Caso real: 47 leads en un mes con Google Ads en negocio local",
+      "El error de Meta Ads que quema el 40% del presupuesto",
+      "Auditoría en 60 segundos: 3 señales de que tu web no convierte",
+      "Automatizamos la respuesta a leads: de 6 horas a 2 minutos",
+      "Carrusel: qué mira de verdad Performance Max cuando gasta tu dinero",
+      "Los 5 KPIs que sí le importan a un dueño de negocio",
+      "Por qué dejamos de vender packs de posts al mes",
+      "Directo: auditoría en vivo de la web de un seguidor",
+      "Cuánto cuesta de verdad Google Ads en España en 2026",
+      "Cómo comprimir un PDF sin que se vea borroso",
+      "500 MB a 40 MB sin subir el vídeo a ningún servidor",
+      "Carrusel: 6 formatos de imagen y cuándo usar cada uno",
+      "Comparativa honesta: FileForge frente a iLovePDF y Smallpdf",
+      "Hilo: por qué una herramienta gratis puede permitirse no vender tus datos",
+      "Monté una agencia mientras estudiaba programación",
+      "Lo que aprendí lanzando FileForge yo solo",
+      "Mi setup y las 4 herramientas con las que llevo la agencia",
+      "Construyo en público: semana 1 de la próxima herramienta"
+    ]},
+    { key:"estudio-contenido.v1", titles:[
+      "Reel: 3 errores al empezar a programar en C",
+      "Cómo monté mi primer juego en consola (3 en raya)",
+      "Carrusel: anatomía de un array en memoria",
+      "Lo que aprendí haciendo Hundir la Flota",
+      "Serie: bucles while explicados con ejemplos reales",
+      "Plantilla de repaso para el primer examen",
+      "Matrices: el ejercicio que todos suspenden"
+    ]}
+  ];
+
+  function statusFor(dateISO){
+    var dias = Math.round((new Date(dateISO + "T00:00:00") - new Date(TODAY_ISO + "T00:00:00")) / 86400000);
+    if (dias < -1) return "publicado";
+    if (dias <= 0) return "editado";
+    if (dias <= 2) return "grabado";
+    if (dias <= 6) return "guion";
+    return "idea";
+  }
+
+  /* Una idea por cada día del mes, siguiendo el ritmo semanal del POOL.
+     `ocupados` es un mapa de fechas que ya tienen algo y se saltan. */
+  function planDelMes(year, month, ocupados){
+    var total = new Date(year, month + 1, 0).getDate();
+    var vueltas = {};
+    var plan = [];
+    for (var dia = 1; dia <= total; dia++){
+      var fecha = new Date(year, month, dia);
+      var wd = fecha.getDay();
+      var cesta = POOL[wd];
+      var n = vueltas[wd] || 0;
+      vueltas[wd] = n + 1;
+      var key = iso(fecha);
+      if (ocupados && ocupados[key]) continue;
+      plan.push(normalize(Object.assign({}, cesta[n % cesta.length], {
+        id: uid(), date: key, status: statusFor(key)
+      })));
+    }
+    return plan;
+  }
+
+  function seed(){
+    var ideas = planDelMes(today.getFullYear(), today.getMonth(), null)
+      .concat(SPARES.map(function(s){ return normalize(Object.assign({ id: uid() }, s)); }));
+    state.seedTitles = ideas.map(function(i){ return i.title; });
+    return ideas;
+  }
+
+  var state = {
+    ideas: [],
+    view: "calendario",
+    year: today.getFullYear(),
+    month: today.getMonth(),
+    q: "",
+    brand: "",
+    plat: "",
+    stat: ""
+  };
+
+  function normalize(idea){
+    return Object.assign({
+      id: uid(), brand:"personal", platform:"otro", format:FORMATS[0], status:"idea",
+      date:null, hook:"", notes:""
+    }, idea);
+  }
+
+  // ¿Las ideas guardadas siguen siendo exactamente los ejemplos que pusimos?
+  function sinTocar(ideas, titulos){
+    return ideas.length === titulos.length && ideas.every(function(i){
+      return titulos.indexOf(i.title) !== -1;
+    });
+  }
+
+  function load(){
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var data = JSON.parse(raw);
+        state.ideas = Array.isArray(data.ideas) ? data.ideas.map(normalize) : [];
+        if (data.view) state.view = data.view;
+        if (Array.isArray(data.seedTitles)) state.seedTitles = data.seedTitles;
+        return;
+      }
+      // Versiones anteriores: si el usuario nunca tocó los ejemplos, los
+      // sustituimos por los nuevos; si escribió los suyos, se conservan.
+      for (var v = 0; v < LEGACY.length; v++){
+        var guardado = localStorage.getItem(LEGACY[v].key);
+        if (!guardado) continue;
+        var previas = JSON.parse(guardado).ideas;
+        previas = Array.isArray(previas) ? previas : [];
+        state.ideas = sinTocar(previas, LEGACY[v].titles) ? seed() : previas.map(normalize);
+        save();
+        return;
+      }
+      state.ideas = seed();
+      save();
+    } catch (e) {
+      state.ideas = seed();
+    }
+  }
+
+  function save(){
+    var payload = { ideas: state.ideas, view: state.view };
+    // Dejamos constancia de los títulos de ejemplo para que una versión futura
+    // sepa distinguir tus ideas de las nuestras.
+    if (state.seedTitles) payload.seedTitles = state.seedTitles;
+    try { localStorage.setItem(KEY, JSON.stringify(payload)); }
+    catch (e) { toast("No se pudo guardar en este navegador"); }
+  }
+
+  var toastTimer;
+  function toast(msg){
+    var el = $("#toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 2200);
+  }
+
+  function matches(idea){
+    if (state.brand && idea.brand !== state.brand) return false;
+    if (state.plat && idea.platform !== state.plat) return false;
+    if (state.stat && idea.status !== state.stat) return false;
+    if (state.q){
+      var hay = (idea.title + " " + (idea.hook||"") + " " + (idea.notes||"") + " " + (idea.format||"")).toLowerCase();
+      if (hay.indexOf(state.q.toLowerCase()) === -1) return false;
+    }
+    return true;
+  }
+  function visible(){ return state.ideas.filter(matches); }
+
+  /* ---------- tarjetas ---------- */
+  function cardHTML(idea){
+    var p = platformOf(idea.platform);
+    var b = brandOf(idea.brand);
+    return '<button class="card" type="button" draggable="true" data-id="' + idea.id + '" data-brand="' + b.id + '">' +
+      '<span class="title">' + esc(idea.title) + '</span>' +
+      '<span class="meta">' +
+        '<span class="tag brand">' + esc(b.label) + '</span>' +
+        '<span class="tag">' + esc(p.label) + '</span>' +
+        '<span class="state" data-s="' + idea.status + '">' + esc(stateLabel(idea.status)) + '</span>' +
+      '</span>' +
+    '</button>';
+  }
+
+  /* ---------- vistas ---------- */
+  function renderCalendar(){
+    var first = new Date(state.year, state.month, 1);
+    var offset = (first.getDay() + 6) % 7;          // lunes = 0
+    var start = addDays(first, -offset);
+    var byDate = {};
+    visible().forEach(function(i){
+      if (!i.date) return;
+      (byDate[i.date] = byDate[i.date] || []).push(i);
+    });
+
+    var daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
+    var total = Math.ceil((offset + daysInMonth) / 7) * 7;
+
+    var head = DAYNAMES.map(function(d){ return "<span>" + d + "</span>"; }).join("");
+    var cells = "";
+    for (var n = 0; n < total; n++){
+      var day = addDays(start, n);
+      var key = iso(day);
+      var out = day.getMonth() !== state.month ? " is-out" : "";
+      var isToday = key === TODAY_ISO ? " is-today" : "";
+      var items = (byDate[key] || []).map(cardHTML).join("");
+      cells += '<div class="day' + out + isToday + '" data-drop="day" data-date="' + key + '">' +
+          '<div class="dayhead">' +
+            '<span class="daynum">' + day.getDate() + '</span>' +
+            '<button class="dayadd" type="button" data-add="' + key + '" aria-label="Nueva idea el ' + key + '">+</button>' +
+          '</div>' + items +
+        '</div>';
+    }
+    return '<section class="panel"><div class="calscroll"><div class="calinner">' +
+      '<div class="weekhead">' + head + '</div><div class="grid">' + cells + '</div></div></div></section>';
+  }
+
+  function renderBoard(){
+    var list = visible();
+    var cols = STATES.map(function(s){
+      var items = list.filter(function(i){ return i.status === s.id; });
+      items.sort(function(a,b){ return (a.date||"9999").localeCompare(b.date||"9999"); });
+      var body = items.length
+        ? items.map(cardHTML).join("")
+        : '<p class="empty">Nada aquí todavía.</p>';
+      return '<div class="col" data-drop="state" data-state="' + s.id + '">' +
+          '<div class="colhead"><span class="k state" data-s="' + s.id + '" style="border:0;padding:0">' + s.label + '</span>' +
+          '<span class="count">' + items.length + '</span></div>' +
+          '<div class="colbody">' + body + '</div>' +
+        '</div>';
+    }).join("");
+    return '<div class="board">' + cols + '</div>';
+  }
+
+  function renderList(){
+    var list = visible().slice().sort(function(a,b){
+      return (a.date || "9999-99-99").localeCompare(b.date || "9999-99-99");
+    });
+    if (!list.length) return '<section class="panel"><p class="empty">Ninguna idea coincide con el filtro.</p></section>';
+    var rows = list.map(function(i){
+      var p = platformOf(i.platform);
+      var b = brandOf(i.brand);
+      return '<tr data-id="' + i.id + '">' +
+        '<td class="date">' + (i.date ? esc(i.date) : "—") + '</td>' +
+        '<td class="name">' + esc(i.title) + '</td>' +
+        '<td data-brand="' + b.id + '"><span class="tag brand">' + esc(b.label) + '</span></td>' +
+        '<td><span class="rowplat"><span class="dot" style="background:' + p.color + '"></span>' + esc(p.label) + '</span></td>' +
+        '<td>' + esc(i.format || "—") + '</td>' +
+        '<td><span class="state" data-s="' + i.status + '">' + esc(stateLabel(i.status)) + '</span></td>' +
+      '</tr>';
+    }).join("");
+    return '<section class="panel"><div class="tablewrap"><table>' +
+      '<thead><tr><th>Fecha</th><th>Idea</th><th>Marca</th><th>Plataforma</th><th>Formato</th><th>Estado</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table></div></section>';
+  }
+
+  function renderBank(){
+    var items = visible().filter(function(i){ return !i.date; });
+    $("#bank-count").textContent = items.length + (items.length === 1 ? " idea" : " ideas");
+    $("#bank").innerHTML = items.length
+      ? items.map(cardHTML).join("")
+      : '<p class="empty">El banco está vacío.<br>Las ideas sin fecha aparecen aquí.</p>';
+  }
+
+  function renderMetrics(){
+    var prefix = state.year + "-" + String(state.month+1).padStart(2,"0");
+    var mes = state.ideas.filter(function(i){ return i.date && i.date.indexOf(prefix) === 0; });
+    var publicados = mes.filter(function(i){ return i.status === "publicado"; }).length;
+    var produccion = state.ideas.filter(function(i){ return i.status === "guion" || i.status === "grabado" || i.status === "editado"; }).length;
+    var banco = state.ideas.filter(function(i){ return !i.date; }).length;
+    var reparto = BRANDS.map(function(b){
+      return b.label + " " + mes.filter(function(i){ return brandOf(i.brand).id === b.id; }).length;
+    }).join(" · ");
+    var tiles = [
+      { k:"Programado este mes", v:mes.length, n:mes.length ? reparto : MONTHS[state.month] + " " + state.year, accent:true },
+      { k:"Publicado", v:publicados, n:"de " + mes.length + " previstos" },
+      { k:"En producción", v:produccion, n:"guion, grabado o editado" },
+      { k:"En el banco", v:banco, n:"sin fecha asignada" }
+    ];
+    $("#metrics").innerHTML = tiles.map(function(t){
+      return '<div class="metric' + (t.accent ? " metric-accent" : "") + '">' +
+        '<span class="k">' + t.k + '</span><span class="v">' + t.v + '</span><span class="n">' + esc(t.n) + '</span></div>';
+    }).join("");
+  }
+
+  function render(){
+    $("#monthlabel").textContent = MONTHS[state.month] + " " + state.year;
+    Array.prototype.forEach.call(document.querySelectorAll(".viewtabs button"), function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.view === state.view));
+    });
+    var main = $("#main");
+    if (state.view === "calendario") main.innerHTML = renderCalendar();
+    else if (state.view === "tablero") main.innerHTML = renderBoard();
+    else main.innerHTML = renderList();
+
+    $("#aside").hidden = state.view !== "calendario";
+    $("#workspace").style.gridTemplateColumns = state.view === "calendario" ? "" : "minmax(0,1fr)";
+    if (state.view === "calendario") renderBank();
+    renderMetrics();
+  }
+
+  /* ---------- modal ---------- */
+  var modal = $("#modal"), form = $("#form"), editing = null;
+
+  function fillSelects(){
+    $("#sel-brand").innerHTML = BRANDS.map(function(b){ return '<option value="' + b.id + '">' + b.label + '</option>'; }).join("");
+    $("#f-brand").innerHTML = '<option value="">Toda marca</option>' +
+      BRANDS.map(function(b){ return '<option value="' + b.id + '">' + b.label + '</option>'; }).join("");
+    $("#sel-plat").innerHTML = PLATFORMS.map(function(p){ return '<option value="' + p.id + '">' + p.label + '</option>'; }).join("");
+    $("#sel-format").innerHTML = FORMATS.map(function(f){ return '<option value="' + f + '">' + f + '</option>'; }).join("");
+    $("#sel-state").innerHTML = STATES.map(function(s){ return '<option value="' + s.id + '">' + s.label + '</option>'; }).join("");
+    $("#f-plat").innerHTML = '<option value="">Toda plataforma</option>' +
+      PLATFORMS.map(function(p){ return '<option value="' + p.id + '">' + p.label + '</option>'; }).join("");
+    $("#f-state").innerHTML = '<option value="">Todo estado</option>' +
+      STATES.map(function(s){ return '<option value="' + s.id + '">' + s.label + '</option>'; }).join("");
+  }
+
+  function openModal(id, presetDate){
+    editing = id || null;
+    var idea = id ? state.ideas.find(function(i){ return i.id === id; }) : null;
+    $("#modal-title").textContent = idea ? "Editar idea" : "Nueva idea";
+    $("#btn-delete").hidden = !idea;
+    $("#btn-duplicate").hidden = !idea;
+    form.title.value = idea ? idea.title : "";
+    form.brand.value = idea ? brandOf(idea.brand).id : (state.brand || "ryu");
+    form.platform.value = idea ? idea.platform : "tiktok";
+    form.format.value = idea ? (idea.format || FORMATS[0]) : FORMATS[0];
+    form.status.value = idea ? idea.status : "idea";
+    form.date.value = idea ? (idea.date || "") : (presetDate || "");
+    form.hook.value = idea ? (idea.hook || "") : "";
+    form.notes.value = idea ? (idea.notes || "") : "";
+    modal.showModal();
+    form.title.focus();
+  }
+
+  form.addEventListener("submit", function(){
+    var data = {
+      title: form.title.value.trim(),
+      brand: form.brand.value,
+      platform: form.platform.value,
+      format: form.format.value,
+      status: form.status.value,
+      date: form.date.value || null,
+      hook: form.hook.value.trim(),
+      notes: form.notes.value.trim()
+    };
+    if (!data.title) return;
+    if (editing){
+      var idea = state.ideas.find(function(i){ return i.id === editing; });
+      Object.keys(data).forEach(function(k){ idea[k] = data[k]; });
+      toast("Idea actualizada");
+    } else {
+      data.id = uid();
+      state.ideas.push(data);
+      toast("Idea añadida");
+    }
+    save(); render();
+  });
+
+  $("#modal-close").addEventListener("click", function(){ modal.close(); });
+
+  $("#btn-delete").addEventListener("click", function(){
+    if (!editing) return;
+    if (!confirm("¿Eliminar esta idea? No se puede deshacer.")) return;
+    state.ideas = state.ideas.filter(function(i){ return i.id !== editing; });
+    save(); render(); modal.close(); toast("Idea eliminada");
+  });
+
+  $("#btn-duplicate").addEventListener("click", function(){
+    if (!editing) return;
+    var idea = state.ideas.find(function(i){ return i.id === editing; });
+    var copy = Object.assign({}, idea, { id: uid(), title: idea.title + " (copia)", status: "idea", date: null });
+    state.ideas.push(copy);
+    save(); render(); modal.close(); toast("Duplicada al banco de ideas");
+  });
+
+  /* ---------- interacción ---------- */
+  document.addEventListener("click", function(e){
+    var add = e.target.closest("[data-add]");
+    if (add){ openModal(null, add.dataset.add); return; }
+    var card = e.target.closest(".card");
+    if (card){ openModal(card.dataset.id); return; }
+    var row = e.target.closest("tbody tr[data-id]");
+    if (row){ openModal(row.dataset.id); }
+  });
+
+  $("#btn-new").addEventListener("click", function(){ openModal(null, null); });
+
+  $("#btn-fill").addEventListener("click", function(){
+    var ocupados = {};
+    state.ideas.forEach(function(i){ if (i.date) ocupados[i.date] = true; });
+    var nuevas = planDelMes(state.year, state.month, ocupados);
+    var mes = MONTHS[state.month] + " de " + state.year;
+    if (!nuevas.length){ toast("Todos los días de " + mes + " ya tienen contenido"); return; }
+    if (!confirm("Se añadirán " + nuevas.length + " ideas, una por cada día libre de " + mes + ".\n\nSiguen el ritmo semanal: lunes y viernes Ryu Ads, martes y sábados FileForge, jueves y domingos marca personal.")) return;
+    state.ideas = state.ideas.concat(nuevas);
+    save(); render();
+    toast("Añadidas " + nuevas.length + " ideas a " + mes);
+  });
+  $("#prev").addEventListener("click", function(){ shiftMonth(-1); });
+  $("#next").addEventListener("click", function(){ shiftMonth(1); });
+  $("#today").addEventListener("click", function(){
+    state.year = today.getFullYear(); state.month = today.getMonth(); render();
+  });
+  function shiftMonth(n){
+    var d = new Date(state.year, state.month + n, 1);
+    state.year = d.getFullYear(); state.month = d.getMonth(); render();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".viewtabs button"), function(b){
+    b.addEventListener("click", function(){ state.view = b.dataset.view; save(); render(); });
+  });
+  $("#q").addEventListener("input", function(e){ state.q = e.target.value; render(); });
+  $("#f-brand").addEventListener("change", function(e){ state.brand = e.target.value; render(); });
+  $("#f-plat").addEventListener("change", function(e){ state.plat = e.target.value; render(); });
+  $("#f-state").addEventListener("change", function(e){ state.stat = e.target.value; render(); });
+
+  document.addEventListener("keydown", function(e){
+    if (e.key !== "n" && e.key !== "N") return;
+    if (modal.open) return;
+    var t = e.target.tagName;
+    if (t === "INPUT" || t === "TEXTAREA" || t === "SELECT") return;
+    e.preventDefault();
+    openModal(null, null);
+  });
+
+  /* ---------- arrastrar y soltar ---------- */
+  var dragId = null;
+
+  document.addEventListener("dragstart", function(e){
+    var card = e.target.closest(".card");
+    if (!card) return;
+    dragId = card.dataset.id;
+    card.classList.add("is-dragging");
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", dragId);
+  });
+  document.addEventListener("dragend", function(e){
+    var card = e.target.closest(".card");
+    if (card) card.classList.remove("is-dragging");
+    dragId = null;
+    clearDropHints();
+  });
+  function clearDropHints(){
+    Array.prototype.forEach.call(document.querySelectorAll(".is-drop"), function(el){ el.classList.remove("is-drop"); });
+  }
+  document.addEventListener("dragover", function(e){
+    var zone = e.target.closest("[data-drop]");
+    if (!zone || !dragId) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (!zone.classList.contains("is-drop")){ clearDropHints(); zone.classList.add("is-drop"); }
+  });
+  document.addEventListener("drop", function(e){
+    var zone = e.target.closest("[data-drop]");
+    var id = dragId || e.dataTransfer.getData("text/plain");
+    if (!zone || !id) return;
+    e.preventDefault();
+    var idea = state.ideas.find(function(i){ return i.id === id; });
+    if (!idea) return;
+    if (zone.dataset.drop === "day"){ idea.date = zone.dataset.date; toast("Programada para el " + zone.dataset.date); }
+    else if (zone.dataset.drop === "bank"){ idea.date = null; toast("Devuelta al banco de ideas"); }
+    else if (zone.dataset.drop === "state"){ idea.status = zone.dataset.state; toast("Estado: " + stateLabel(idea.status)); }
+    clearDropHints();
+    save(); render();
+  });
+
+  /* ---------- copia de seguridad ---------- */
+  $("#btn-export").addEventListener("click", function(){
+    var blob = new Blob([JSON.stringify({ ideas: state.ideas }, null, 2)], { type:"application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "contenido-" + TODAY_ISO + ".json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast("Copia descargada");
+  });
+  $("#btn-import").addEventListener("click", function(){ $("#file").click(); });
+  $("#file").addEventListener("change", function(e){
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try {
+        var data = JSON.parse(reader.result);
+        if (!Array.isArray(data.ideas)) throw new Error("formato");
+        if (!confirm("Esto reemplaza las " + state.ideas.length + " ideas actuales por las " + data.ideas.length + " del archivo. ¿Continuar?")) return;
+        state.ideas = data.ideas.map(function(i){ return Object.assign({ id: uid(), status:"idea", platform:"otro" }, i); });
+        save(); render(); toast("Importadas " + state.ideas.length + " ideas");
+      } catch (err) {
+        toast("Ese archivo no tiene el formato esperado");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  fillSelects();
+  load();
+  render();
+})();
+</script>
+</body>
+</html>

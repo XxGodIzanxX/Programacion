@@ -1,2 +1,15 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Imágenes: binarias siempre, sin normalización de saltos de línea.
+# "* text=auto" las detecta bien casi siempre, pero una detección errónea
+# corrompe el archivo en silencio y solo te enteras al ver la web rota.
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.webp binary
+*.gif  binary
+*.avif binary
+*.heic binary
+*.ico  binary
+*.pdf  binary
